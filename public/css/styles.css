@@ -1,0 +1,342 @@
+/******************************************************************************************
+Author: Mike Cumberworth
+CS 290, Section 400 Web Development Summer 2019 
+Assignment Database Interaction Project
+
+CSS Sections: 
+1. Site-wide structural styles
+2. Table-specific styles
+3. Form-specific styles
+4. @media query for responive styles at smaller sizes 
+***************************************************************************************/
+
+/********************************** 
+1. Site-wide styles 
+***********************************/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;  
+}
+
+body {
+  background: #333;
+  color: #444;
+  font-family: Arial, Helvetica, sans-serif; 
+  height: 100vh;
+  overflow: hidden;
+  line-height: 18px;
+  position: absolute;
+  width: 100%;
+}
+
+section {
+  padding: 0px;
+}
+
+.page-content {
+  margin: 60px 0 0 0;
+}
+
+.header {
+  background: #fff;
+  box-shadow: 0 0 4px #999;
+  padding: 20px 0 20px 20px;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+}
+
+.footer {
+  background: #333;
+  bottom: 0;
+  color: #888;
+  font-size: 0.8em;
+  line-height: 50px;
+  padding: 0 10px;
+  position: sticky;
+  margin: 0;
+  max-height: 50px;
+  width: 100%;
+}
+
+.title {
+  color: #336699;
+  font-size: 1.2em;
+  padding: 0.5em;
+}
+
+#notFoundpage{
+  color: #fff;
+  display: block;
+  margin: 100px auto;
+  text-align: center;
+}
+.null-set{
+  display: block;
+  font-size: 10em;
+  margin: 120px auto;
+  
+}
+
+/********************************** 
+2. Table-Specific Styles 
+***********************************/
+
+#exercises {
+  margin: 0;
+  max-height: 360px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+#exerciseTable {
+  background: #fff;
+  border-collapse: collapse;
+  text-align: left;
+  overflow: scroll;
+  width: 99%;
+}
+
+.header-row{
+  color: #fff;
+  width: 100%;
+}
+.header-row th{
+  background: #333;
+  padding: 1em 0.5em;
+  top: 0;
+  position: sticky;
+  z-index: 10;
+}
+
+.highlighted {
+  background: #f00;
+}
+.row-highlight-animated{
+  animation-name: highlightMe;
+  animation-duration: 1s;
+}
+@keyframes highlightMe{
+  from {
+    color: chartreuse;
+    background: rgb(234, 255, 142);
+  }
+  to {
+    color: initial;
+    background: rgb(255, 255, 255);
+  }
+}
+
+.row-delete-animated{
+  animation-name: deleteMe;
+  animation-duration: 0.3s;
+}
+@keyframes deleteMe{
+  from {
+    color: #f00;
+    background: rgb(173, 10, 10);
+  }
+  to {
+    color: initial;
+    background: rgb(255, 255, 255);
+  }
+}
+
+#tbody {
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.table-entry {
+  border: 1px solid #ccc;
+}
+
+.table-entry:last-of-type{
+  border-bottom: none;
+}
+
+.table-entry td{
+  padding: 1em 0.5em;
+  border-right: 1px solid #ddd;
+}
+
+.table-entry td:last-of-type{
+  border-right: none;
+}
+
+.delete-btn {
+  color: rgb(173, 13, 13);
+  cursor: pointer;
+}
+
+.edit-btn {
+  color: #aaa;
+  cursor: pointer;
+}
+
+/********************************** 
+3. Form-specific styles 
+***********************************/
+
+.btn-group {
+  display: flex;
+  flex-direction: row;
+}
+
+#cancelBtn {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-left: 20px;
+}
+
+.content {
+  background: #292929;
+  background: linear-gradient(180deg, rgb(250, 242, 227) 0%,rgb(138, 145, 153) 0.5%, rgb(88, 88, 88) 1%, rgb(59, 59, 59) 95%, rgb(20, 23, 26) 100%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0px auto;
+  overflow: hidden;
+  padding: 1em 0 4em 0;
+}
+
+.content h3 {
+  font-size: 1.1em;
+  margin: 0 0 10px 0;
+}
+
+fieldset {
+  background: #eee;
+  background: linear-gradient(180deg, rgb(240, 240, 250) 0%, rgb(220, 220, 220) 100%);
+  border: 1px solid #888;
+  padding: 0 1em;
+}
+
+.form-div {
+  margin: 5px auto;
+  width: 65%;
+}
+
+.form-div label {
+  color: rgb(220, 68, 5);
+  display: block;
+  font-size: 0.8em;
+  margin: 10px 0 6px 0;
+}
+
+.form-div input, 
+.form-div select{
+  display: block;
+  font-size: 1em;
+  line-height: 1em;
+  margin: 0 0 10px 0;
+  min-height: 28px;
+  width: 100%;  
+}
+
+input[type=radio]{
+  background: none;
+  margin-right: 60px;
+  width: 6%;
+}
+
+.form-note-textarea {
+  font-size: 1em;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  min-height: 150px;
+  padding: 0.5em;
+  width: 100%;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none; 
+  padding: 0;
+}
+
+.select-div {
+  position: relative;
+}
+
+.select-div::after{
+  content: "▼";
+  color: #336699;
+  font-size: 22px;
+  right: 10px;
+  top: 0.5em;
+  position: absolute;
+}
+
+.submit-btn {
+  background: rgb(220, 68, 5);
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 2px 2px #aaa;
+  color: white;
+  cursor: pointer;
+  font-size: 1.0em;
+  font-weight: bold;
+  height: 40px;
+  max-width: 200px;
+  margin: 20px 0;
+  padding: 0.4em ;  
+}
+
+/***************************************** 
+4. Media Query for smaller viewport sizes
+******************************************/
+
+@media (max-width: 850px) { 
+
+  .footer {
+    font-size: 0.6em;
+    line-height: 25px;
+    max-height: 25px;
+  }
+
+  .header {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .header-row {
+    font-size: 0.8em;
+  }
+
+  #notFoundpage h1{
+    font-size: 1.2em;
+    margin: 80px auto;
+  }
+
+  .null-set{
+    font-size: 8em;
+    margin: 80px auto;
+  }
+
+  .section {
+    margin: 20px 0 30px 0;
+  }
+
+  .table-entry td {
+    font-size: 0.7em;
+  }
+
+  .title {
+    background: #336699;
+    color: white;
+    display: block;
+    font-size: 1.0em;
+    margin: 0 0 10px 0;
+    padding: 0.4em;
+    width: 100%;
+  }
+}
