@@ -1,0 +1,26 @@
+<section class="content">
+  <form id="theForm" class="form-div">
+    <fieldset>
+      <input type="hidden" id="entryId" value="-1">
+      <label for="exerciseName">Exercise Name</label>
+      <input type="text" id="exerciseName" name="exerciseName" required>
+      <label for="numReps"># of Repetitions</label>
+      <input type="number" name="numReps" id="numReps" min="0" max="10000" step="1">
+      <label for="weight">Weight Used</label>
+      <input type="number" id="weight" name="weight" min="0" max="1000" step="1">
+      <label for="date">Date</label>
+      <input type="date" id="exerciseDate" name="exerciseDate" value="">
+      <label for="units">Units</label>
+      <div class="btn-group">
+        <label for="unit_lbs">lb</label>
+        <input type="radio" name="units" id="unit_lbs" value="lb"/>
+        <label for="unit_kg">kg</label>
+        <input type="radio" name="units" id="unit_kg" value="kg"/>
+        <label for="unit_none">N/A</label>
+        <input type="radio" name="units" id="unit_na" value="" checked/>
+      </div>
+      <button id="formSubmitBtn" type="submit" class="submit-btn">Add Exercise</button>
+      <button id="cancelBtn" type="button" class="">Cancel</button>
+    </fieldset>
+  </form>
+</section>
