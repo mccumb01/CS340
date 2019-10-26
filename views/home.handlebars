@@ -1,9 +1,21 @@
-<div class="page-content">
-  {{>workout-table}}
-  {{>form}}
-</div>
-<script src="/js/form.js"></script>
-<script src="/js/table.js"></script>
-<script src="/js/apiCalls.js"></script>
-<script src="/js/static.js"></script>
+<h3>Tsundoku </h3>
+<form class="add-form">
+  <fieldset>
+    <div><label for="date">Date: </label>
+      <input id="new-date" type="date" name="date"></div>
+    <div><label for="name">Media Type: </label>
+      <input id="new-name" type="text" name="name"></div>
+    <div><label for="title">Title: </label>
+      <input class="new-title" id="new-title" type="text" name="title" min="0"></div>
+    <div><label for="orig-lang-title">Original Language Title: </label>
+      <input class="orig-lang-title" id="orig-lang-title" type="text" name="title" min="0"></div>
+    <div><label for="priority">Priority: </label>
+      <input id="new-priority" type="radio" name="priority" value="1" checked>High
+      <input type="radio" name="priority" value="0">Low</div>
+    <input id="addItem" type="submit" value="Add">
+  </fieldset>
+</form>
 
+<h3>Media Queue:</h3>
+<div id="workout-table"></div>
+<script src="js/script.js"></script>
