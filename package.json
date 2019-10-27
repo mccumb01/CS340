@@ -4,9 +4,9 @@
   "description": "Database interaction",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
-  "author": "Sriram Narayanan",
+  "author": "Mike Cumberworth and Sriram Narayanan",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",

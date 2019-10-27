@@ -7,10 +7,12 @@
  * Maybe split these up to follow more of an MVC approach; items, genres, users, other middleware, etc.
  * ******************************************************************************************/
 const dataSources = require ('./dataSources');
+const models = require ('./src/models');
 
 module.exports.UserController = {
   createUser : function createUser(body){
-    return dataSources.createUser(body);
+    return new models.User(body);
+    // return dataSources.createUser(body);
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
