@@ -1,0 +1,31 @@
+<section class="content">
+  <form id="theForm" class="form-div">
+    <fieldset>
+      <input type="hidden" id="userId" value="-1">
+      <label for="username">User Name</label>
+      <p id="profile_username">The Username</p>
+      {{!-- <input type="text" id="username" name="username" required> --}}
+      <label for="contact">Contact</label>
+      <p id="profile_email">fakeEmail@fakefake.com</p>
+      {{!-- <input type="text" name="contact" id="contact"> --}}
+      <label for="queue_item_count"># Items in Queue</label>
+      <p id="profile_item_count">42</p>
+      {{!-- <input type="number" id="queue_item_count" name="queue_item_count" min="0" max="1000" step="1"> --}}
+      <label for="last_active">Date</label>
+      <p id="profile_last_active_date">10/10/2019</p>
+      <label for="top_priorities">Priority Items</label>
+      <ul class="priority_items">
+        {{#each priorities}}
+        <li id={{@index}}>
+          <a href="{{title}}">{{title}}</a></h4>
+        </li>
+        {{/each}}
+      </ul>
+      {{!-- <input type="date" id="last_active" name="last_active" value=""> --}}
+       <div class="button-set">
+      <button type="submit" class="submit-btn" name="edit_profile">Edit Profile</button>
+      <button type="submit" class="cancel-btn" name="cancel">Cancel</button>
+    </div>
+    </fieldset>
+  </form>
+</section>
