@@ -24,7 +24,7 @@ router.get('/add-item', function (req, res) {
 });
 
 router.get('/user', function (req, res) {
-  let priorities = api.getPriorities();
+  let priorities = api.getPriorityItems();
   console.log("PRIORITIES: ", priorities);
   let context = {priorities}; 
   res.render('profile', context);
