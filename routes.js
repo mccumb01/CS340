@@ -10,12 +10,41 @@ const router = express.Router();
 const api = require('./api');
 
 router.get('/', function (req, res) {
+  // if(!req.session.name){
+  //   res.render('login', context);
+  //   return;
+  // }
   res.render('home');
   return;
 });
 
+router.get('/add-item', function (req, res) {
+  res.render('home');
+  return;
+});
+
+router.get('/user', function (req, res) {
+  let priorities = api.getPriorities();
+  console.log("PRIORITIES: ", priorities);
+  let context = {priorities}; 
+  res.render('profile', context);
+  return;
+});
+
+router.route('/login')
+  .get((req, res) => {
+      // logout
+      res.render('login');
+      return;    
+  })
+  .post((req, res) =>{
+      // handle login somehow & redirect to 'home' if successful
+      res.render('home');
+      return;
+  });
+
 // API endpoints actually called by the client's Ajax requests
-router.route('/workouts')
+router.route('/mediaqueue')
 
   .get((req, res) => {
   let entries = [];

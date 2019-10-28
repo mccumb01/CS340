@@ -1,0 +1,163 @@
+* {
+  text-decoration: none;
+  /* margin: 0;
+  padding: 0;
+  background: none; */
+}
+
+#createUser {
+  background: #3f933f;
+}
+
+#login {
+
+}
+
+.box-shadow {
+  box-shadow: 0px 2px 1px #444;
+}
+
+
+.container {
+  /* width: 90%;
+  background: #d9d9d9; */
+}
+
+.header {
+  /* background: #444; */
+}
+
+.logo-text {
+  
+}
+
+.main-nav {
+  background: #d9d9d9;
+  color: #444; 
+  padding: 0.05em 0;
+  margin: 0;
+  font-size: 1em;
+  width: 100%;
+}
+
+.nav-list {
+  color: #444;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  list-style-type: none;
+}
+
+.nav-item {
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  margin: 0px 0.5em;
+}
+
+.nav-item a {
+  color: #444;
+  display: block;
+  padding: 0.5em;
+}
+
+.nav-item:hover, .nav-item:active{
+  background: #3f933f;
+}
+
+.nav-item:hover a, .nav-item:active a{
+  color: #fff;
+}
+
+.nav-list li.active {
+  background: #3f933f;
+}
+
+fieldset {
+  background: #eee; 
+  /*background: linear-gradient(180deg, rgb(240, 240, 250) 0%, rgb(220, 220, 220) 100%);*/
+  border: none;
+  padding: 1em;
+  margin: 0 auto;
+}
+
+.form {
+  margin: 20px auto;
+  max-width: 60%;
+}
+
+.form-div {
+  margin: 0 0 20px 0;
+  /* width: 100%; */
+}
+
+.form-div label {
+  color: #444;
+  display: block;
+  font-size: 0.9em;
+  margin: 12px 0 6px 0;
+}
+
+.form-div input, 
+.form-div select{
+  font-size: 0.8em;
+  line-height: 0.8em;
+  margin: 0 0 10px 0;
+  min-height: 35px;
+  width: 100%;  
+}
+
+.login-h2 {
+  background: #3f933f;
+  color: #fff;
+  padding: 0.3em;
+  margin: 0;
+}
+
+.page-content {
+  /* background: #d9d9d9;
+  color: #444; */
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.displayed {
+  display: block;
+}
+
+.submit-btn {
+  background: #3f933f;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 2px 2px #aaa;
+  color: white;
+  cursor: pointer;
+  font-size: 1.0em;
+  font-weight: bold;
+  height: 40px;
+  max-width: 200px;
+  margin: 20px 0;
+  padding: 0.4em ;  
+}
+
+.submit-btn:disabled {
+  background-color: #aaa;
+}
+
+.button-set {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel-btn {
+  background: inherit;
+  border: none;
+  cursor: pointer;
+  margin-left: 30px;
+  color: #444;
+  font-size: 0.9em;
+}
