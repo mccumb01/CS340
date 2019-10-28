@@ -18,8 +18,8 @@ router.get('/', function (req, res) {
   return;
 });
 
-router.get('/add-item', function (req, res) {
-  res.render('home');
+router.get('/media_items', function (req, res) {
+  res.render('media_items');
   return;
 });
 
