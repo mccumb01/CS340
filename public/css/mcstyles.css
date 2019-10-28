@@ -119,7 +119,14 @@ fieldset {
   color: #444; */
 }
 
+.hidden {
+  display: none;
+  opacity: 0;
+}
 
+.displayed {
+  display: block;
+}
 
 .submit-btn {
   background: #3f933f;
