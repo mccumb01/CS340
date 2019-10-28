@@ -1,21 +1,60 @@
 <h3>Tsundoku </h3>
 <form class="add-form">
   <fieldset>
-    <div><label for="date">Date: </label>
-      <input id="new-date" type="date" name="date"></div>
-    <div><label for="name">Media Type: </label>
-      <input id="new-name" type="text" name="name"></div>
+    <!--<div><label for="name">Media Type: </label>
+      <input id="new-name" type="text" name="name"></div>-->
     <div><label for="title">Title: </label>
       <input class="new-title" id="new-title" type="text" name="title" min="0"></div>
-    <div><label for="orig-lang-title">Original Language Title: </label>
-      <input class="orig-lang-title" id="orig-lang-title" type="text" name="title" min="0"></div>
-    <div><label for="priority">Priority: </label>
-      <input id="new-priority" type="radio" name="priority" value="1" checked>High
-      <input type="radio" name="priority" value="0">Low</div>
+     <input id="searchItem" type="submit" value="I'm Feeling Lucky"> 
     <input id="addItem" type="submit" value="Add">
-  </fieldset>
+      </fieldset>
 </form>
 
-<h3>Media Queue:</h3>
-<div id="workout-table"></div>
+
+<h3>Did you mean...</h3>
+<div id="db-table">
+<table>
+  <caption> Is this what you want to add? </caption>
+  <thead>
+    <th> Media Type</th>
+    <th> Title</th>
+    <th> Publication Year</th>
+    <th> User Rating</th>
+  </thead>
+  <tbody>
+      <td>Laser Disc</td>
+      <td>Blade Runner</td>
+      <td>1981</td>
+      <td>imdB 8.1/10</td>
+      </tbody>
+</table></div>
+
+
+<h3>Media Queue</h3>
+<div id="queue-table">
+<table>
+  <caption> Queue wisely! </caption>
+  <thead>
+    <th> Queue ID</th>
+    <th> Title</th>
+    <th> Status</th>
+    <th> Priority</th>
+    <th> Date Added</th>
+    <th> Delete </th>
+  </thead>
+  <tbody>
+      <th>1</th>
+      <td>The Last Knight</td>
+      <td>  <select name="status">
+    <option value="status 1">Started</option>
+    <option value="status 2">In Progress</option>
+  </select></td>
+      <td><select name="priority">
+    <option value="priority 1">Priority</option>
+    <option value="priority 2">-</option>
+  </select></td>
+      <td>10-27-2019</td>
+      <td><input id="deleteItem" type="radio" value="Delete"></td>
+      </tbody>
+</table></div>
 <script src="js/script.js"></script>
