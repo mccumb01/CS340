@@ -21,7 +21,7 @@ req.send();
 //Create table
 function createTable(dataArray){
 
-  var tableDiv = document.getElementById("workout-table");
+  var tableDiv = document.getElementById("queue-table");
 
   if(tableDiv.firstChild != null){
 
@@ -41,18 +41,14 @@ function createTable(dataArray){
   var headCell7 = document.createElement("th");
 
   // Populate header cells with appropriate titles
-  headCell1.innerText = "Date";
+  headCell1.innerText = "Queue ID";
   headRow.appendChild(headCell1);
-  headCell2.innerText = "Name";
+  headCell2.innerText = "Status";
   headRow.appendChild(headCell2);
-  headCell3.innerText = "Reps";
+  headCell3.innerText = "Priority";
   headRow.appendChild(headCell3);
-  headCell4.innerText = "Weight";
+  headCell4.innerText = "Date Added";
   headRow.appendChild(headCell4);
-  headCell5.innerText = "Unit";
-  headRow.appendChild(headCell5);
-  headRow.appendChild(headCell6);
-  headRow.appendChild(headCell7);
 
   table.appendChild(headRow);
 
@@ -299,3 +295,4 @@ function deleteEvent(event){
   req.send(JSON.stringify(payload));
   event.preventDefault();
 }
+
