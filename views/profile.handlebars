@@ -1,31 +1,31 @@
 <section class="content">
-  <form id="theForm" class="form-div">
+  <form id="profileForm" class="form-div">
     <fieldset>
       <input type="hidden" id="userId" value="-1">
-      <label for="username">User Name</label>
-      <p id="profile_username" class="displayed-text"></p>
+      <label class="form-label" for="username">User Name</label>
+      <p id="profile_username" class="displayed-text">Placeholder McFakename</p>
       <input class="hidden" type="text" id="username" name="username" required>
-      <label for="contact">Contact</label>
-      <p id="profile_email" class="displayed-text"></p>
+      <label class="form-label" for="contact">Contact</label>
+      <p id="profile_email" class="displayed-text">fake@faker.com</p>
       <input class="hidden" type="text" name="email" id="email">
-      <label for="queue_item_count"># Items in Queue</label>
+      <label class="form-label" for="queue_item_count"># Items in Queue</label>
       <p id="profile_item_count">42</p>
-      <label for="last_active">Date Last Active</label>
+      <label class="form-label" for="last_active">Date Last Active</label>
       <p id="profile_last_active_date">10/10/2019</p>
-      <label for="top_priorities">Priority Items</label>
+      <label class="form-label" for="top_priorities">Priority Items</label>
       {{priorities.length}}
       <ul class="priority_items">
         {{#each priorities}}
-        <li id={{@index}}>
-          <a href="{{title}}">{{title}}</a></h4>
+        <li id={{@index}} class="priority-list-item">
+          <a href="{{title}}">{{title}}</a>
         </li>
         {{/each}}
       </ul>
        <div class="button-set">
-      <button id="editBtn" type="submit" class="submit-btn" name="edit_profile">Edit Profile</button>
-      <button id="saveBtn" type="submit" class="submit-btn hidden" name="save_profile">Save Profile</button>
-      <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
-    </div>
+        <button id="editBtn" type="submit" class="submit-btn" name="edit_profile">Edit Profile</button>
+        <button id="saveBtn" type="submit" class="submit-btn hidden" name="save_profile">Save Profile</button>
+        <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
+      </div>
     </fieldset>
   </form>
 </section>
