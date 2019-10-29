@@ -43,6 +43,11 @@ router.route('/login')
       return;
   });
 
+  router.get('/about', function (req, res) {
+    res.render('about');
+    return;
+  });
+
 // API endpoints actually called by the client's Ajax requests
 router.route('/mediaqueue')
 
