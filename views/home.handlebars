@@ -18,13 +18,15 @@
   <thead>
     <th> Media Type</th>
     <th> Title</th>
+    <th> Genre</th>
     <th> Publication Year</th>
     <th> User Rating</th>
   </thead>
   <tbody>
       <td>Laser Disc</td>
       <td>Blade Runner</td>
-      <td>1981</td>
+      <td>Science Fiction</td>     
+      <td>1981</td> 
       <td>imdB 8.1/10</td>
       </tbody>
 </table></div>
@@ -37,6 +39,7 @@
   <thead>
     <th> Queue ID</th>
     <th> Title</th>
+    <th> Genre</th>
     <th> Status</th>
     <th> Priority</th>
     <th> Date Added</th>
@@ -45,16 +48,16 @@
   <tbody>
       <th>1</th>
       <td>The Last Knight</td>
+      <td>Useless Summer Blockbuster Sequel</td>
       <td>  <select name="status">
-    <option value="status 1">Started</option>
+    <option value="status 1">Unwatched</option>
     <option value="status 2">In Progress</option>
   </select></td>
-      <td><select name="priority">
-    <option value="priority 1">Priority</option>
-    <option value="priority 2">-</option>
-  </select></td>
+      <td><input type="checkbox" name="priority" value="High"><br></td>
       <td>10-27-2019</td>
-      <td><input id="deleteItem" type="radio" value="Delete"></td>
+      <td>
+      <button type="submit" value="Delete">Delete</button>
+      </td>
       </tbody>
 </table></div>
 <script src="js/script.js"></script>
