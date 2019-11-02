@@ -12,8 +12,8 @@ const models = require ('./src/models');
 module.exports.UserController = {
   createUser : function createUser(body){
     //check if user exists, if not create one.
-    return new models.User(body);
-    // return dataSources.createUser(body);
+    // return new models.User(body);
+    return dataSources.createUser(body);
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
