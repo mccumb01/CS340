@@ -13,20 +13,26 @@ module.exports.UserController = {
   createUser : function createUser(body){
     //check if user exists, if not create one.
     // return new models.User(body);
-    return dataSources.createUser(body);
+    let u = Promise.resolve(dataSources.createUser(body))
+                   .catch(err => {console.log(err)
+                      return err;
+                    });
+    console.log("Result of createUser in API: ", u);
+    return u;
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
     return Promise.resolve(dataSources.authenticateUser);
   },
                 
-  getUser : function getUserById(id){
-    let fake = new models.User();
-    fake.user_id = -1;
-    fake.username = "fake";
-    fake.user_email = "fake@fake.com";
-    return fake;
-    //return Promise.resolve(dataSources.getUserById(id));
+  getUserById : function getUserById(id){
+    console.log("GET USER CALLED IN API.JS! id: ", id);
+    // let fake = new models.User();
+    // fake.user_id = -1;
+    // fake.username = "fake";
+    // fake.user_email = "fake@fake.com";
+    // return fake;
+    return Promise.resolve(dataSources.getUserById(id));
   },
   
   updateUser : function updateUser(body){

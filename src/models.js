@@ -1,7 +1,7 @@
 module.exports.User = function(obj){ 
-                        this.user_id = null; 
-                        this.username = ""; 
-                        this.user_email = ""; 
+                        this.user_id = obj.user_id || null; 
+                        this.username = obj.username || ""; 
+                        this.user_email = obj.user_email || ""; 
                         Object.assign(this, obj);
                       };
 

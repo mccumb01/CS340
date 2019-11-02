@@ -15,10 +15,10 @@
 const mysql = require ('mysql');
 
 let pool = mysql.createPool({
-  host  : process.env.CS340_MYSQL_HOST + ":" + process.env.CS340_MYSQL_PORT,
+  host  : process.env.CS340_MYSQL_HOST, //+ ":" + process.env.CS340_MYSQL_PORT,
   user  : process.env.CS340_MYSQL_USER,
   password: process.env.CS340_MYSQL_PW,
-  database: process.env.CS340_MYSQL_DB
+  database: "tsundoku"
 });
 
 
@@ -78,7 +78,7 @@ module.exports.createUser = function(body){
   let name = String(body.username);
   let email = String(body.user_email);
   return new Promise((resolve, reject) => {
-    pool.query('INSERT INTO ' + users + ' (username, user_email), VALUES (?,?);',[name, email], function (err, rows){
+    pool.query('INSERT INTO ' + users + ' (username, user_email) VALUES (?,?);',[name, email], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
@@ -89,14 +89,15 @@ module.exports.createUser = function(body){
   });
 }
 
-module.exports.getEntries = function getEntries(){
+module.exports.getUserById = function getUserById(id){
+  console.log("GET USER CALLED IN DATASOURCES! id: ", id);
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM ' + TBLNAME + ';', function (err, rows){
+    pool.query('SELECT * FROM ' + users + ' WHERE user_id = ?;',[parseInt(id)] ,function (err, rows){
       if (err){
-      //  console.log("ERROR GETTING ENTRIES");
+      console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      //console.log("Results in dataSources: ", JSON.stringify(rows));
+      console.log("Results in dataSources: ", JSON.stringify(rows));
       resolve(rows);
     });
   });
