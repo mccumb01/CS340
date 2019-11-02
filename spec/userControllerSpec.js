@@ -32,5 +32,9 @@ describe("The test suite for the UserController in api.js", function() {
     let a = ctrl.createUser({user_id: -1, username: "Mike", user_email: "fake@faker.com"});
     expect(a.user_id).toBe(-1);
   });
+  it("should return the correct user for the given id", function() {
+    let a = ctrl.getUser(-1);
+    expect(a.user_id).toBe(-1);
+  });
 });
 

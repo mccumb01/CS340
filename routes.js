@@ -81,8 +81,9 @@ router.route('/mediaqueue')
 
 // Used to drop & rebuild an empty workouts table in the database
 router.get('/reset-table',function(req,res,next){
-  var context = {};
-  api.resetTable().then(() => res.send('<h1>Table Reset</h1>')); 
+  let tableName = req.query.tableName || "";
+  let context = {};
+  api.resetTable(tableName).then(() => res.send('<h1>Table Reset</h1>')); 
 });
 
 router.use((req, res, next) => {

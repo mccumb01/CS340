@@ -11,21 +11,32 @@ const models = require ('./src/models');
 
 module.exports.UserController = {
   createUser : function createUser(body){
+    //check if user exists, if not create one.
     return new models.User(body);
     // return dataSources.createUser(body);
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
-  return false;
+    return Promise.resolve(dataSources.authenticateUser);
   },
                 
-  getUserInfo : function getUserInfo(body){
-    return Promise.resolve(dataSources.getUserInfo(body));
+  getUser : function getUserById(id){
+    let fake = new models.User();
+    fake.user_id = -1;
+    fake.username = "fake";
+    fake.user_email = "fake@fake.com";
+    return fake;
+    //return Promise.resolve(dataSources.getUserById(id));
+  },
+  
+  updateUser : function updateUser(body){
+    return Promise.resolve(dataSources.updateUser(body));
   },
                 
-  deleteUserAfterAuth : function deleteUserAfterAuth(body){
-      return Promise.resolve(
-        dataSources.deleteUserAfterAuth(body)
+  deleteUser : function deleteUser(body){
+    // authenticateUser(body).then()  
+    return Promise.resolve(
+        dataSources.deleteUser(body)
       );
     }
   }
@@ -107,6 +118,6 @@ module.exports.GenreController = {
   }
 }
   
-module.exports.resetTable = function resetTable() {
-  return dataSources.resetTable();
+module.exports.resetTable = function resetTable(tableName) {
+  return dataSources.resetTable(tableName);
 }
