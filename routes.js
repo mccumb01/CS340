@@ -18,8 +18,8 @@ router.get('/', function (req, res) {
   return;
 });
 
-router.get('/add-item', function (req, res) {
-  res.render('home');
+router.get('/media_items', function (req, res) {
+  res.render('media_items');
   return;
 });
 
@@ -41,6 +41,11 @@ router.route('/login')
       // handle login somehow & redirect to 'home' if successful
       res.render('home');
       return;
+  });
+
+  router.get('/about', function (req, res) {
+    res.render('about');
+    return;
   });
 
 // API endpoints actually called by the client's Ajax requests

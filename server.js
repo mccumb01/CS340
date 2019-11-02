@@ -23,7 +23,7 @@ var pool = mysql.createPool({
     password: 'password',
     database: 'cs340_naraysri'
 });
-app.set('port', 3307);
+app.set('port', 3000);
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
@@ -117,5 +117,5 @@ app.use(function(err, req, res, next){
 });
 
 app.listen(app.get('port'), function(){
-  console.log('Express started on flipX.engr.oregonstate.edu:' + app.get('port') + '; press Ctrl-C to terminate.');
+  console.log('Express started on localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
