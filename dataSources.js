@@ -13,12 +13,14 @@
  * ******************************************************************************************/
 
 const mysql = require ('mysql');
+const fs = require('fs');
+const path = require('path');
 
 let pool = mysql.createPool({
   host  : process.env.CS340_MYSQL_HOST, //+ ":" + process.env.CS340_MYSQL_PORT,
   user  : process.env.CS340_MYSQL_USER,
   password: process.env.CS340_MYSQL_PW,
-  database: "tsundoku"
+  database: process.env.CS340_MYSQL_DB
 });
 
 
@@ -171,28 +173,21 @@ module.exports.deleteEntryWithId = function deleteEntryWithId(id){
   }); 
 }
 
-module.exports.resetTable = function resetTable() {
-  return Promise.resolve(pool.query(`DROP TABLE IF EXISTS ${TBLNAME}`, (err) =>{
-    var createString = `CREATE TABLE ${TBLNAME}(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    exerciseName VARCHAR(255) NOT NULL,
-    numReps INT,
-    weight INT,
-    exerciseDate DATE,
-    unit ENUM('lb', 'kg', ''))`;
-    pool.query(createString, function(err){
-      if (err){
-       // console.log("Error resetting table", err);
-      }
-      return "Table reset";
-    })
-  }));
+module.exports.resetTable = function resetTable(tableName) {
+  return Promise.resolve(pool.query(`DELETE FROM ${tableName}`, 
+  (err) =>{ console.log("Error emptying table") }));
 }
 
 module.exports.nukeDB = function nukeDB(){
-  // SELECT CONCAT('DROP TABLE IF EXISTS ', table_name, ';')
-  // FROM information_schema.tables
-  // WHERE table_schema = 'tsundoku';
-  // this.resetTable();??
+
+  const replaceNewlines = /;|\n*/g;
+  const initialSQL = fs.readFileSync(path.join(__dirname, '/initial_sql.txt'), {encoding: 'UTF-8'}).split(';\n');
+  for (let query of initialSQL) {
+    query.replace(replaceNewlines,'');
+    query = query.trim();
+    console.log('Query: ' + query + ';');
+    pool.query(query, 
+      (err) => console.log("Error resetting database", err ));
+  }
 }
 
