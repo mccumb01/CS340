@@ -1,5 +1,7 @@
 let button = document.querySelector('#submit')
-let input = document.querySelector('#search')
+let input = document.getElementById('new-title')
+console.log(input.value)
+//querySelector('#input')
 let output = document.querySelector('#output')
 
 button.addEventListener('click', (e)=>{
