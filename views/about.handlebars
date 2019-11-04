@@ -1,0 +1,104 @@
+
+<section id="aboutPage" class="content">
+<h2>About This Project</h2>
+<p>This is a project for CS 340 - Databases at Oregon State University.</p>
+<ul>
+  <li class="about-item">
+    <h3>
+      <a href="/">Home</a>
+    </h3>
+    <p>This page contains a User's "Media Queue(s)", a list of items they intend to watch/read eventually. 
+          Each queue item has a status, date added to the queue, titles pulled from the item in a separate table, and whether or not it's a "priority".</p>
+    <ul class="bulleted-list">
+      <li>
+        <p>A User can add new items to their queue by searching for a title in the database's "media_items" table. If it isn't there, they can add it.</p>
+      </li>
+      <li>
+        <p>A user can update the status and priority of individual items in their queue</p>
+      </li>
+      <li>
+        <p>A user can delete individual items from their queue, but note this does not delete the media item itself from the database - only removes it from their queue.</p>
+      </li>
+    </ul>
+    <div class="schema-div">
+      <h4>media_queue schema</h4>
+      <p> queue_item_id (PK), status, priority, date_added, media_queue_id (FK), media_item_id (FK)</p>
+    </div>
+  </li>
+  <li class="about-item">
+    <h3>
+      <a href="/media_items">Add Item</a>
+    </h3>
+    <p>This page has a form for adding a new "Media Item" to the database of items added by all users.
+       The database "media_item" table is a list of all books, movies, albums, etc that can be added by anyone as a "Queue Item" in their respective "Media Queue(s)."</p>
+    <p>This form also contains a multi-select list of "genres" (another DB table) you can associate with an item. This is the "many-to-many" relationship, which is problematic for reasons to be explained in a second ...</p>
+    <ul class="bulleted-list">
+      <li>
+        <p>A User can add new media items.</p>
+      </li>
+      <li>
+        <p>A User will be able to edit/delete media items, because we need to facilitate adding/editing/deleting "genres" from an item.</p>
+        <p>Note: If this were a "real" project, we couldn't use this model for multiple users. Allowing any user to edit or delete a media_item, would impact all other users who've added that item to their queues.</p>
+        <p>Having 'roles' for Users where we limit editing functionality to "Admin" users starts to get beyond the scope of this class - we'd basically be doing the CS 493 project at that point. So, for the purposes of this project, every user is an Admin trusted not to ruin the database.</p>
+      </li>
+    </ul>
+    
+    <div class="schema-div">
+      <h4>media_item schema</h4>
+      <p> media_item_id (PK), media_type, title, original_language_title, publication_year, avg_rating</p>
+    </div>
+    <div class="schema-div">
+      <h4>item_genre schema</h4>
+      <p> media_item_id (FK), genre_id (FK)</p>
+    </div>
+    <div class="schema-div">
+      <h4>genre schema</h4>
+      <p> genre_id (PK), name</p>
+    </div>
+  </li>
+  <li class="about-item">
+    <h3>
+      <a href="/user">Profile</a>
+    </h3>
+    <ul class="bulleted-list">
+      <li>
+        <p>This page contains User's Profile, consisting of their username, contact email, number of items currently in their queue, and a list of which items are marked as "priority".
+          A user can edit their username and email address, but cannot edit other values as they will be dynamically populated from the database. 
+      </li>
+      <li>
+        <p>A User can view their current profile info.</p>
+      </li>
+      <li>
+        <p>A user can update their username and email address</p>
+      </li>
+      <li>
+        <p>A user should probably be able to delete their profile, which would then cascade-delete their media_queue and all its associated queue_items.</p>
+      </li>
+    </ul>
+    
+    <div class="schema-div">
+      <h4>user schema</h4>
+      <p> user_id (PK), username, user_email</p>
+    </div>
+  </li>
+  <li class="about-item">
+    <h3>
+      <a href="/login">Login/Logout</a>
+    </h3>
+    <ul class="bulleted-list">
+      <li>
+        <p>This page allows an existing User to log in (through as-yet unspecified means).
+          It also allows a new user to create an account. 
+          It may have to check the database for existing users with that username, but at least email address would probably be unique.
+        </p>
+      </li>
+      <li>
+        <p>A User can login to the site with a password that would either be hashed/stored in a separate table that we haven't yet discussed, or would be totally fake and just set an Express "Session" cookie TBD.</p>
+      </li>
+      <li>
+        <p>A new user can create an account by providing a unique username and email address. This is the "Create" input for the "User" entity that gets edited on the Profile page.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+</section>

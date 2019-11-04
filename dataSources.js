@@ -13,33 +13,93 @@
  * ******************************************************************************************/
 
 const mysql = require ('mysql');
-
-// console.log(process.env);
+const fs = require('fs');
+const path = require('path');
 
 let pool = mysql.createPool({
-  host  : process.env.CS340_MYSQL_HOST,
+  host  : process.env.CS340_MYSQL_HOST, //+ ":" + process.env.CS340_MYSQL_PORT,
   user  : process.env.CS340_MYSQL_USER,
   password: process.env.CS340_MYSQL_PW,
   database: process.env.CS340_MYSQL_DB
 });
 
-const TBLNAME = "workouts";
 
-// let pool = mysql.createPool({
-//   host  : 'classmysql.engr.oregonstate.edu',
-//   user  : 'cs340_cumberwm',
-//   password: '[CHANGE ME LATER - NOT IN VERSION CONTROL]',
-//   database: 'cs340_cumberwm'
-// });
+/*******************************************
+SQL Tables 
+*******************************************/
+const users = "users";
+const hashed_creds = "hashed_creds";
+const media_items = "media_items";
+const media_queues = "media_queues";
+const queue_items = "queue_items";
+const genres = "genres";
+const item_genre = "media_items";
 
-module.exports.getEntries = function getEntries(){
+module.exports.resetTable = function(tableName){
+  // Match tableName to existing tables. If it doesn't match exactly, return
+
+  // DROP TABLE tableName IF EXISTS
+  // Call the appropriate SQL procedure to recreate tableName
+}
+
+
+/*******************************************
+Individual DB Queries
+ 
+ Add new user
+ Get user by id
+ Edit user with id
+ Delete user with id (and cascade delete media_queues and queue_items for that user?)
+ 
+ Add new media_item
+ Get all media_items
+ Get media_item by id
+ Edit media_item with id
+ Delete media_item with id
+ 
+ Add media_queue for user 
+ Get all media_queues for user
+ Get media_queue (for user) by queue_id
+ Delete media_queue (and cascade delete all its queue_items)
+
+ Add queue_item to media_queue
+ Get all queue_items for queue
+ Update queue_item (status, priority)
+ Remove queue_item 
+ Remove all queue_items from queue
+
+ Add genre to media_item
+ Update genres for media_item
+ Remove genre from media_item
+ Add new genre(?)
+
+*******************************************/
+
+module.exports.createUser = function(body){
+  //check if user exists, if not create one.
+  let name = String(body.username);
+  let email = String(body.user_email);
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * , DATE_FORMAT(exerciseDate, "%m-%d-%Y") AS exerciseDate FROM ' + TBLNAME + ';', function (err, rows){
+    pool.query('INSERT INTO ' + users + ' (username, user_email) VALUES (?,?);',[name, email], function (err, rows){
       if (err){
-      //  console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      //console.log("Results in dataSources: ", JSON.stringify(rows));
+      console.log("Results in dataSources: ", JSON.stringify(rows));
+      resolve(rows);
+    });
+  });
+}
+
+module.exports.getUserById = function getUserById(id){
+  console.log("GET USER CALLED IN DATASOURCES! id: ", id);
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM ' + users + ' WHERE user_id = ?;',[parseInt(id)] ,function (err, rows){
+      if (err){
+      console.log("ERROR GETTING ENTRIES");
+        return reject(err);
+      }
+      console.log("Results in dataSources: ", JSON.stringify(rows));
       resolve(rows);
     });
   });
@@ -113,21 +173,21 @@ module.exports.deleteEntryWithId = function deleteEntryWithId(id){
   }); 
 }
 
-module.exports.resetTable = function resetTable() {
-  return Promise.resolve(pool.query(`DROP TABLE IF EXISTS ${TBLNAME}`, (err) =>{
-    var createString = `CREATE TABLE ${TBLNAME}(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    exerciseName VARCHAR(255) NOT NULL,
-    numReps INT,
-    weight INT,
-    exerciseDate DATE,
-    unit ENUM('lb', 'kg', ''))`;
-    pool.query(createString, function(err){
-      if (err){
-       // console.log("Error resetting table", err);
-      }
-      return "Table reset";
-    })
-  }));
+module.exports.resetTable = function resetTable(tableName) {
+  return Promise.resolve(pool.query(`DELETE FROM ${tableName}`, 
+  (err) =>{ console.log("Error emptying table") }));
+}
+
+module.exports.nukeDB = function nukeDB(){
+
+  const replaceNewlines = /;|\n*/g;
+  const initialSQL = fs.readFileSync(path.join(__dirname, '/initial_sql.txt'), {encoding: 'UTF-8'}).split(';\n');
+  for (let query of initialSQL) {
+    query.replace(replaceNewlines,'');
+    query = query.trim();
+    console.log('Query: ' + query + ';');
+    pool.query(query, 
+      (err) => console.log("Error resetting database", err ));
+  }
 }
 

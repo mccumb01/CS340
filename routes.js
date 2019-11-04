@@ -10,12 +10,90 @@ const router = express.Router();
 const api = require('./api');
 
 router.get('/', function (req, res) {
+  // if(!req.session.name){
+  //   res.render('login', context);
+  //   return;
+  // }
   res.render('home');
   return;
 });
 
-// API endpoints actually called by the client's Ajax requests
-router.route('/workouts')
+router.get('/media_items', function (req, res) {
+  res.render('media_items');
+  return;
+});
+
+router.get('/user', function (req, res) {
+  let priorities = api.MediaQueueController.getPriorityItems();
+
+  console.log("PRIORITIES: ", priorities);
+  let context = {priorities}; 
+  res.render('profile', context);
+  return;
+});
+
+router.route('/login')
+  .get((req, res) => {
+      // logout
+      res.render('login');
+      return;    
+  })
+  .post((req, res) =>{
+      // handle login somehow & redirect to 'home' if successful
+      res.render('home');
+      return;
+  });
+
+  router.get('/about', function (req, res) {
+    res.render('about');
+    return;
+  });
+
+
+/*********************************************
+ * User CRUD Web API Endpoints
+ * 
+ * 
+ *********************************************/
+router.route('/user-info')
+  .get((req, res) => {
+  console.log("user 'GET' route!");
+  let id = req.query.id;
+  if (id != null && id != undefined) {
+    api.UserController.getUserById(id).then(val => {
+      res.json(val);
+    });
+  }
+  else {
+    console.log("No user w/id ", id);
+  }
+})
+.post((req, res) => {
+ // console.log('POST req received');
+  api.createUser(req.body).then(val => {
+    console.log("User from route: ", val);
+    res.json(val);
+  });
+  return;
+})
+.put((req, res) => {
+ // console.log('PUT req received');
+  let id = req.query.id;
+  api.updateEntryWithId(id, req.body).then(val => res.json(val));
+})
+.delete((req, res) => {
+ // console.log('DELETE req received');
+  let id = parseInt(req.query.id);
+  api.deleteEntryWithId(id).then(()=> res.send(`Entry ${id} deleted`));
+});
+
+/*********************************************
+ * Media Queue CRUD Web API Endpoints
+ * 
+ * 
+ *********************************************/
+
+router.route('/mediaqueue')
 
   .get((req, res) => {
   let entries = [];
@@ -50,10 +128,13 @@ router.route('/workouts')
   api.deleteEntryWithId(id).then(()=> res.send(`Entry ${id} deleted`));
 });
 
+
+
 // Used to drop & rebuild an empty workouts table in the database
 router.get('/reset-table',function(req,res,next){
-  var context = {};
-  api.resetTable().then(() => res.send('<h1>Table Reset</h1>')); 
+  let tableName = req.query.tableName || "";
+  let context = {};
+  api.resetTable(tableName).then(() => res.send('<h1>Table Reset</h1>')); 
 });
 
 router.use((req, res, next) => {

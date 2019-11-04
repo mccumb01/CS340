@@ -1,0 +1,104 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  user_id int unsigned NOT NULL AUTO_INCREMENT,
+  username varchar(100) NOT NULL ,
+  user_email varchar(100) NOT NULL,
+  PRIMARY KEY (user_id),
+  KEY idx_user_email (user_email),
+  CONSTRAINT unique_username UNIQUE(username),
+  CONSTRAINT unique_email UNIQUE(user_email)
+);
+
+LOCK TABLES users WRITE;
+
+INSERT INTO users VALUES (1,'MikeC','mc@fakeemail.com'),
+(2,'Sri','sri@fakeemail.com'),
+(3,'Guest User','guest@fakeemail.com');
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS media_items;
+
+CREATE TABLE media_items (
+  media_item_id int unsigned NOT NULL AUTO_INCREMENT,
+  media_type enum('Book','Movie','Audio Album','Periodical','Short') DEFAULT 'Book' NOT NULL,
+  title varchar(255) NOT NULL,
+  original_language_title varchar(255) DEFAULT NULL,
+  publication_year year(4) DEFAULT NULL,
+  avg_user_rating float(2) DEFAULT NULL,
+  PRIMARY KEY (media_item_id),
+  KEY idx_title (title),
+  KEY idx_original_language_title (original_language_title)
+);
+
+LOCK TABLES media_items WRITE;
+
+INSERT INTO media_items VALUES 
+(1, 'Book', 'A Common Sense Guide to Data Structures and Algorithms', NULL , 2017, NULL), 
+(2, 'Book', 'Cracking the Coding Interview, 6th Ed', NULL, 2015, NULL), 
+(3, 'Book', 'Taiwan Today', '今日台灣', 2004, NULL), 
+(4, 'Book', 'Modern Chinese Conversation, Revised Edition', '新編會話', 1998, NULL); 
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS media_queues;
+
+CREATE TABLE  media_queues (
+  media_queue_id int unsigned NOT NULL AUTO_INCREMENT,
+  user_id int unsigned NOT NULL, 
+  PRIMARY KEY (media_queue_id),
+  CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE
+);
+
+LOCK TABLES media_queues WRITE;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS queue_items;
+
+CREATE TABLE queue_items (
+  media_queue_id int unsigned NOT NULL,
+  media_item_id int unsigned NOT NULL,
+  CONSTRAINT media_item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id),
+  CONSTRAINT queue_fk FOREIGN KEY (media_queue_id) REFERENCES media_queues(media_queue_id)
+);
+
+DROP TABLE IF EXISTS genres;
+
+CREATE TABLE genres (
+  genre_id int unsigned NOT NULL AUTO_INCREMENT,
+  genre_name varchar(25) NOT NULL,
+  PRIMARY KEY (genre_id)
+);
+
+LOCK TABLES genres WRITE;
+INSERT INTO genres VALUES 
+(1,'Action'),
+(2,'Animation'),
+(3,'Children'),
+(4,'Classics'),
+(5,'Comedy'),
+(6,'Documentary'),
+(7,'Drama'),
+(8,'Family'),
+(9,'Foreign'),
+(10,'Games'),
+(11,'Horror'),
+(12,'Music'),
+(13,'New'),
+(14,'Sci-Fi'),
+(15,'Sports'),
+(16,'Travel');
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS item_genres;
+
+CREATE TABLE item_genres (
+  genre_id int unsigned NOT NULL,
+  media_item_id int unsigned NOT NULL,
+  CONSTRAINT item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id),
+  CONSTRAINT genre_fk FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
+);
+
+SET FOREIGN_KEY_CHECKS = 1;
