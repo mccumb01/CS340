@@ -1,59 +1,80 @@
-<h3>Tsundoku </h3>
-<form class="add-form">
-  <fieldset>
-    <!--<div><label for="name">Media Type: </label>
-      <input id="new-name" type="text" name="name"></div>-->
-      <div class="dropdown">
-                        <select id="mediaSelector">
-                                <option value="movie">Movie</option>
-                                <option value="book">Book</option>
-                                <option value="music">Music</option>
-                                <option value="podcast">Podcast</option>
-                          </select>
-    </div>
-    <div><label for="title">Title: </label>
-      <input class="new-title" id="new-title" type="text" name="title" min="0"></div>
-     <button id="submit" type="button">Search</button> 
-    <input id="addItem" type="submit" value="Add">
-      </fieldset>
-</form>
-
-
-   <h4> Search Results:</h4>
-   
- <!--   <div class="container">
-        <p>Enter query: <input id="search"/><button id="submit" class="btn btn-primary btn-sm" role="button">Search</button>
-    </p>
-        </div>-->
-    <div id="output"></div>   
-
-
-<h3>Media Queue</h3>
-<div id="queue-table">
-<table>
-  <caption> Queue wisely! </caption>
-  <thead>
-    <th> Queue ID</th>
-    <th> Title</th>
-    <th> Genre</th>
-    <th> Status</th>
-    <th> Priority</th>
-    <th> Date Added</th>
-    <th> Delete </th>
-  </thead>
-  <tbody>
-      <th>1</th>
-      <td>The Last Knight</td>
-      <td>Useless Summer Blockbuster Sequel</td>
-      <td>  <select name="status">
-    <option value="status 1">Unwatched</option>
-    <option value="status 2">In Progress</option>
-  </select></td>
-      <td><input type="checkbox" name="priority" value="High"><br></td>
-      <td>10-27-2019</td>
-      <td>
-      <button type="submit" value="Delete">Delete</button>
-      </td>
-      </tbody>
-</table></div>
-<script src="js/script.js"></script>
+<section class="content">
+  <form class="add-form">
+    <h3>Search to Add a New Media Item</h3>
+    <fieldset>
+      <!--<div><label for="name">Media Type: </label>
+        <input id="new-name" type="text" name="name"></div>-->
+        <div class="dropdown">
+                          <select id="mediaSelector">
+                                  <option value="movie">Movie</option>
+                                  <option value="book">Book</option>
+                                  <option value="music">Music</option>
+                                  <option value="podcast">Podcast</option>
+                            </select>
+      </div>
+      <div><label for="title">Title: </label>
+        <input class="new-title" id="new-title" type="text" name="title" min="0"></div>
+       <button id="submit" class="submit-btn" type="button">Search</button> 
+      {{!-- <input id="addItem" type="submit" value="Add"> --}}
+        </fieldset>
+  </form>
+  
+  
+  <h4> Search Results</h4>
+     
+   <!--   <div class="container">
+          <p>Enter query: <input id="search"/><button id="submit" class="btn btn-primary btn-sm" role="button">Search</button>
+      </p>
+          </div>-->
+  <div id="output"></div>   
+  
+  
+  <h3>Media Queue</h3>
+  <div id="queueBtns">
+    <button>New Queue</button>
+    <button>Edit Queue</button>
+    <button>Clear Queue</button>
+    <button>Delete Queue</button>
+  </div>
+  <div class="selectDiv">
+    <label for="selectQueue" class="form-label">Select a Queue</label>
+    <select name="selectQueue" id="selectQueue">
+  </div>
+    <option value="1">Main Queue</option>
+    <option value="1">Some other queue</option>
+  </select>
+  <div id="queue-table">
+  <table>
+    <caption> Queue wisely! </caption>
+    <thead>
+      <th> Queue ID</th>
+      <th> Title</th>
+      <th> Genre</th>
+      <th> Status</th>
+      <th> Priority</th>
+      <th> Date Added</th>
+      <th> Delete </th>
+    </thead>
+    <tbody>
+      <tr>
+        <th>1</th>
+        <td>The Last Knight</td>
+        <td>Useless Summer Blockbuster Sequel</td>
+        <td>
+          <select name="status">
+            <option value="status 1">Unwatched</option>
+            <option value="status 2">In Progress</option>
+          </select>
+        </td>
+        <td>
+          <input type="checkbox" name="priority" value="High"><br>
+        </td>
+        <td>10-27-2019</td>
+        <td>
+          <button type="button" class="delete-btn" value="Delete">Delete</button>
+        </td>
+        </tr>
+        </tbody>
+  </table></div>
+  <script src="js/script.js"></script>
+</section>
