@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
+  box-sizing: border-box;
 }
 
 :root {
@@ -35,6 +36,29 @@ body {
 
 }
 
+#queueBtns {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0.5em 1em;
+}
+
+#queueBtns button {
+  cursor: pointer;
+  font-size: 0.8em;
+  margin: 0 1em 0 0;
+}
+
+th {
+  color: #fff;
+  text-align: center;
+}
+
+tbody > tr > td {
+  background: #444;
+  color: #fff;
+  padding: 0 1em;
+}
+
 .about-item {
   background:#eee;
   background: rgba(255, 255, 255, 0.8);
@@ -49,8 +73,31 @@ body {
   color: var(--primary-color);
   text-decoration: underline;
 }
-.schema-div {
 
+.add-btn {
+  background: var(--accent-color);
+  border: none;
+  box-shadow: 0px 2px 1px #444;
+  color: var(--dark-text);
+  cursor: pointer;
+  font-size: 0.8em;
+  margin: auto;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.delete-btn {
+  background: rgb(196, 3, 3);
+  border: none;
+  box-shadow: 0px 2px 1px #444;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.8em;
+  margin: auto;
+  text-align: center;
+  width: 100%;
+  height: 100%;
 }
 
 .box-shadow {
@@ -71,6 +118,8 @@ body {
 }
 
 .header {
+  display: flex;
+  justify-content:space-between;
   padding: 0;
 }
 
@@ -80,11 +129,12 @@ h1, h2, h3, h4, h5, h6 {
   text-align: unset;
 }
 
-h1 {
-  text-shadow: none;
-  color: var(--primary-color);
-  margin-left: 0.5em;
+h1.title {
+  color: #fff;
+  font-size: 1.3em;
+  margin: 0.5em 2em 0 0.5em;
   text-align: unset;
+  text-shadow: none;
 }
 
 li {
@@ -97,14 +147,16 @@ li {
   padding: 0.5em;
 }
 
-.logo-img {
-  position: relative;
-}
-.logo-img img {
+.header-title-w-logo {
   position: absolute;
-  left: 1.0em;
-  max-height: 100px;
-  max-width: 100px;
+  display: flex;
+  line-height: 50px;
+}
+
+.header-title-w-logo img {
+  margin: -0.5em 0 0 1.0em;
+  height: 100px;
+  width: 100px;
 }
 
 .main-nav {
@@ -113,6 +165,7 @@ li {
   margin: 0 0 0.5em 0;
   font-size: 1em;
   width: 100%;
+  justify-self: right;
 }
 
 .nav-list {
@@ -204,7 +257,8 @@ fieldset {
 
 .content {
   margin: 10px auto;
-  width: 90%;
+  padding: 1em;
+  width: 100%;
 }
 
 .content p {

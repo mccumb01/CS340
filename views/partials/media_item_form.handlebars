@@ -17,9 +17,11 @@
       <option value="7">Season</option>
       <option value="8">Series</option>
       <option value="9">Anthology/Collection</option>
+      {{!-- {{media_type}} --}}
     </select>
     <label class="form-label" for="genres">Genres (Ctrl/Cmd + Click To Select Multiple</label>
     <select multiple name="genres" id="genres">
+      <option value="99">Add New ...</option>
       <option value="1">Action</option>
       <option value="2">Bollywood</option>
       <option value="3">Comedy</option>
@@ -36,8 +38,13 @@
       <option value="12">Technology</option>
       <option value="13">Travel</option>
       <option value="14">World Literature</option>
-      <option value="15">Other</option>
+      {{!-- {{item_genre}} --}}
     </select>
+    <div id="newGenreDiv">
+      <label for="newGenre" class="form-label">Add New Genre</label>
+      <input type="text" id="newGenre" >
+      <button id="addGenre" type="button" class="add-btn" name="addGenre">Add Genre</button>
+    </div>
     <div class="button-set">
       <button id="saveBtn" type="submit" class="submit-btn" name="saveItem">Save Item</button>
       <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
