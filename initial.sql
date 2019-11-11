@@ -60,7 +60,7 @@ DROP TABLE IF EXISTS media_items;
 
 CREATE TABLE media_items (
   media_item_id int unsigned NOT NULL AUTO_INCREMENT,
-  media_type enum('Book','Movie','Audio Album','Periodical','Short') DEFAULT 'Book' NOT NULL,
+  media_type enum('Book','Movie','Audio Album','Periodical','Short') DEFAULT 'Movie' NOT NULL,
   title varchar(255) NOT NULL,
   original_language_title varchar(255) DEFAULT NULL,
   publication_year year(4) DEFAULT NULL,
@@ -191,8 +191,5 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- INSERT INTO language VALUES (1,'English','2006-02-15 13:02:19'),(2,'Italian','2006-02-15 13:02:19'),(3,'Japanese','2006-02-15 13:02:19'),(4,'Mandarin','2006-02-15 13:02:19'),(5,'French','2006-02-15 13:02:19'),(6,'German','2006-02-15 13:02:19');
 -- /*!40000 ALTER TABLE language ENABLE KEYS */;
 -- UNLOCK TABLES;
-
-
-
 
 
