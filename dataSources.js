@@ -75,6 +75,20 @@ Individual DB Queries
 
 *******************************************/
 
+module.exports.authenticateUser = function authenticateUser(body) {
+  console.log("Authenticating user against DB!", body);
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM ' + users + ' WHERE username = ?;',[body.username] ,function (err, rows){
+      if (err || rows.length < 1 ){
+      console.log("ERROR GETTING ENTRIES");
+        return reject(err);
+      }
+      console.log("Result from DB: ", JSON.stringify(rows[0]));
+      resolve(rows[0]);
+    });
+  });
+}
+
 module.exports.createUser = function(body){
   //check if user exists, if not create one.
   console.log('body: ', body);
@@ -112,7 +126,7 @@ module.exports.getUserById = function getUserById(id){
         return reject(err);
       }
       // console.log("Results in dataSources: ", JSON.stringify(rows));
-      resolve(rows);
+      resolve(rows[0]);
     });
   });
 }

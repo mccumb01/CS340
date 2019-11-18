@@ -30,22 +30,54 @@ router.get('/user', function (req, res) {
   let priorities = api.MediaQueueController.getPriorityItems();
   console.log("PRIORITIES: ", priorities);
   let context = {priorities}; 
+  if(!req.session || !req.session.username){
+    res.render('login', context);
+    return;
+  }
+  context.user_id = req.session.user_id;
+  context.username = req.session.username;
+  context.user_email = req.session.user_email;
   res.render('profile', context);
   return;
+  
 });
 
 // Route to login an existing user
 router.route('/login')
   .get((req, res) => {
-
-      res.render('login');
-      return;    
+    if(req.body['New Session'] || req.body['New User']){
+      console.log("New Session?");
+      req.session.username = req.body.username;
+      req.session.user_email = req.body.user_email;
+    } 
+    res.render('login');
+    return;    
   })
   .post((req, res) =>{
       let context = {};
-      context.username = req.body.username;
-      context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
-      res.render('home', {context});
+      let priorities = api.MediaQueueController.getPriorityItems();
+      console.log("PRIORITIES: ", priorities);
+      context = {priorities}; 
+      let user = api.UserController.authenticateUser(req.body)
+                    .then(user => {
+                      if (!user) {
+                        res.status(400);
+                        return;
+                      }
+                      console.log("User after auth?", user);
+                      context.user_id = user.user_id;
+                      context.username = user.username;
+                      context.user_email = user.user_email;
+                      //context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
+                      req.session.user_id = user.user_id;
+                      req.session.username = user.username;
+                      req.session.user_email = user.user_email;
+                      console.log('Req Session after login: ', req.session);
+                      res.render('profile', context);
+                    })
+                    .catch(err =>{
+                      res.status(404);
+                    });
       return;
   });
 
@@ -73,21 +105,37 @@ router.route('/user-info')
 })
 .post((req, res, next) => {
  // console.log('POST req received');
+  if(req.body['New Session'] || req.body['New User']){
+    console.log("New Session?");
+    req.session.username = req.body.username;
+    req.session.user_email = req.body.user_email;
+  }
+  // If there is no session, go to the login page.
+  if(!req.session || !req.session.username){
+    res.render('login', {});
+    return;
+  }
   api.UserController.createUser(req.body).then(val => {
     req.body.user_id = val.insertId;
+    req.session.user_id = val.insertId;
     console.log("Req.body from post now with id:", req.body);
     let context = req.body;
     context.priorities = [];
     res.render('profile', context);
   });
+  
   return;
 })
 .put((req, res) => { 
- // console.log('PUT req received');
+  // console.log('PUT req received');
+  // If there is no session, go to the login page.
+  if(!req.session || !req.session.username){
+    res.render('login', {});
+    return;
+  } 
   let id = req.query.id;
-  let priorities = api.MediaQueueController.getPriorityItems();
-  console.log("PRIORITIES: ", priorities);
-  let context = {priorities}; 
+  req.session.username = req.body.username;
+  req.session.user_email = req.body.user_email;
   api.UserController.updateUser(req.body).then(val => res.json(val));
 })
 .delete((req, res) => {

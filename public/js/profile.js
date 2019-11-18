@@ -84,13 +84,13 @@ function saveEdits() {
     let req = new XMLHttpRequest();  
     req.open('PUT', '/user-info', true);
     req.setRequestHeader('Content-Type', 'application/json');
-    req.addEventListener('load',function(){
+    req.addEventListener('load',function(response){
       if(req.status >= 200 && req.status < 400){
         clearForm();
         user = payload;
         displayedText[0].textContent = payload.username;
         displayedText[1].textContent = payload.user_email;
-        alert('Data successfully updated!');          
+        alert('Data successfully updated!', response);          
       } else {
         console.log('Error in network request: ' + req.statusText);
       }});

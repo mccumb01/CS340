@@ -6,14 +6,14 @@
 const bodyParser = require('body-parser');
 const db = require('mysql');
 const express = require('express');
+let session = require('express-session');
 const hb = require('express-handlebars').create({defaultLayout : 'main'});
 const path = require('path');
-// let session = require('express-session');
 
 const app = express();
 const publicDirPath = path.join(__dirname, '/public');
 
-// app.use(session({secret:'MathIsFunTheySaid', path: "/form"}));
+app.use(session({secret:'ReadAllTheThings', path: "/", saveUninitialized: true, resave: true }));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(publicDirPath));

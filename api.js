@@ -14,13 +14,14 @@ module.exports.UserController = {
     //check if user exists, if not create one.
     // return new models.User(body);
     return Promise.resolve(dataSources.createUser(body))
-                   .catch(err => {console.log(err)
-                      return err;
-                    });
+                  .catch(err => {console.log(err)
+                    return err;
+                  });
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
-    return Promise.resolve(dataSources.authenticateUser);
+    return Promise.resolve(dataSources.authenticateUser(body))
+                  .catch(err => err);
   },
 
   getAllUsers : function getAllUsers(){
