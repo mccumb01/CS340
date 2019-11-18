@@ -160,8 +160,18 @@ router.get('/media_items', function (req, res) {
   return; 
 });
 /*********************************************
- * Media Queue CRUD Web API Endpoints
+ * Media Items CRUD Web API Endpoints
  *********************************************/
+
+/*********************************************
+ * Genres CRUD Web API Endpoints
+ *********************************************/
+
+router.post('/add_genre', function (req, res) {
+  console.log('add_genre route called in API!', req.body);
+  api.GenreController.addGenre(req.body)
+                     .then(val => res.json(val));
+});
 
 /*********************************************
  * Media Queue CRUD Web API Endpoints

@@ -198,7 +198,7 @@ module.exports.deleteItemWithId = function deleteItemWithId(id){
 *******************************************/
 module.exports.getAllGenres = function getAllGenres(){
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM genres;', function (err, rows){
+    pool.query('SELECT * FROM genres ORDER BY genre_name;', function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
@@ -214,12 +214,28 @@ module.exports.getGenreWithId = function getGenreWithId (body){
 }
 
 module.exports.addGenre = function addGenre (body){
-  return dataSources.addGenre(body);
-}
+  return new Promise((resolve, reject) => {
+    pool.query('INSERT INTO ' + genres + ' (genre_name) VALUES (?);',[body.genre_name], function (err, rows){
+      if (err){
+        console.log("ERROR GETTING ENTRIES");
+        return reject(err);
+      }
+      //console.log("Results in dataSources: ", JSON.stringify(rows));
+      resolve(rows);
+    });
+  });}
 
 module.exports.updateGenreWithId = function updateGenreWithId(id, body){
-  return dataSources.updateGenreWithId(id, body);
-}
+  return new Promise((resolve, reject) => {
+    pool.query('UPDATE genres SET genre_name = ? WHERE genre_id = ?;',[body.genre_name, body.genre_id], function (err, rows){
+      if (err){
+        console.log("ERROR GETTING ENTRIES");
+        return reject(err);
+      }
+      console.log("Results in dataSources: ", JSON.stringify(rows));
+      resolve(rows);
+    });
+  });}
 
 module.exports.deleteGenreWithId = function deleteGenreWithId(id){
   return dataSources.deleteGenreWithId(id);
