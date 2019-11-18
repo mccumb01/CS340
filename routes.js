@@ -21,10 +21,10 @@ router.get('/', function (req, res) {
   return;
 });
 
-router.get('/media_items', function (req, res) {
-  res.render('media_items');
-  return;
-});
+// router.get('/media_items', function (req, res) {
+//   res.render('media_items');
+//   return;
+// });
 
 router.get('/user', function (req, res) {
   let priorities = api.MediaQueueController.getPriorityItems();
@@ -58,26 +58,26 @@ router.route('/login')
       let priorities = api.MediaQueueController.getPriorityItems();
       console.log("PRIORITIES: ", priorities);
       context = {priorities}; 
-      let user = api.UserController.authenticateUser(req.body)
-                    .then(user => {
-                      if (!user) {
-                        res.status(400);
-                        return;
-                      }
-                      console.log("User after auth?", user);
-                      context.user_id = user.user_id;
-                      context.username = user.username;
-                      context.user_email = user.user_email;
-                      //context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
-                      req.session.user_id = user.user_id;
-                      req.session.username = user.username;
-                      req.session.user_email = user.user_email;
-                      console.log('Req Session after login: ', req.session);
-                      res.render('profile', context);
-                    })
-                    .catch(err =>{
-                      res.status(404);
-                    });
+      api.UserController.authenticateUser(req.body)
+          .then(user => {
+            if (!user) {
+              res.status(400);
+              return;
+            }
+            console.log("User after auth?", user);
+            context.user_id = user.user_id;
+            context.username = user.username;
+            context.user_email = user.user_email;
+            //context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
+            req.session.user_id = user.user_id;
+            req.session.username = user.username;
+            req.session.user_email = user.user_email;
+            console.log('Req Session after login: ', req.session);
+            res.render('profile', context);
+          })
+          .catch(err =>{
+            res.status(404);
+          });
       return;
   });
 
@@ -141,8 +141,27 @@ router.route('/user-info')
 .delete((req, res) => {
  // console.log('DELETE req received');
   let id = parseInt(req.query.id);
-  api.deleteUser(req.body).then(()=> res.send(`Entry ${id} deleted`))
+  api.deleteUser(req.body).then(() => res.send(`Entry ${id} deleted`))
 });
+
+/*********************************************
+ * Media Items Page 
+ *********************************************/
+router.get('/media_items', function (req, res) {
+  let context = {};
+  let types = api.MediaItemsController.getMediaTypes();
+  console.log('media types: ' , types);
+  context.types = types;
+  api.GenreController.getAllGenres().then(g => {
+    context.genres = g;
+    console.log("Context for media items: \n",context); 
+    res.render('media_items', context);
+  });
+  return; 
+});
+/*********************************************
+ * Media Queue CRUD Web API Endpoints
+ *********************************************/
 
 /*********************************************
  * Media Queue CRUD Web API Endpoints

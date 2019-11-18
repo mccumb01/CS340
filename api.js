@@ -84,7 +84,11 @@ module.exports.MediaItemsController = {
   getAllItems : function getAllItems(){
     return Promise.resolve(dataSources.getAllItems());
   },
-  
+  getMediaTypes : function getMediaTypes(){
+    return dataSources.MEDIA_TYPES;
+    //return Promise.resolve(dataSources.getMediaTypes());
+  },
+
   getItemById : function getItemId(id){
     return dataSources.getItemById(id);
   },
@@ -110,7 +114,7 @@ module.exports.MediaItemsController = {
 module.exports.GenreController = {
 
   getAllGenres : function getAllGenres(){
-    return Promise.resolve(dataSources.getAllGenres(body));
+    return Promise.resolve(dataSources.getAllGenres());
   },
 
   getGenreWithId : function getGenreWithId (body){

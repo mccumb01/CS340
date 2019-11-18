@@ -8,7 +8,10 @@
     <input class="form-input" id="pubYear" type="number" min='1000' max='2999' name="pubYear">
     <label class="form-label" for="media_type">Media Type</label>
     <select name="media_type" id="mediaType">
-      <option value="1">Book</option>
+      {{#each types}}
+        <option value={{@index}}>{{this}}</option>
+      {{/each}}
+      {{!-- <option value="1">Book</option>
       <option value="2">Film</option>
       <option value="3">Audio</option>
       <option value="4">Periodical</option>
@@ -16,13 +19,16 @@
       <option value="6">Episode</option>
       <option value="7">Season</option>
       <option value="8">Series</option>
-      <option value="9">Anthology/Collection</option>
+      <option value="9">Anthology/Collection</option> --}}
       {{!-- {{media_type}} --}}
     </select>
     <label class="form-label" for="genres">Genres (Ctrl/Cmd + Click To Select Multiple</label>
     <select multiple name="genres" id="genres">
       <option value="99">Add New ...</option>
-      <option value="1">Action</option>
+      {{#each genres}}
+        <option value={{genre_id}}>{{genre_name}}</option>
+      {{/each}}
+      {{!-- <option value="1">Action</option>
       <option value="2">Bollywood</option>
       <option value="3">Comedy</option>
       <option value="3">Classics</option>
@@ -37,7 +43,7 @@
       <option value="11">Self Help</option>
       <option value="12">Technology</option>
       <option value="13">Travel</option>
-      <option value="14">World Literature</option>
+      <option value="14">World Literature</option> --}}
       {{!-- {{item_genre}} --}}
     </select>
     <div id="newGenreDiv">
@@ -48,5 +54,6 @@
     <div class="button-set">
       <button id="saveBtn" type="submit" class="submit-btn" name="saveItem">Save Item</button>
       <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
-    </div>  </fieldset>
+    </div>  
+    </fieldset>
 </form>

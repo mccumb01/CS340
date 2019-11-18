@@ -75,6 +75,10 @@ Individual DB Queries
 
 *******************************************/
 
+
+/*******************************************
+'User' Functions 
+*******************************************/
 module.exports.authenticateUser = function authenticateUser(body) {
   console.log("Authenticating user against DB!", body);
   return new Promise((resolve, reject) => {
@@ -146,73 +150,149 @@ module.exports.updateUser = function(body){
   });
 }
 
-module.exports.getEntryById = function getEntryById(id){
+/*******************************************
+'Media Items' Functions
+*******************************************/
+
+module.exports.MEDIA_TYPES = ['Book','Movie','Audio Album','Periodical','Short'];
+
+module.exports.getAllItems = function getAllItems(){
   return new Promise((resolve, reject) => {
-    pool.query('SELECT *, DATE_FORMAT(exerciseDate, "%m-%d-%Y") AS exerciseDate FROM ' + TBLNAME + ' WHERE id = ?;', [parseInt(id)], function (err, rows){
+    pool.query('SELECT * FROM media_items;', function (err, rows){
       if (err){
-       // console.log("ERROR GETTING ENTRY");
+        console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-     // console.log("Results in dataSources: ", JSON.stringify(rows));
+      console.log("Results in dataSources: ", JSON.stringify(rows));
       resolve(rows);
     });
   });
-
 }
 
-module.exports.createEntry = function createEntry(body){
-
-  if (body.weight == ''){
-    body.weight = null;
-  }
-
-  if (body.exerciseDate == ''){
-    body.exerciseDate == null;
-  }
-
-  if (body.numReps == ''){
-    body.numReps == null;
-  }
-
-  return new Promise((resolve, reject) => {pool.query('INSERT into ' + TBLNAME + 
-  ' (exerciseName, numReps, weight, exerciseDate, unit ) VALUES (?, ?, ?, ?, ?);', 
-  [body.exerciseName, body.numReps, body.weight, body.exerciseDate, body.unit], 
-    (err, result, fields) => {
-      if (err){
-        return reject(err);
-      }
-      resolve(result);
-    });
-  }); 
+module.exports.getMediaTypes = function getMediaTypes(){
+  return Promise.resolve(dataSources.getMediaTypes());
 }
 
-module.exports.updateEntryWithId = function updateEntryWithId(id, body){
+module.exports.getItemById = function getItemId(id){
+  return dataSources.getItemById(id);
+}
+
+module.exports.addItem = function addItem(body){
+  return dataSources.addItem(body);
+}
+
+module.exports.updateItemWithId = function updateItemWithId(id, body){
+  return dataSources.updateItemWithId(id, body);
+}
+
+module.exports.updateItems = function updateItems(body){
+  return dataSources.updateItems(body);
+}
+
+module.exports.deleteItemWithId = function deleteItemWithId(id){
+  return dataSources.deleteItemWithId(id);
+}
+
+/*******************************************
+'Media Items' Functions
+*******************************************/
+module.exports.getAllGenres = function getAllGenres(){
   return new Promise((resolve, reject) => {
-    pool.query('UPDATE ' + 
-    TBLNAME + 
-    ' SET exerciseName=?, numReps=?, weight=?, exerciseDate=?, unit=? WHERE id=?;', 
-    [body.exerciseName, body.numReps, body.weight, body.exerciseDate, body.unit, id], 
-    (err, result, fields) => {
+    pool.query('SELECT * FROM genres;', function (err, rows){
       if (err){
+        console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      // console.log("Updated!?", result);
-      resolve(result);
+      console.log("Results in dataSources: ", JSON.stringify(rows));
+      resolve(rows);
     });
-  }); 
+  });
 }
 
-module.exports.deleteEntryWithId = function deleteEntryWithId(id){
-  return new Promise((resolve, reject) => {pool.query('DELETE FROM ' + TBLNAME + 
-  ' WHERE id = ?;', [id], 
-    (err, result) => {
-      if (err){
-        return reject(err);
-      }
-      resolve(result);
-    });
-  }); 
+module.exports.getGenreWithId = function getGenreWithId (body){
+  return Promise.resolve(dataSources.getGenreWithId(body));
 }
+
+module.exports.addGenre = function addGenre (body){
+  return dataSources.addGenre(body);
+}
+
+module.exports.updateGenreWithId = function updateGenreWithId(id, body){
+  return dataSources.updateGenreWithId(id, body);
+}
+
+module.exports.deleteGenreWithId = function deleteGenreWithId(id){
+  return dataSources.deleteGenreWithId(id);
+}
+
+
+// module.exports.getEntryById = function getEntryById(id){
+//   return new Promise((resolve, reject) => {
+//     pool.query('SELECT *, DATE_FORMAT(exerciseDate, "%m-%d-%Y") AS exerciseDate FROM ' + TBLNAME + ' WHERE id = ?;', [parseInt(id)], function (err, rows){
+//       if (err){
+//        // console.log("ERROR GETTING ENTRY");
+//         return reject(err);
+//       }
+//      // console.log("Results in dataSources: ", JSON.stringify(rows));
+//       resolve(rows);
+//     });
+//   });
+
+// }
+
+// module.exports.createEntry = function createEntry(body){
+
+//   if (body.weight == ''){
+//     body.weight = null;
+//   }
+
+//   if (body.exerciseDate == ''){
+//     body.exerciseDate == null;
+//   }
+
+//   if (body.numReps == ''){
+//     body.numReps == null;
+//   }
+
+//   return new Promise((resolve, reject) => {pool.query('INSERT into ' + TBLNAME + 
+//   ' (exerciseName, numReps, weight, exerciseDate, unit ) VALUES (?, ?, ?, ?, ?);', 
+//   [body.exerciseName, body.numReps, body.weight, body.exerciseDate, body.unit], 
+//     (err, result, fields) => {
+//       if (err){
+//         return reject(err);
+//       }
+//       resolve(result);
+//     });
+//   }); 
+// }
+
+// module.exports.updateEntryWithId = function updateEntryWithId(id, body){
+//   return new Promise((resolve, reject) => {
+//     pool.query('UPDATE ' + 
+//     TBLNAME + 
+//     ' SET exerciseName=?, numReps=?, weight=?, exerciseDate=?, unit=? WHERE id=?;', 
+//     [body.exerciseName, body.numReps, body.weight, body.exerciseDate, body.unit, id], 
+//     (err, result, fields) => {
+//       if (err){
+//         return reject(err);
+//       }
+//       // console.log("Updated!?", result);
+//       resolve(result);
+//     });
+//   }); 
+// }
+
+// module.exports.deleteEntryWithId = function deleteEntryWithId(id){
+//   return new Promise((resolve, reject) => {pool.query('DELETE FROM ' + TBLNAME + 
+//   ' WHERE id = ?;', [id], 
+//     (err, result) => {
+//       if (err){
+//         return reject(err);
+//       }
+//       resolve(result);
+//     });
+//   }); 
+// }
 
 module.exports.resetTable = function resetTable(tableName) {
   return Promise.resolve(pool.query(`DELETE FROM ${tableName}`, 
