@@ -1,13 +1,13 @@
 <section class="content">
   <form id="profileForm" class="form-div">
     <fieldset>
-      <input type="hidden" id="userId" value="{{user_id}}">
+      <p class="hidden" id="userId">{{user_id}}"</p>
       <label class="form-label" for="username">User Name</label>
       <p id="profile_username" class="displayed-text">{{username}}</p>
-      <input class="hidden" type="text" id="username" name="username" required>
-      <label class="form-label" for="contact">Contact</label>
+      <input class="hidden" type="text" id="username" name="username" value="" required>
+      <label class="form-label" for="contact">Contact Email</label>
       <p id="profile_email" class="displayed-text">{{user_email}}</p>
-      <input class="hidden" type="text" name="email" id="email">
+      <input class="hidden" type="text" name="user_email" id="user_email" value="">
       <label class="form-label" for="queue_item_count"># Items in Queue</label>
       <p id="profile_item_count">42</p>
       <label class="form-label" for="last_active">Date Last Active</label>
@@ -29,5 +29,5 @@
     </fieldset>
   </form>
 </section>
-
+{{{data}}}
 <script src="js/profile.js"></script>

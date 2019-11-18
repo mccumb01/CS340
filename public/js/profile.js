@@ -1,11 +1,17 @@
+window.onload = function(){
+
+}
+
 
 let isEditing = false;
-
-let user = {user_id: -1, username: '', user_email: ''};
-let userId = document.getElementById('userId');
+ 
+let userId = document.getElementById('userId').textContent;
+let username = document.getElementById('profile_username').textContent;
+let email = document.getElementById('profile_email').textContent;
 let nameInput = document.getElementById('username');
-let emailInput = document.getElementById('email');
+let emailInput = document.getElementById('user_email');
 const displayedText = document.getElementsByClassName('displayed-text');
+let user = {user_id: userId, username: username, user_email: email};
 console.log(displayedText);
 const saveBtn = document.getElementById('saveBtn');
 const editBtn = document.getElementById('editBtn');
@@ -31,15 +37,17 @@ cancelBtn.addEventListener('click', (event) => {
 });
 
 function toggleEdit(){
-  // if currently editing, hide inputs & revert to previous state
+  // if currently editing, show inputs, and populate inputs w/current values
+  isEditing = !isEditing;
   if (isEditing) {
-    hideFormInputs();
-  }
-  // if not editing, hide text, show inputs, and populate inputs w/current values
-  else {
+    populateForm();
     showFormInputs();
   }
-  isEditing = !isEditing;
+  // if not editing, hide form fields and show static text instead  
+  else {
+    hideFormInputs();
+    clearForm();
+  }
 }
 
 function showFormInputs(){
@@ -62,8 +70,7 @@ function cancelEdit(){
   isEditing = false;
   this.hideFormInputs(); 
 }
-
-
+ 
 function saveEdits() {
   console.log('Save Edits called!');
   // get the current values from the form fields
@@ -79,7 +86,10 @@ function saveEdits() {
     req.setRequestHeader('Content-Type', 'application/json');
     req.addEventListener('load',function(){
       if(req.status >= 200 && req.status < 400){
-        //clearForm();
+        clearForm();
+        user = payload;
+        displayedText[0].textContent = payload.username;
+        displayedText[1].textContent = payload.user_email;
         alert('Data successfully updated!');          
       } else {
         console.log('Error in network request: ' + req.statusText);
@@ -90,14 +100,20 @@ function saveEdits() {
 function getFormValues(){
   console.log('Getting form values!');
   let vals = {
-    'user_id': userId.value,
+    'user_id': parseInt(userId),
     'username': nameInput.value,
     'user_email': emailInput.value
   };
   return vals;
 }
 
-function populateForm(obj) {
-  nameInput.value = obj.username;
-  emailInput.value = obj.user_email;
+function populateForm() {
+  console.log('Populate form called! ', userId, nameInput, emailInput);
+  nameInput.value = user.username;
+  emailInput.value = user.user_email;
+}
+
+function clearForm(){
+  nameInput.value = '';
+  emailInput.value = '';
 }

@@ -82,7 +82,7 @@ router.route('/user-info')
   });
   return;
 })
-.put((req, res) => {
+.put((req, res) => { 
  // console.log('PUT req received');
   let id = req.query.id;
   let priorities = api.MediaQueueController.getPriorityItems();
