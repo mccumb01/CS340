@@ -1,31 +1,31 @@
 
 let isEditing = false;
 
-let user = {user_id: -1, username: "", user_email: ""};
-
-let nameInput = document.getElementById("username");
-let emailInput = document.getElementById("email");
-const displayedText = document.getElementsByClassName("displayed-text");
+let user = {user_id: -1, username: '', user_email: ''};
+let userId = document.getElementById('userId');
+let nameInput = document.getElementById('username');
+let emailInput = document.getElementById('email');
+const displayedText = document.getElementsByClassName('displayed-text');
 console.log(displayedText);
 const saveBtn = document.getElementById('saveBtn');
 const editBtn = document.getElementById('editBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 
 saveBtn.addEventListener('click', (event) => {
-  console.log("Save Btn clicked!");
+  console.log('Save Btn clicked!');
   saveEdits();
   toggleEdit();
   event.preventDefault();
 });
 
 editBtn.addEventListener('click', (event) => {
-  console.log("Edit Btn clicked!");
+  console.log('Edit Btn clicked!');
   toggleEdit();
   event.preventDefault();
 });
 
 cancelBtn.addEventListener('click', (event) => {
-  console.log("Cancel Btn clicked!");
+  console.log('Cancel Btn clicked!');
   cancelEdit();
   event.preventDefault();
 });
@@ -65,17 +65,36 @@ function cancelEdit(){
 
 
 function saveEdits() {
+  console.log('Save Edits called!');
   // get the current values from the form fields
   let name = nameInput.value;
   let email = emailInput.value;
   // save them in a 'User' object format
-  let editedUser = {user_id: user.user_id, username: name, user_email: email};
-  
+  let payload = getFormValues();
+  console.log("User vals to update:", payload);
+
   // send the User object to client-side API method for updating the User's info
-  alert(`Edited User Info! But there's no working API or DB yet ... 
-         username: ${editedUser.username}
-         user email: ${editedUser.user_email}
-         ` );
+    let req = new XMLHttpRequest();  
+    req.open('PUT', '/user-info', true);
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.addEventListener('load',function(){
+      if(req.status >= 200 && req.status < 400){
+        //clearForm();
+        alert('Data successfully updated!');          
+      } else {
+        console.log('Error in network request: ' + req.statusText);
+      }});
+    req.send(JSON.stringify(payload));
+    event.preventDefault();
+}
+function getFormValues(){
+  console.log('Getting form values!');
+  let vals = {
+    'user_id': userId.value,
+    'username': nameInput.value,
+    'user_email': emailInput.value
+  };
+  return vals;
 }
 
 function populateForm(obj) {

@@ -45,7 +45,7 @@ router.route('/login')
       let context = {};
       context.username = req.body.username;
       context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
-      res.render('home', context);
+      res.render('home', {context});
       return;
   });
 
@@ -74,15 +74,21 @@ router.route('/user-info')
 .post((req, res, next) => {
  // console.log('POST req received');
   api.UserController.createUser(req.body).then(val => {
-    console.log("User from route: ", val);
-    res.render('home');
+    req.body.user_id = val.insertId;
+    console.log("Req.body from post now with id:", req.body);
+    let context = req.body;
+    context.priorities = [];
+    res.render('profile', context);
   });
   return;
 })
 .put((req, res) => {
  // console.log('PUT req received');
   let id = req.query.id;
-  api.updateUser(id, req.body).then(val => res.json(val));
+  let priorities = api.MediaQueueController.getPriorityItems();
+  console.log("PRIORITIES: ", priorities);
+  let context = {priorities}; 
+  api.UserController.updateUser(req.body).then(val => res.json(val));
 })
 .delete((req, res) => {
  // console.log('DELETE req received');

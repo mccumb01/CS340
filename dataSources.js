@@ -117,6 +117,21 @@ module.exports.getUserById = function getUserById(id){
   });
 }
 
+module.exports.updateUser = function(body){
+  //check if user exists, if not create one.
+  console.log('body: ', body);
+  return new Promise((resolve, reject) => {
+    pool.query('UPDATE users SET username = ?, user_email = ? WHERE user_id = ?',[body.username, body.user_email, parseInt(body.user_id)], function (err, rows){
+      if (err){
+        console.log("ERROR GETTING ENTRIES");
+        return reject(err);
+      }
+      console.log("Results in dataSources: ", JSON.stringify(rows));
+      resolve(rows);
+    });
+  });
+}
+
 module.exports.getEntryById = function getEntryById(id){
   return new Promise((resolve, reject) => {
     pool.query('SELECT *, DATE_FORMAT(exerciseDate, "%m-%d-%Y") AS exerciseDate FROM ' + TBLNAME + ' WHERE id = ?;', [parseInt(id)], function (err, rows){
