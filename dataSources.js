@@ -77,15 +77,27 @@ Individual DB Queries
 
 module.exports.createUser = function(body){
   //check if user exists, if not create one.
-  let name = String(body.username);
-  let email = String(body.user_email);
+  console.log('body: ', body);
   return new Promise((resolve, reject) => {
-    pool.query('INSERT INTO ' + users + ' (username, user_email) VALUES (?,?);',[name, email], function (err, rows){
+    pool.query('INSERT INTO ' + users + ' (username, user_email) VALUES (?,?);',[body.username, body.user_email], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
       console.log("Results in dataSources: ", JSON.stringify(rows));
+      resolve(rows);
+    });
+  });
+}
+
+module.exports.getAllUsers = function getAllUsers() {
+  console.log("getAllUsers called in dataSources");
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * from users', (err, rows) => {
+      if (err){
+        console.log("Error getting all users");
+        return reject(err);
+      }
       resolve(rows);
     });
   });
@@ -99,7 +111,7 @@ module.exports.getUserById = function getUserById(id){
       console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      console.log("Results in dataSources: ", JSON.stringify(rows));
+      // console.log("Results in dataSources: ", JSON.stringify(rows));
       resolve(rows);
     });
   });

@@ -1,10 +1,6 @@
 /******************************************************************************************
  * Author: Mike Cumberworth
- * CS 290, Section 400 Web Development Summer 2019 
- * 
- * Assignment Database Interaction:
- * https://dev.mysql.com/doc/refman/8.0/en/enum.html
- * https://www.sitepoint.com/community/t/mysql-table-and-column-field-naming-conventions/1322
+ * CS 340, Fall 2019 
  ******************************************************************************************/
 
 const bodyParser = require('body-parser');

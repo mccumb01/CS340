@@ -9,6 +9,9 @@ const express = require('express');
 const router = express.Router();
 const api = require('./api');
 
+/*********************************************
+ * Page Route Endpoints
+ *********************************************/
 router.get('/', function (req, res) {
   // if(!req.session.name){
   //   res.render('login', context);
@@ -25,22 +28,24 @@ router.get('/media_items', function (req, res) {
 
 router.get('/user', function (req, res) {
   let priorities = api.MediaQueueController.getPriorityItems();
-
   console.log("PRIORITIES: ", priorities);
   let context = {priorities}; 
   res.render('profile', context);
   return;
 });
 
+// Route to login an existing user
 router.route('/login')
   .get((req, res) => {
-      // logout
+
       res.render('login');
       return;    
   })
   .post((req, res) =>{
-      // handle login somehow & redirect to 'home' if successful
-      res.render('home');
+      let context = {};
+      context.username = req.body.username;
+      context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
+      res.render('home', context);
       return;
   });
 
@@ -52,8 +57,6 @@ router.route('/login')
 
 /*********************************************
  * User CRUD Web API Endpoints
- * 
- * 
  *********************************************/
 router.route('/user-info')
   .get((req, res) => {
@@ -68,29 +71,27 @@ router.route('/user-info')
     console.log("No user w/id ", id);
   }
 })
-.post((req, res) => {
+.post((req, res, next) => {
  // console.log('POST req received');
-  api.createUser(req.body).then(val => {
+  api.UserController.createUser(req.body).then(val => {
     console.log("User from route: ", val);
-    res.json(val);
+    res.render('home');
   });
   return;
 })
 .put((req, res) => {
  // console.log('PUT req received');
   let id = req.query.id;
-  api.updateEntryWithId(id, req.body).then(val => res.json(val));
+  api.updateUser(id, req.body).then(val => res.json(val));
 })
 .delete((req, res) => {
  // console.log('DELETE req received');
   let id = parseInt(req.query.id);
-  api.deleteEntryWithId(id).then(()=> res.send(`Entry ${id} deleted`));
+  api.deleteUser(req.body).then(()=> res.send(`Entry ${id} deleted`))
 });
 
 /*********************************************
  * Media Queue CRUD Web API Endpoints
- * 
- * 
  *********************************************/
 
 router.route('/mediaqueue')

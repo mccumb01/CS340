@@ -13,16 +13,21 @@ module.exports.UserController = {
   createUser : function createUser(body){
     //check if user exists, if not create one.
     // return new models.User(body);
-    let u = Promise.resolve(dataSources.createUser(body))
+    return Promise.resolve(dataSources.createUser(body))
                    .catch(err => {console.log(err)
                       return err;
                     });
-    console.log("Result of createUser in API: ", u);
-    return u;
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
     return Promise.resolve(dataSources.authenticateUser);
+  },
+
+  getAllUsers : function getAllUsers(){
+    console.log("getAllUsers called in API");
+    return Promise.resolve(dataSources.getAllUsers())
+          .catch(err => consoler.log(err))
+          .then(val=> console.log(val));
   },
                 
   getUserById : function getUserById(id){
