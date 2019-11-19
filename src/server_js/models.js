@@ -1,3 +1,8 @@
+/********************************************************************************************
+ * Author: Mike Cumberworth
+ * CS 340, Section 400 Web Development Summer 2019 
+ *******************************************************************************************/
+
 module.exports.User = function(obj){ 
                         this.user_id = obj.user_id || null; 
                         this.username = obj.username || ""; 

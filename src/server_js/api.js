@@ -1,54 +1,46 @@
 /********************************************************************************************
  * Author: Mike Cumberworth
- * CS 290, Section 400 Web Development Summer 2019 
- * 
- * Assignment Database Interaction:
- * Pass-through Interface to separate API calls from data-layer implementation
- * Maybe split these up to follow more of an MVC approach; items, genres, users, other middleware, etc.
+ * CS 340 Fall 2019 
  * ******************************************************************************************/
+
 const dataSources = require ('./dataSources');
-const models = require ('./src/models');
+const models = require ('./models');
 
 module.exports.UserController = {
   createUser : function createUser(body){
     //check if user exists, if not create one.
     // return new models.User(body);
-    return Promise.resolve(dataSources.createUser(body))
+    return Promise.resolve(dataSources.users.createUser(body))
                   .catch(err => {console.log(err)
                     return err;
                   });
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
-    return Promise.resolve(dataSources.authenticateUser(body))
+    return Promise.resolve(dataSources.users.authenticateUser(body))
                   .catch(err => err);
   },
 
   getAllUsers : function getAllUsers(){
     console.log("getAllUsers called in API");
-    return Promise.resolve(dataSources.getAllUsers())
+    return Promise.resolve(dataSources.users.getAllUsers())
           .catch(err => consoler.log(err))
           .then(val=> console.log(val));
   },
                 
   getUserById : function getUserById(id){
     console.log("GET USER CALLED IN API.JS! id: ", id);
-    // let fake = new models.User();
-    // fake.user_id = -1;
-    // fake.username = "fake";
-    // fake.user_email = "fake@fake.com";
-    // return fake;
-    return Promise.resolve(dataSources.getUserById(id));
+    return Promise.resolve(dataSources.users.getUserById(id));
   },
   
   updateUser : function updateUser(body){
-    return Promise.resolve(dataSources.updateUser(body));
+    return Promise.resolve(dataSources.users.updateUser(body));
   },
                 
   deleteUser : function deleteUser(body){
     // authenticateUser(body).then()  
     return Promise.resolve(
-        dataSources.deleteUser(body)
+        dataSources.users.deleteUser(body)
       );
     }
   }
@@ -82,31 +74,31 @@ module.exports.MediaQueueController = {
 
 module.exports.MediaItemsController = {
   getAllItems : function getAllItems(){
-    return Promise.resolve(dataSources.getAllItems());
+    return Promise.resolve(dataSources.media_items.getAllItems());
   },
   getMediaTypes : function getMediaTypes(){
-    return dataSources.MEDIA_TYPES;
+    return dataSources.media_items.MEDIA_TYPES;
     //return Promise.resolve(dataSources.getMediaTypes());
   },
 
   getItemById : function getItemId(id){
-    return dataSources.getItemById(id);
+    return dataSources.media_items.getItemById(id);
   },
   
   addItem : function addItem(body){
-    return dataSources.addItem(body);
+    return dataSources.media_items.addItem(body);
   },
   
   updateItemWithId : function updateItemWithId(id, body){
-    return dataSources.updateItemWithId(id, body);
+    return dataSources.media_items.updateItemWithId(id, body);
   },
   
   updateItems : function updateItems(body){
-    return dataSources.updateItems(body);
+    return dataSources.media_items.updateItems(body);
   },
   
   deleteItemWithId : function deleteItemWithId(id){
-    return dataSources.deleteItemWithId(id);
+    return dataSources.media_items.deleteItemWithId(id);
   }
   
 };
@@ -114,23 +106,23 @@ module.exports.MediaItemsController = {
 module.exports.GenreController = {
 
   getAllGenres : function getAllGenres(){
-    return Promise.resolve(dataSources.getAllGenres());
+    return Promise.resolve(dataSources.genres.getAllGenres());
   },
 
   getGenreWithId : function getGenreWithId (body){
-    return Promise.resolve(dataSources.getGenreWithId(body));
+    return Promise.resolve(dataSources.genres.getGenreWithId(body));
   },
 
   addGenre : function addGenre (body){
-    return dataSources.addGenre(body);
+    return dataSources.genres.addGenre(body);
   },
 
   updateGenreWithId : function updateGenreWithId(id, body){
-    return dataSources.updateGenreWithId(id, body);
+    return dataSources.genres.updateGenreWithId(id, body);
   },
 
   deleteGenreWithId : function deleteGenreWithId(id){
-    return dataSources.deleteGenreWithId(id);
+    return dataSources.genres.deleteGenreWithId(id);
   }
 }
   

@@ -1,9 +1,7 @@
 /******************************************************************************************
  * Author: Mike Cumberworth
- * CS 290, Section 400 Web Development Summer 2019 
- * 
- * Assignment Database Interaction:
- * ***************************************************************************************/
+ * CS 340, Section 400 Web Development Fall 2019 
+ ****************************************************************************************/
 
 const express = require('express');
 const router = express.Router();
@@ -13,10 +11,10 @@ const api = require('./api');
  * Page Route Endpoints
  *********************************************/
 router.get('/', function (req, res) {
-  // if(!req.session.name){
-  //   res.render('login', context);
-  //   return;
-  // }
+  if(!req.session || !req.session.username){
+    res.render('login');
+    return;
+  }
   res.render('home');
   return;
 });
