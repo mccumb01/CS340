@@ -63,7 +63,7 @@ CREATE TABLE media_items (
   media_type enum('Book','Movie','Audio Album','Periodical','Short') DEFAULT 'Movie' NOT NULL,
   title varchar(255) NOT NULL,
   original_language_title varchar(255) DEFAULT NULL,
-  publication_year year(4) DEFAULT NULL,
+  publication_year int(4) DEFAULT NULL,
   avg_user_rating float(2) DEFAULT NULL,
   -- SKU, ISBN, Editions, etc...?
   PRIMARY KEY (media_item_id),
