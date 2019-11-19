@@ -19,9 +19,9 @@ let pool = mysql.createPool({
 
 module.exports = pool;
 
-/*******************************************
-SQL Tables & Database Maintenance
-*******************************************/
+/**********************************************************
+SQL Tables & Database Maintenance ... These don't work yet
+***********************************************************/
 
 module.exports.resetTable = function resetTable(tableName) {
   return Promise.resolve(pool.query(`DELETE FROM ${tableName}`, 

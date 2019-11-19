@@ -3,9 +3,13 @@
  * CS 340 Fall 2019 
  * ******************************************************************************************/
 
-const dataSources = require ('./dataSources');
+const dataSources = require ('../data_layer/dataSources');
 const models = require ('./models');
 
+
+/************************************************
+API for Users Controller
+************************************************/
 module.exports.UserController = {
   createUser : function createUser(body){
     //check if user exists, if not create one.
@@ -45,6 +49,9 @@ module.exports.UserController = {
     }
   }
 
+/************************************************
+API for MediaQueue Controller
+************************************************/
 module.exports.MediaQueueController = {
   createNewQueue : function() {
     // create a new media queue;
@@ -72,6 +79,9 @@ module.exports.MediaQueueController = {
   },  
 }
 
+/************************************************
+API for MediaItemsController
+************************************************/
 module.exports.MediaItemsController = {
   getAllItems : function getAllItems(){
     return Promise.resolve(dataSources.media_items.getAllItems());
@@ -103,14 +113,17 @@ module.exports.MediaItemsController = {
   
 };
 
+/************************************************
+API for Genres Controller
+************************************************/
 module.exports.GenreController = {
 
   getAllGenres : function getAllGenres(){
-    return Promise.resolve(dataSources.genres.getAllGenres());
+    return dataSources.genres.getAllGenres();
   },
 
   getGenreWithId : function getGenreWithId (body){
-    return Promise.resolve(dataSources.genres.getGenreWithId(body));
+    return dataSources.genres.getGenreWithId(body);
   },
 
   addGenre : function addGenre (body){

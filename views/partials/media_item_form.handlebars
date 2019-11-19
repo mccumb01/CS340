@@ -9,18 +9,8 @@
     <label class="form-label" for="media_type">Media Type</label>
     <select name="media_type" id="mediaType">
       {{#each types}}
-        <option value={{@index}}>{{this}}</option>
+        <option value={{this}}>{{this}}</option>
       {{/each}}
-      {{!-- <option value="1">Book</option>
-      <option value="2">Film</option>
-      <option value="3">Audio</option>
-      <option value="4">Periodical</option>
-      <option value="5">Short</option>
-      <option value="6">Episode</option>
-      <option value="7">Season</option>
-      <option value="8">Series</option>
-      <option value="9">Anthology/Collection</option> --}}
-      {{!-- {{media_type}} --}}
     </select>
     <label class="form-label" for="genres">Genres (Ctrl/Cmd + Click To Select Multiple</label>
     <select multiple name="genres" id="genres">
@@ -28,23 +18,6 @@
       {{#each genres}}
         <option value={{genre_id}}>{{genre_name}}</option>
       {{/each}}
-      {{!-- <option value="1">Action</option>
-      <option value="2">Bollywood</option>
-      <option value="3">Comedy</option>
-      <option value="3">Classics</option>
-      <option value="4">Drama</option>
-      <option value="5">Eccentric</option>
-      <option value="6">Foreign</option>
-      <option value="7">Horror</option>
-      <option value="8">Language Learning</option>
-      <option value="16">Musical</option>
-      <option value="9">Romance</option>
-      <option value="10">Sci-Fi</option>
-      <option value="11">Self Help</option>
-      <option value="12">Technology</option>
-      <option value="13">Travel</option>
-      <option value="14">World Literature</option> --}}
-      {{!-- {{item_genre}} --}}
     </select>
     <div id="newGenreDiv">
       <label for="newGenre" class="form-label">Add New Genre</label>

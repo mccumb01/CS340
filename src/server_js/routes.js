@@ -8,7 +8,7 @@ const router = express.Router();
 const api = require('./api');
 
 /*********************************************
- * Page Route Endpoints
+ * Home Page
  *********************************************/
 router.get('/', function (req, res) {
   if(!req.session || !req.session.username){
@@ -19,11 +19,14 @@ router.get('/', function (req, res) {
   return;
 });
 
-// router.get('/media_items', function (req, res) {
-//   res.render('media_items');
-//   return;
-// });
+/*********************************************
+ * Media Items Page 
+ *********************************************/
+router.use('/media_items', require('./media_items.js'));
 
+/*********************************************
+ * Profile Page
+ *********************************************/
 router.get('/user', function (req, res) {
   let priorities = api.MediaQueueController.getPriorityItems();
   console.log("PRIORITIES: ", priorities);
@@ -40,7 +43,9 @@ router.get('/user', function (req, res) {
   
 });
 
-// Route to login an existing user
+/************************************************
+Login Existing User
+************************************************/
 router.route('/login')
   .get((req, res) => {
     if(req.body['New Session'] || req.body['New User']){
@@ -79,6 +84,9 @@ router.route('/login')
       return;
   });
 
+/*********************************************
+* About Page
+*********************************************/
   router.get('/about', function (req, res) {
     res.render('about');
     return;
@@ -141,25 +149,6 @@ router.route('/user-info')
   let id = parseInt(req.query.id);
   api.deleteUser(req.body).then(() => res.send(`Entry ${id} deleted`))
 });
-
-/*********************************************
- * Media Items Page 
- *********************************************/
-router.get('/media_items', function (req, res) {
-  let context = {};
-  let types = api.MediaItemsController.getMediaTypes();
-  console.log('media types: ' , types);
-  context.types = types;
-  api.GenreController.getAllGenres().then(g => {
-    context.genres = g;
-    console.log("Context for media items: \n",context); 
-    res.render('media_items', context);
-  });
-  return; 
-});
-/*********************************************
- * Media Items CRUD Web API Endpoints
- *********************************************/
 
 /*********************************************
  * Genres CRUD Web API Endpoints
