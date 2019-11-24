@@ -19,27 +19,30 @@ function addTableRow(obj, index){
   let row = tbody.insertRow(index);
   row.classList.add('table-entry');
 
-  let name = row.insertCell(0);
-  name.textContent = obj.exerciseName;
+  let title = row.insertCell(0);
+  title.textContent = obj.title;
 
-  let numReps = row.insertCell(1);
-  numReps.textContent = obj.numReps;
+  let o_title = row.insertCell(1);
+  o_title.textContent = obj.o_title;
 
-  let weight = row.insertCell(2);
-  weight.textContent = obj.weight;
+  let type = row.insertCell(2);
+  type.textContent = obj.m_type;
 
-  let exerciseDate = row.insertCell(3);
-  exerciseDate.textContent = convertDateForDisplay(obj.exerciseDate);
+  let yr = row.insertCell(3);
+  yr.textContent = obj.pub_year;
 
-  let unit = row.insertCell(4);          
-  unit.textContent = obj.unit;
+  let genres = row.insertCell(4);          
+  genres.textContent = obj.genres;
 
-  let edit = row.insertCell(5);
+  let rating = row.insertCell(5);          
+  rating.textContent = obj.rating;
+
+  let edit = row.insertCell(6);
   edit.textContent = "Edit";
   edit.classList.add("edit-btn");
   edit.addEventListener('click', this.editEntry.bind(this));
 
-  let del = row.insertCell(6);
+  let del = row.insertCell(7);
   del.textContent = "Delete";
   del.classList.add("delete-btn");
   del.addEventListener('click', this.deleteEntry.bind(this));

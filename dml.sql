@@ -90,3 +90,10 @@ UPDATE genres SET genre_name = :genre_name WHERE genre_id = :genre_id;
 DELETE FROM genres WHERE genre_id = :genre_id; 
 
 -------------------------------------------------------------------------------------------------
+
+-- ITEM_GENRES TABLE
+
+SELECT m.media_item_id, title, media_type from media_items m 
+JOIN item_genres ig ON m.media_item_id = ig.media_item_id 
+JOIN genres g ON g.genre_id = ig.genre_id 
+WHERE g.genre_name = :user_filter_genre;

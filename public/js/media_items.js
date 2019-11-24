@@ -1,6 +1,7 @@
-window.onload = function(){
-  console.log('Media Items page loaded ...');
-}
+// window.onload = function(){
+//   console.log('Media Items page loaded ...');
+//   getAllItems();
+// }
 
 document.getElementById('addGenre').addEventListener('click', function(event){
   addGenre(event);
@@ -9,6 +10,37 @@ document.getElementById('addGenre').addEventListener('click', function(event){
 document.getElementById('saveBtn').addEventListener('click', function(event){
   addMediaItem(event);
 });
+
+function getAllMediaItems(){
+  let req = new XMLHttpRequest();
+  const self = this;
+  req.open('GET', '/media_items/all_items', true);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.addEventListener('load',function(response){
+    if(req.status >= 200 && req.status < 400){
+      console.log(req.responseText);
+      let response = JSON.parse(req.responseText);
+      self.createEntries(response);     
+    } else {
+      console.log('Error in network request: ' + req.statusText);
+    }});
+  req.send(null);
+  event.preventDefault();
+}
+
+function getMediaItemById(id){
+  let req = new XMLHttpRequest();
+  req.open('GET', '//id='+id, true);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.addEventListener('load',function(response){
+    if(req.status >= 200 && req.status < 400){
+      console.log("All the items!");      
+    } else {
+      console.log('Error in network request: ' + req.statusText);
+    }});
+  req.send(null);
+  event.preventDefault();
+}
 
 function addGenre(e){
   let ng = document.getElementById('newGenre');
@@ -44,6 +76,48 @@ function addMediaItem(e){
   event.preventDefault();
 }
 
+function updateEntry(context){
+  let self = context;
+  let entry = new DataModel(getFormValues());
+  let url = this.base + 'workouts/?id=' + entry.id;
+  let req = new XMLHttpRequest();
+  req.open('PUT', url, true);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.addEventListener('load',function(){
+    if(req.status >= 200 && req.status < 400){
+      // alert("Data successfully edited!");  //replace this w/nice CSS animation instead if there's time?
+      let res = JSON.parse(req.responseText);
+      let index = self.entries.findIndex(e => e.id == entry.id);
+      self.entries.splice(index,1, entry);
+      self.editTableRowAtIndex(entry, index);
+      clearForm();
+    } else {
+      console.error("Error in network request: " + req.statusText);
+    }});
+  req.send(JSON.stringify(entry));
+  event.preventDefault();
+}
+
+function deleteEntry(e){
+  let row = e.target.parentElement.rowIndex - 1;
+  console.log("Delete btn clicked for row at index " , row);
+  let entry = this.entries[row];
+  let self = this;
+  let req = new XMLHttpRequest();
+  req.open('DELETE', '/workouts/?id='+entry.id, true);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.addEventListener('load',function(){
+    if(req.status >= 200 && req.status < 400){
+      // alert("Row deleted");
+      self.entries.splice(row, 1);
+      self.removeTableRowAtIndex(row);
+    } else {
+      console.error("Error in network request: " + req.statusText. req.error);
+    }});
+  req.send(null);
+  event.preventDefault();
+}
+
 function getFormValues(){
   let title = document.getElementById('itemTitle').value;
   let oTitle = document.getElementById('originalLangTitle').value;
@@ -68,4 +142,26 @@ function getFormValues(){
   }
   
   return payload;
+}
+
+function editEntry(e){
+  let row = e.target.parentElement.rowIndex - 1;
+  let entry = this.entries[row];
+  let self = this;
+  this.fillForm(entry);
+}
+
+function fillForm(obj){
+  console.log('Filling form with entry:', obj);
+  document.getElementById('entryId').value = obj.id;
+  document.getElementById('itemTitle').value = obj.title;
+  document.getElementById('originalLangTitle').value = obj.o_title;
+  document.getElementById('mediaType').value = obj.m_type;
+  document.getElementById('pubYear').value = obj.pub_year;
+  //document.querySelector('input[name="genres"][value="'+obj.genres+'"]').checked = true;  
+}
+
+function clearForm(){
+  document.getElementById('theForm').reset();
+  document.getElementById('entryId').value = -1; // Need to explicit reset hidden value or else it retains last entry's id
 }
