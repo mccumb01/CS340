@@ -100,7 +100,12 @@ module.exports.MediaItemsController = {
   },
   
   addItem : function addItem(body){
-    return dataSources.media_items.addItem(body);
+    return dataSources.media_items.addItem(body)
+                      .then(res => {
+                        console.log("Item added with id: ", res.insertId);
+                        let id = res.insertId;
+                        return dataSources.item_genres.setGenresForItem(id, body.genres);
+                      });
   },
   
   updateItemWithId : function updateItemWithId(id, body){
