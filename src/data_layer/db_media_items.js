@@ -25,7 +25,7 @@ module.exports.getAllItems = function getAllItems(){
     pool.query('SELECT * FROM media_items;', function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
-        return reject(err);
+        reject(err);
       }
       console.log("Results in dataSources: ", JSON.stringify(rows));
       resolve(rows);

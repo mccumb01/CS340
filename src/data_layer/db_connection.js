@@ -5,6 +5,7 @@
 
 const mysql = require ('mysql');
 
+// mysql -u {username} -p -h classmysql.engr.oregonstate.edu {database_name}
 
 /************************************************
 Shared Database Connection Pool for All Entities

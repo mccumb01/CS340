@@ -6,7 +6,6 @@
 const dataSources = require ('../data_layer/dataSources');
 const models = require ('./models');
 
-
 /************************************************
 API for Users Controller
 ************************************************/
@@ -15,14 +14,19 @@ module.exports.UserController = {
     //check if user exists, if not create one.
     // return new models.User(body);
     return Promise.resolve(dataSources.users.createUser(body))
-                  .catch(err => {console.log(err)
-                    return err;
+                  .catch(err => {
+                    console.log("Error creating user " , err)
+                    throw err;
                   });
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
+    console.log("dataSources in API:", dataSources);
     return Promise.resolve(dataSources.users.authenticateUser(body))
-                  .catch(err => err);
+                  .catch(err => {
+                    console.log("Error authenticating user " , err)
+                    throw err;
+                  });
   },
 
   getAllUsers : function getAllUsers(){

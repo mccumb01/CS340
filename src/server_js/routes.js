@@ -56,7 +56,7 @@ router.route('/login')
     res.render('login');
     return;    
   })
-  .post((req, res) =>{
+  .post((req, res, next) =>{
       let context = {};
       let priorities = api.MediaQueueController.getPriorityItems();
       console.log("PRIORITIES: ", priorities);
@@ -79,8 +79,9 @@ router.route('/login')
             res.render('profile', context);
           })
           .catch(err =>{
-            res.status(404);
-          });
+            console.log("Error w/user auth in route", err);
+            res.status(401).render('401', {name: req.body.username});
+          })
       return;
   });
 

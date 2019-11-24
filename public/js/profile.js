@@ -85,6 +85,7 @@ function saveEdits() {
     req.open('PUT', '/user-info', true);
     req.setRequestHeader('Content-Type', 'application/json');
     req.addEventListener('load',function(response){
+      console.log(req.status, response);
       if(req.status >= 200 && req.status < 400){
         clearForm();
         user = payload;
@@ -92,7 +93,7 @@ function saveEdits() {
         displayedText[1].textContent = payload.user_email;
         alert('Data successfully updated!', response);          
       } else {
-        console.log('Error in network request: ' + req.statusText);
+        alert('Login Error: ' + req.statusText);
       }});
     req.send(JSON.stringify(payload));
     event.preventDefault();
