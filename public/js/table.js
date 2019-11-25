@@ -19,29 +19,32 @@ function addTableRow(obj, index){
   let row = tbody.insertRow(index);
   row.classList.add('table-entry');
 
-  let name = row.insertCell(0);
-  name.textContent = obj.exerciseName;
+  let title = row.insertCell(0);
+  title.textContent = obj.title;
 
-  let numReps = row.insertCell(1);
-  numReps.textContent = obj.numReps;
+  let o_title = row.insertCell(1);
+  o_title.textContent = obj.o_title;
 
-  let weight = row.insertCell(2);
-  weight.textContent = obj.weight;
+  let type = row.insertCell(2);
+  type.textContent = obj.m_type;
 
-  let exerciseDate = row.insertCell(3);
-  exerciseDate.textContent = convertDateForDisplay(obj.exerciseDate);
+  let yr = row.insertCell(3);
+  yr.textContent = obj.pub_year;
 
-  let unit = row.insertCell(4);          
-  unit.textContent = obj.unit;
+  let genres = row.insertCell(4);          
+  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
 
-  let edit = row.insertCell(5);
+  let rating = row.insertCell(5);          
+  rating.textContent = obj.rating;
+
+  let edit = row.insertCell(6);
   edit.textContent = "Edit";
   edit.classList.add("edit-btn");
   edit.addEventListener('click', this.editEntry.bind(this));
 
-  let del = row.insertCell(6);
-  del.textContent = "Delete";
-  del.classList.add("delete-btn");
+  let del = row.insertCell(7);
+  del.innerHTML = "<button class='delete-btn'>Delete</button>";
+  //del.classList.add("delete-btn");
   del.addEventListener('click', this.deleteEntry.bind(this));
   
   scrollToRowAtIndex(index);
@@ -51,24 +54,27 @@ function addTableRow(obj, index){
 
 function editTableRowAtIndex(obj, index){
   let tbody = document.getElementById('tbody');
-  
+  console.log('Editing table row obj ', obj, 'at index ', index);
   let row = tbody.rows[index]; 
   row.classList.add('table-entry');
 
-  let name = row.cells[0];
-  name.textContent = obj.exerciseName;
+  let title = row.cells[0];
+  title.textContent = obj.title;
 
-  let numReps = row.cells[1];
-  numReps.textContent = obj.numReps;
+  let o_title = row.cells[1];
+  o_title.textContent = obj.original_language_title;
 
-  let weight = row.cells[2];
-  weight.textContent = obj.weight;
+  let type = row.cells[2];
+  type.textContent = obj.media_type;
 
-  let exerciseDate = row.cells[3];
-  exerciseDate.textContent = convertDateForDisplay(obj.exerciseDate);
+  let yr = row.cells[3];
+  yr.textContent = obj.publication_year;
 
-  let unit = row.cells[4];          
-  unit.textContent = obj.unit;
+  let genres = row.cells[4];          
+  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
+
+  let rating = row.cells[5];          
+  rating.textContent = obj.rating;
 
   scrollToRowAtIndex(index);
   row.classList.add('row-highlight-animated');
@@ -87,12 +93,12 @@ function removeTableRowAtIndex(index){
 }
 
 function scrollToRowAtIndex(index){
-  console.log('scrolling to row?', index); 
+  //console.log('scrolling to row?', index); 
   let tbody = document.querySelector('#tbody'); 
   let rows = tbody.querySelectorAll('tr');
   if (index == -1) {index = rows.length - 1}
   
-  console.log(rows[index]);
+  //console.log(rows[index]);
   rows[index].scrollIntoView({
     behavior: 'smooth',
     block: 'center'

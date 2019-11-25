@@ -6,7 +6,6 @@
 const dataSources = require ('../data_layer/dataSources');
 const models = require ('./models');
 
-
 /************************************************
 API for Users Controller
 ************************************************/
@@ -15,20 +14,25 @@ module.exports.UserController = {
     //check if user exists, if not create one.
     // return new models.User(body);
     return Promise.resolve(dataSources.users.createUser(body))
-                  .catch(err => {console.log(err)
-                    return err;
+                  .catch(err => {
+                    console.log("Error creating user " , err)
+                    throw err;
                   });
   },
   authenticateUser : function authenticateUser(body){
   // validate username & password match stored hashes, return T/F.
+    console.log("dataSources in API:", dataSources);
     return Promise.resolve(dataSources.users.authenticateUser(body))
-                  .catch(err => err);
+                  .catch(err => {
+                    console.log("Error authenticating user " , err)
+                    throw err;
+                  });
   },
 
   getAllUsers : function getAllUsers(){
     console.log("getAllUsers called in API");
     return Promise.resolve(dataSources.users.getAllUsers())
-          .catch(err => consoler.log(err))
+          .catch(err => console.log(err))
           .then(val=> console.log(val));
   },
                 
@@ -41,10 +45,10 @@ module.exports.UserController = {
     return Promise.resolve(dataSources.users.updateUser(body));
   },
                 
-  deleteUser : function deleteUser(body){
+  deleteUser : function deleteUser(id){
     // authenticateUser(body).then()  
     return Promise.resolve(
-        dataSources.users.deleteUser(body)
+        dataSources.users.deleteUser(id)
       );
     }
   }
@@ -84,7 +88,39 @@ API for MediaItemsController
 ************************************************/
 module.exports.MediaItemsController = {
   getAllItems : function getAllItems(){
-    return Promise.resolve(dataSources.media_items.getAllItems());
+    // return Promise.resolve(dataSources.media_items.getAllItems());
+    // https://stackoverflow.com/questions/30025965/merge-duplicate-objects-in-array-of-objects
+    return dataSources.media_items.getAllItems()
+                      .then(json => {
+                          let rows = JSON.parse(json); 
+                          let seen = {};
+                          let items = rows.filter(r => {
+                            console.log('Next row: ', r);
+                            let prev = {};
+                            let key = r.media_item_id;
+                            let gObj = {'genre_id': r.genre_id, 'genre_name': r.genre_name};
+                            if (seen.hasOwnProperty(key)){
+                              console.log('Seen this one! ', key);
+                              prev = seen[key];
+                              prev.genres.push(gObj);
+                              return false;
+                            }
+                            console.log('New item! ', key);
+                            seen[key] = r;
+                            let item = seen[key];
+                            if (!item.genres) {
+                              console.log('New item needs genres array!');
+                              item.genres = [];                              
+                              item.genres.push(gObj);
+                              delete item.genre_id;
+                              delete item.genre_name;
+                            }
+                            return true;
+                          });
+                          console.log("Single items! ", items);
+                          return items;
+                      })
+                      .catch(err => console.log('Error getting items w/genres', err));
   },
   getMediaTypes : function getMediaTypes(){
     return dataSources.media_items.MEDIA_TYPES;
@@ -96,11 +132,28 @@ module.exports.MediaItemsController = {
   },
   
   addItem : function addItem(body){
-    return dataSources.media_items.addItem(body);
+    return dataSources.media_items.addItem(body)
+                      .then(res => {
+                        console.log("Item added with id: ", res.insertId);
+                        let id = res.insertId;
+                        return dataSources.item_genres
+                                          .setGenresForItem(id, body.genres)
+                                          .then(res => res)
+                                          .catch(err => err)
+                      })
+                      .catch(err => {throw err});
   },
   
   updateItemWithId : function updateItemWithId(id, body){
-    return dataSources.media_items.updateItemWithId(id, body);
+    return dataSources.media_items.updateItemWithId(id, body)
+                      .then(res => {
+                        console.log("Item updated with id: ", id);
+                        return dataSources.item_genres
+                                          .setGenresForItem(id, body.genres)
+                                          .then(res => res)
+                                          .catch(err => err)
+                      })
+                      .catch(err => {throw err});
   },
   
   updateItems : function updateItems(body){

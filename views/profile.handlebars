@@ -1,12 +1,12 @@
 <section class="content">
   <form id="profileForm" class="form-div">
     <fieldset>
-      <p class="hidden" id="userId">{{user_id}}"</p>
+      <p class="hidden" id="userId">{{user.user_id}}</p>
       <label class="form-label" for="username">User Name</label>
-      <p id="profile_username" class="displayed-text">{{username}}</p>
+      <p id="profile_username" class="displayed-text">{{user.username}}</p>
       <input class="hidden" type="text" id="username" name="username" value="" required>
       <label class="form-label" for="contact">Contact Email</label>
-      <p id="profile_email" class="displayed-text">{{user_email}}</p>
+      <p id="profile_email" class="displayed-text">{{user.user_email}}</p>
       <input class="hidden" type="text" name="user_email" id="user_email" value="">
       <label class="form-label" for="queue_item_count"># Items in Queue</label>
       <p id="profile_item_count">42</p>
@@ -26,6 +26,7 @@
         <button id="saveBtn" type="submit" class="submit-btn hidden" name="save_profile">Save Profile</button>
         <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
       </div>
+      <button id="deleteProfileBtn" type="submit" class="delete-btn" name="delete_profile">DELETE USER</button>
     </fieldset>
   </form>
 </section>

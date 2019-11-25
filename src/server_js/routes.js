@@ -11,8 +11,8 @@ const api = require('./api');
  * Home Page
  *********************************************/
 router.get('/', function (req, res) {
-  if(!req.session || !req.session.username){
-    res.render('login');
+  if(!req.session.user || !req.session.user.username){
+    res.redirect('/login');
     return;
   }
   res.render('home');
@@ -27,21 +27,21 @@ router.use('/media_items', require('./media_items.js'));
 /*********************************************
  * Profile Page
  *********************************************/
+
 router.get('/user', function (req, res) {
+  if(!req.session.user || !req.session.user.username){
+    res.redirect('/login');
+    return;
+  }
+
   let priorities = api.MediaQueueController.getPriorityItems();
   console.log("PRIORITIES: ", priorities);
   let context = {priorities}; 
-  if(!req.session || !req.session.username){
-    res.render('login', context);
-    return;
-  }
-  context.user_id = req.session.user_id;
-  context.username = req.session.username;
-  context.user_email = req.session.user_email;
+  context.user = req.session.user;
   res.render('profile', context);
-  return;
-  
 });
+
+router.use('/user-info', require('./users.js'));
 
 /************************************************
 Login Existing User
@@ -50,37 +50,26 @@ router.route('/login')
   .get((req, res) => {
     if(req.body['New Session'] || req.body['New User']){
       console.log("New Session?");
-      req.session.username = req.body.username;
-      req.session.user_email = req.body.user_email;
+      req.session.user = {user_id: -1, username: req.body.username, user_email: req.body.user_email };
     } 
     res.render('login');
     return;    
   })
-  .post((req, res) =>{
+  .post((req, res, next) =>{
       let context = {};
-      let priorities = api.MediaQueueController.getPriorityItems();
-      console.log("PRIORITIES: ", priorities);
-      context = {priorities}; 
       api.UserController.authenticateUser(req.body)
           .then(user => {
             if (!user) {
               res.status(400);
               return;
             }
-            console.log("User after auth?", user);
-            context.user_id = user.user_id;
-            context.username = user.username;
-            context.user_email = user.user_email;
-            //context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
-            req.session.user_id = user.user_id;
-            req.session.username = user.username;
-            req.session.user_email = user.user_email;
-            console.log('Req Session after login: ', req.session);
-            res.render('profile', context);
+            req.session.user = user;
+            res.redirect('/user');
           })
           .catch(err =>{
-            res.status(404);
-          });
+            console.log("Error w/user auth in route", err);
+            res.status(401).render('401', {name: req.body.username});
+          })
       return;
   });
 
@@ -93,62 +82,78 @@ router.route('/login')
   });
 
 
-/*********************************************
- * User CRUD Web API Endpoints
- *********************************************/
-router.route('/user-info')
-  .get((req, res) => {
-  console.log("user 'GET' route!");
-  let id = req.query.id;
-  if (id != null && id != undefined) {
-    api.UserController.getUserById(id).then(val => {
-      res.json(val);
-    });
-  }
-  else {
-    console.log("No user w/id ", id);
-  }
-})
-.post((req, res, next) => {
- // console.log('POST req received');
-  if(req.body['New Session'] || req.body['New User']){
-    console.log("New Session?");
-    req.session.username = req.body.username;
-    req.session.user_email = req.body.user_email;
-  }
-  // If there is no session, go to the login page.
-  if(!req.session || !req.session.username){
-    res.render('login', {});
-    return;
-  }
-  api.UserController.createUser(req.body).then(val => {
-    req.body.user_id = val.insertId;
-    req.session.user_id = val.insertId;
-    console.log("Req.body from post now with id:", req.body);
-    let context = req.body;
-    context.priorities = [];
-    res.render('profile', context);
-  });
-  
-  return;
-})
-.put((req, res) => { 
-  // console.log('PUT req received');
-  // If there is no session, go to the login page.
-  if(!req.session || !req.session.username){
-    res.render('login', {});
-    return;
-  } 
-  let id = req.query.id;
-  req.session.username = req.body.username;
-  req.session.user_email = req.body.user_email;
-  api.UserController.updateUser(req.body).then(val => res.json(val));
-})
-.delete((req, res) => {
- // console.log('DELETE req received');
-  let id = parseInt(req.query.id);
-  api.deleteUser(req.body).then(() => res.send(`Entry ${id} deleted`))
-});
+// /*********************************************
+//  * User CRUD Web API Endpoints
+//  *********************************************/
+// router.route('/user-info')
+//   .get((req, res) => {
+//   console.log("user 'GET' route!");
+//   let id = req.query.id;
+//   if (id != null && id != undefined) {
+//     api.UserController.getUserById(id).then(val => {
+//       res.json(val);
+//       return;
+//     });
+//   }
+//   else {
+//     console.log("No user w/id ", id);
+//   }
+// })
+// .post((req, res, next) => {
+//  // console.log('POST req received');
+//   if(req.body['New Session'] || req.body['New User']){
+//     console.log("New Session?");
+//     req.session.username = req.body.username;
+//     req.session.user_email = req.body.user_email;
+//   }
+//   // If there is no session, go to the login page.
+//   if(!req.session.username){
+//     res.redirect('/login');
+//     return;
+//   }
+//   api.UserController.createUser(req.body).then(val => {
+//     req.body.user_id = val.insertId;
+//     req.session.user_id = val.insertId;
+//     console.log("Req.body from post now with id:", req.body);
+//     let context = req.body;
+//     context.priorities = [];
+//     res.render('profile', context);
+//   });
+// })
+// .put((req, res) => { 
+//   api.UserController.updateUser(req.body)
+//                     .then(val => res.json(val))
+//                     .catch(err => console.log(err));
+// })
+// .delete((req, res) => {
+//  // console.log('DELETE req received');
+//   let id = parseInt(req.body.user_id);
+//   console.log(id, typeof id);
+//   if (!id || (typeof id) != 'number' ) {
+//     console.log("Bad User ID")
+//     res.status(400).send(null);
+//     return;    
+//   }
+//   let user = api.UserController.getUserById(id)
+//   .then(val => {
+//     if (val.user_id != null){
+//       console.log("User exists with id ", val.user_id);
+//       return api.UserController.deleteUser(id);
+//     }
+//     else {
+//       console.log("No User w/that Id");
+//       res.status(404).send("User does not exist");
+//       return;
+//     }
+//   }) 
+//   .then(() => {
+//     console.log("User deleted!");
+//     req.session.username = null;
+//     req.session.user_email = null;
+//     res.status(200).send('User deleted!');
+// })
+//   .catch(err => console.log(err));
+// });
 
 /*********************************************
  * Genres CRUD Web API Endpoints
@@ -157,7 +162,9 @@ router.route('/user-info')
 router.post('/add_genre', function (req, res) {
   console.log('add_genre route called in API!', req.body);
   api.GenreController.addGenre(req.body)
-                     .then(val => res.json(val));
+                     .then(val => {return api.GenreController.getAllGenres();})
+                     .then(genres => res.render('media_items', {genres: genres}))
+                     .catch(err => res.json(null));
 });
 
 /*********************************************

@@ -11,7 +11,7 @@ module.exports.media_items = require('./db_media_items.js');
 // module.exports.media_queues = require('./db_media_queues.js');
 // module.exports.queue_items = require('./db_queue_items.js');
 module.exports.genres = require('./db_genres.js');
-// module.exports.item_genres = require('./db_item_genres.js');
+module.exports.item_genres = require('./db_item_genres.js');
 
 /*******************************************
 DB Queries TODO 
@@ -26,8 +26,4 @@ DB Queries TODO
  Update queue_item (status, priority)
  Remove queue_item 
  Remove all queue_items from queue
-
- Add item_genre to media_item
- Update item_genres for media_item
- Remove item_genre from media_item
   *******************/ 

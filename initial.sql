@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
   user_id int unsigned NOT NULL AUTO_INCREMENT,
-  username varchar(100) NOT NULL ,
+  username varchar(100) NOT NULL,
   user_email varchar(100) NOT NULL,
   PRIMARY KEY (user_id),
   KEY idx_user_email (user_email),
@@ -140,18 +140,23 @@ INSERT INTO genres VALUES
 (2,'Animation'),
 (3,'Children'),
 (4,'Classics'),
-(5,'Comedy'),
-(6,'Documentary'),
-(7,'Drama'),
-(8,'Family'),
-(9,'Foreign'),
-(10,'Games'),
-(11,'Horror'),
-(12,'Music'),
-(13,'New'),
-(14,'Sci-Fi'),
-(15,'Sports'),
-(16,'Travel');
+(5,'Computer Science'),
+(6,'Comedy'),
+(7,'Documentary'),
+(8,'Drama'),
+(9,'Education'),
+(10,'Family'),
+(11,'Foreign'),
+(12,'Games'),
+(13,'Horror'),
+(14,'Language Learning'),
+(15,'Music'),
+(16,'New'),
+(17,'Programming'),
+(18,'Sci-Fi'),
+(19,'Sports'),
+(20,'Technology'),
+(21,'Travel');
 UNLOCK TABLES;
 
 
@@ -164,12 +169,33 @@ DROP TABLE IF EXISTS item_genres;
 CREATE TABLE item_genres (
   genre_id int unsigned NOT NULL,
   media_item_id int unsigned NOT NULL,
-  CONSTRAINT item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id),
+  CONSTRAINT item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id) ON DELETE CASCADE,
   CONSTRAINT genre_fk FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
 );
 
-SET FOREIGN_KEY_CHECKS = 1;
+--
+-- Seed data for table genres
+--
 
+LOCK TABLES item_genres WRITE;
+INSERT INTO item_genres VALUES 
+(5,1),
+(9,1),
+(17,1),
+(20,1),
+(5,2),
+(9,2),
+(17,2),
+(20,2),
+(9,3),
+(11,3),
+(14,3),
+(9,4),
+(11,4),
+(14,4);
+UNLOCK TABLES;
+
+SET FOREIGN_KEY_CHECKS = 1;
 --
 -- Table structure for table language
 --
