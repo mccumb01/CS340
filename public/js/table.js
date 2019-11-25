@@ -43,8 +43,8 @@ function addTableRow(obj, index){
   edit.addEventListener('click', this.editEntry.bind(this));
 
   let del = row.insertCell(7);
-  del.textContent = "Delete";
-  del.classList.add("delete-btn");
+  del.innerHTML = "<button class='delete-btn'>Delete</button>";
+  //del.classList.add("delete-btn");
   del.addEventListener('click', this.deleteEntry.bind(this));
   
   scrollToRowAtIndex(index);

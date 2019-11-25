@@ -205,7 +205,8 @@ function updateEntry(context){
 }
 
 function deleteEntry(e){
-  let row = e.target.parentElement.rowIndex - 1;
+  console.log("Delete btn clicked: ", e, this);
+  let row = e.target.parentElement.parentElement.rowIndex - 1;
   let entry = this.entries[row];
   let self = this;
   console.log("Delete btn clicked for row at index " , row, " with id ", entry.id);
