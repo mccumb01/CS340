@@ -16,7 +16,7 @@ module.exports.getGenresForItem = function getGenresForItem(id){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      console.log("Results in dataSources: ", JSON.stringify(rows));
+      console.log("Results getGenresForItem: ", JSON.stringify(rows));
       resolve(rows);
     });
   });
@@ -29,7 +29,7 @@ module.exports.getItemsOfGenre = function getItemsOfGenre(genre_id){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      console.log("Results in dataSources: ", JSON.stringify(rows));
+      console.log("Results in getItemsOfGenre: ", JSON.stringify(rows));
       resolve(rows);
     });
   });
@@ -50,7 +50,7 @@ module.exports.setGenresForItem = function setGenresForItem(item_id, genres){
           console.log("ERROR INSERTING GENRES FOR ITEM");
           return reject(err);
         }
-        console.log("Results in dataSources: ", JSON.stringify(rows));
+        console.log("Results of setGenresForItem: ", JSON.stringify(rows));
         resolve(rows);
       });
     })

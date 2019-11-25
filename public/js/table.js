@@ -32,7 +32,7 @@ function addTableRow(obj, index){
   yr.textContent = obj.pub_year;
 
   let genres = row.insertCell(4);          
-  genres.textContent = obj.genres;
+  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
 
   let rating = row.insertCell(5);          
   rating.textContent = obj.rating;
@@ -54,7 +54,7 @@ function addTableRow(obj, index){
 
 function editTableRowAtIndex(obj, index){
   let tbody = document.getElementById('tbody');
-  
+  console.log('Editing table row ', index);
   let row = tbody.rows[index]; 
   row.classList.add('table-entry');
 

@@ -11,7 +11,7 @@ const api = require('./api');
  * Home Page
  *********************************************/
 router.get('/', function (req, res) {
-  if(!req.session || !req.session.username){
+  if(!req.session.user || !req.session.user.username){
     res.redirect('/login');
     return;
   }
@@ -27,8 +27,9 @@ router.use('/media_items', require('./media_items.js'));
 /*********************************************
  * Profile Page
  *********************************************/
+
 router.get('/user', function (req, res) {
-  if(!req.session || !req.session.username){
+  if(!req.session.user || !req.session.user.username){
     res.redirect('/login');
     return;
   }
@@ -36,19 +37,11 @@ router.get('/user', function (req, res) {
   let priorities = api.MediaQueueController.getPriorityItems();
   console.log("PRIORITIES: ", priorities);
   let context = {priorities}; 
-  context.user_id = req.session.user_id;
-  context.username = req.session.username;
-  context.user_email = req.session.user_email;
+  context.user = req.session.user;
   res.render('profile', context);
 });
 
-// router.delete('/user', (req,res) => {
-//   let id = req.body.user_id;
-//   api.UserController.deleteUser(id)
-//                     .then(val => {
-//                       res.redirect('/login')
-//                     });
-// });
+router.use('/user-info', require('./users.js'));
 
 /************************************************
 Login Existing User
@@ -57,32 +50,20 @@ router.route('/login')
   .get((req, res) => {
     if(req.body['New Session'] || req.body['New User']){
       console.log("New Session?");
-      req.session.username = req.body.username;
-      req.session.user_email = req.body.user_email;
+      req.session.user = {user_id: -1, username: req.body.username, user_email: req.body.user_email };
     } 
     res.render('login');
     return;    
   })
   .post((req, res, next) =>{
       let context = {};
-      let priorities = api.MediaQueueController.getPriorityItems();
-      console.log("PRIORITIES: ", priorities);
-      context = {priorities}; 
       api.UserController.authenticateUser(req.body)
           .then(user => {
             if (!user) {
               res.status(400);
               return;
             }
-            console.log("User after auth?", user);
-            context.user_id = user.user_id;
-            context.username = user.username;
-            context.user_email = user.user_email;
-            //context.userpw = req.body.pw //no, this isn't how it would actually work in production. Use auth middleware.
-            req.session.user_id = user.user_id;
-            req.session.username = user.username;
-            req.session.user_email = user.user_email;
-            console.log('Req Session after login: ', req.session);
+            req.session.user = user;
             res.redirect('/user');
           })
           .catch(err =>{
@@ -101,78 +82,78 @@ router.route('/login')
   });
 
 
-/*********************************************
- * User CRUD Web API Endpoints
- *********************************************/
-router.route('/user-info')
-  .get((req, res) => {
-  console.log("user 'GET' route!");
-  let id = req.query.id;
-  if (id != null && id != undefined) {
-    api.UserController.getUserById(id).then(val => {
-      res.json(val);
-      return;
-    });
-  }
-  else {
-    console.log("No user w/id ", id);
-  }
-})
-.post((req, res, next) => {
- // console.log('POST req received');
-  if(req.body['New Session'] || req.body['New User']){
-    console.log("New Session?");
-    req.session.username = req.body.username;
-    req.session.user_email = req.body.user_email;
-  }
-  // If there is no session, go to the login page.
-  if(!req.session.username){
-    res.redirect('/login');
-    return;
-  }
-  api.UserController.createUser(req.body).then(val => {
-    req.body.user_id = val.insertId;
-    req.session.user_id = val.insertId;
-    console.log("Req.body from post now with id:", req.body);
-    let context = req.body;
-    context.priorities = [];
-    res.render('profile', context);
-  });
-})
-.put((req, res) => { 
-  api.UserController.updateUser(req.body)
-                    .then(val => res.json(val))
-                    .catch(err => console.log(err));
-})
-.delete((req, res) => {
- // console.log('DELETE req received');
-  let id = parseInt(req.body.user_id);
-  console.log(id, typeof id);
-  if (!id || (typeof id) != 'number' ) {
-    console.log("Bad User ID")
-    res.status(400).send(null);
-    return;    
-  }
-  let user = api.UserController.getUserById(id)
-  .then(val => {
-    if (val.user_id != null){
-      console.log("User exists with id ", val.user_id);
-      return api.UserController.deleteUser(id);
-    }
-    else {
-      console.log("No User w/that Id");
-      res.status(404).send("User does not exist");
-      return;
-    }
-  }) 
-  .then(() => {
-    console.log("User deleted!");
-    req.session.username = null;
-    req.session.user_email = null;
-    res.status(200).send('User deleted!');
-})
-  .catch(err => console.log(err));
-});
+// /*********************************************
+//  * User CRUD Web API Endpoints
+//  *********************************************/
+// router.route('/user-info')
+//   .get((req, res) => {
+//   console.log("user 'GET' route!");
+//   let id = req.query.id;
+//   if (id != null && id != undefined) {
+//     api.UserController.getUserById(id).then(val => {
+//       res.json(val);
+//       return;
+//     });
+//   }
+//   else {
+//     console.log("No user w/id ", id);
+//   }
+// })
+// .post((req, res, next) => {
+//  // console.log('POST req received');
+//   if(req.body['New Session'] || req.body['New User']){
+//     console.log("New Session?");
+//     req.session.username = req.body.username;
+//     req.session.user_email = req.body.user_email;
+//   }
+//   // If there is no session, go to the login page.
+//   if(!req.session.username){
+//     res.redirect('/login');
+//     return;
+//   }
+//   api.UserController.createUser(req.body).then(val => {
+//     req.body.user_id = val.insertId;
+//     req.session.user_id = val.insertId;
+//     console.log("Req.body from post now with id:", req.body);
+//     let context = req.body;
+//     context.priorities = [];
+//     res.render('profile', context);
+//   });
+// })
+// .put((req, res) => { 
+//   api.UserController.updateUser(req.body)
+//                     .then(val => res.json(val))
+//                     .catch(err => console.log(err));
+// })
+// .delete((req, res) => {
+//  // console.log('DELETE req received');
+//   let id = parseInt(req.body.user_id);
+//   console.log(id, typeof id);
+//   if (!id || (typeof id) != 'number' ) {
+//     console.log("Bad User ID")
+//     res.status(400).send(null);
+//     return;    
+//   }
+//   let user = api.UserController.getUserById(id)
+//   .then(val => {
+//     if (val.user_id != null){
+//       console.log("User exists with id ", val.user_id);
+//       return api.UserController.deleteUser(id);
+//     }
+//     else {
+//       console.log("No User w/that Id");
+//       res.status(404).send("User does not exist");
+//       return;
+//     }
+//   }) 
+//   .then(() => {
+//     console.log("User deleted!");
+//     req.session.username = null;
+//     req.session.user_email = null;
+//     res.status(200).send('User deleted!');
+// })
+//   .catch(err => console.log(err));
+// });
 
 /*********************************************
  * Genres CRUD Web API Endpoints
