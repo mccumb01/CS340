@@ -1,3 +1,8 @@
+/********************************************************************************************
+ * Author: Sriram Narayanan
+ * CS 340 Fall 2019 
+ * ******************************************************************************************/
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -7,14 +12,6 @@ var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-/*
-var pool = mysql.createPool({
-    connectionLimit : 10,
-    host  : 'classmysql.engr.oregonstate.edu',
-    user  : 'cs290_naraysri',
-    password: '9834',
-    database: 'cs290_naraysri'
-});*/
 
 var pool = mysql.createPool({
     connectionLimit : 10,
