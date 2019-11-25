@@ -22,7 +22,7 @@ module.exports.MEDIA_TYPES = ['Book','Movie','Audio Album','Periodical','Short']
 
 module.exports.getAllItems = function getAllItems(){
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM media_items;', function (err, rows){
+    pool.query('SELECT media_item_id, title, original_language_title, media_type, publication_year, avg_user_rating FROM media_items;', function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         reject(err);
@@ -89,11 +89,11 @@ module.exports.addItem = function addItem(body){
 
 module.exports.updateItemWithId = function updateItemWithId(id, body){
   return new Promise((resolve, reject) => {
-    pool.query('UPDATE media_items SET media_type = ?, title = ?, original_language_title = ?, publication_year = ?, avg_user_rating = ?;',
-                [body.media_type, body.title, body.original_language_title, body.publication_year, body.avg_user_rating], 
+    pool.query('UPDATE media_items SET media_type = ?, title = ?, original_language_title = ?, publication_year = ?, avg_user_rating = ? WHERE media_item_id = ?;',
+                [body.media_type, body.title, body.original_language_title, body.publication_year, body.avg_user_rating, id], 
                 function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR UPDATING ENTRY");
         return reject(err);
       }
       console.log("Results in dataSources: ", JSON.stringify(rows));
@@ -103,7 +103,9 @@ module.exports.updateItemWithId = function updateItemWithId(id, body){
 
 module.exports.deleteItemWithId = function deleteItemWithId(id){
   return new Promise((resolve, reject) => {
-    pool.query('DELETE FROM media_items WHERE media_item_id = ?;',[body.media_item_id], 
+    //pool.query('DELETE FROM item_genres ig WHERE ig.media_item_id = ?;', [id], (err, rows) =>{});
+    
+    pool.query('DELETE FROM media_items WHERE media_item_id = ?;',[id], 
                 function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");

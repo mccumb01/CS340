@@ -32,7 +32,7 @@ module.exports.UserController = {
   getAllUsers : function getAllUsers(){
     console.log("getAllUsers called in API");
     return Promise.resolve(dataSources.users.getAllUsers())
-          .catch(err => consoler.log(err))
+          .catch(err => console.log(err))
           .then(val=> console.log(val));
   },
                 
@@ -104,12 +104,24 @@ module.exports.MediaItemsController = {
                       .then(res => {
                         console.log("Item added with id: ", res.insertId);
                         let id = res.insertId;
-                        return dataSources.item_genres.setGenresForItem(id, body.genres);
-                      });
+                        return dataSources.item_genres
+                                          .setGenresForItem(id, body.genres)
+                                          .then(res => res)
+                                          .catch(err => err)
+                      })
+                      .catch(err => {throw err});
   },
   
   updateItemWithId : function updateItemWithId(id, body){
-    return dataSources.media_items.updateItemWithId(id, body);
+    return dataSources.media_items.updateItemWithId(id, body)
+                      .then(res => {
+                        console.log("Item updated with id: ", id);
+                        return dataSources.item_genres
+                                          .setGenresForItem(id, body.genres)
+                                          .then(res => res)
+                                          .catch(err => err)
+                      })
+                      .catch(err => {throw err});
   },
   
   updateItems : function updateItems(body){

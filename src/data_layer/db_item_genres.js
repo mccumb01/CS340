@@ -35,19 +35,24 @@ module.exports.getItemsOfGenre = function getItemsOfGenre(genre_id){
   });
 }
 module.exports.setGenresForItem = function setGenresForItem(item_id, genres){
-  let igs = [];
-  for (let i = 0; i < genres.length; i++) {
-    igs[i] = [item_id, genres[i]];
-  }
-  console.log("Genres to add to item: ", igs);
   return new Promise((resolve, reject) => {
-    pool.query('INSERT INTO item_genres (media_item_id, genre_id) VALUES ?;',[igs], function (err, rows){
-      if (err){
-        console.log("ERROR INSERTING GENRES FOR ITEM");
-        return reject(err);
-      }
-      console.log("Results in dataSources: ", JSON.stringify(rows));
-      resolve(rows);
-    });
+    let igs = [];
+    for (let i = 0; i < genres.length; i++) {
+      igs[i] = [item_id, genres[i]];
+    }
+    if (igs.length === 0){
+      return reject('No genres');
+    }
+    Promise.resolve(pool.query('DELETE FROM item_genres WHERE media_item_id = ?', [item_id], (err, rows) => {}))
+    .then(() => {
+      pool.query('INSERT INTO item_genres (media_item_id, genre_id) VALUES ?;',[igs], function (err, rows){
+        if (err){
+          console.log("ERROR INSERTING GENRES FOR ITEM");
+          return reject(err);
+        }
+        console.log("Results in dataSources: ", JSON.stringify(rows));
+        resolve(rows);
+      });
+    })
   });
 }

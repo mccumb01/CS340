@@ -80,6 +80,12 @@ SELECT genre_id, genre_name FROM genres ORDER BY genre_name;
 -- Get single genre by id
 SELECT genre_id, genre_name FROM genres WHERE genre_id = :genre_id; 
 
+-- Get all genres for a particular item
+SELECT genre_id, genre_name FROM genres g 
+  JOIN item_genres ig ON g.genre_id = ig.genre_id
+  JOIN media_items m ON m.media_item_id = ig.media_item_id
+  WHERE m.media_item_id = :media_item_id_to_match  
+
 -- Add a new genre
 INSERT INTO genres (genre_name) VALUES (:genre_name); 
 
@@ -93,7 +99,19 @@ DELETE FROM genres WHERE genre_id = :genre_id;
 
 -- ITEM_GENRES TABLE
 
-SELECT m.media_item_id, title, media_type from media_items m 
+
+-- Get all items matching a particular genre
+SELECT m.media_item_id, title, original_language_title, publication_year media_type, avg_user_rating from media_items m 
 JOIN item_genres ig ON m.media_item_id = ig.media_item_id 
 JOIN genres g ON g.genre_id = ig.genre_id 
 WHERE g.genre_name = :user_filter_genre;
+
+-- Get all genres for a particular item
+SELECT genre_id, genre_name FROM genres g 
+  JOIN item_genres ig ON g.genre_id = ig.genre_id
+  JOIN media_items m ON m.media_item_id = ig.media_item_id
+  WHERE m.media_item_id = :media_item_id_to_match  
+
+-- Set genres for a particular item
+-- Not sure how to do this in a loop w/just SQL; using Express mysql to pass an array of items & genres
+INSERT INTO item_genres (media_item_id, genre_id) VALUES (:passed_media_item, :passed_genres);

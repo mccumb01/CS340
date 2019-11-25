@@ -134,15 +134,6 @@ router.route('/user-info')
   return;
 })
 .put((req, res) => { 
-  // console.log('PUT req received');
-  // If there is no session, go to the login page.
-  if(!req.session || !req.session.username){
-    res.render('login', {});
-    return;
-  } 
-  let id = req.query.id;
-  req.session.username = req.body.username;
-  req.session.user_email = req.body.user_email;
   api.UserController.updateUser(req.body).then(val => res.json(val));
 })
 .delete((req, res) => {
@@ -158,7 +149,9 @@ router.route('/user-info')
 router.post('/add_genre', function (req, res) {
   console.log('add_genre route called in API!', req.body);
   api.GenreController.addGenre(req.body)
-                     .then(val => res.json(val));
+                     .then(val => {return api.GenreController.getAllGenres();})
+                     .then(genres => res.render('media_items', {genres: genres}))
+                     .catch(err => res.json(null));
 });
 
 /*********************************************

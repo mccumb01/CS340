@@ -87,6 +87,11 @@ tbody > tr > td {
   height: 100%;
 }
 
+.edit-btn {
+  color: #aaa;
+  cursor: pointer;
+}
+
 .delete-btn {
   background: rgb(196, 3, 3);
   border: none;
