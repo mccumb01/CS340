@@ -16,6 +16,7 @@ console.log(displayedText);
 const saveBtn = document.getElementById('saveBtn');
 const editBtn = document.getElementById('editBtn');
 const cancelBtn = document.getElementById('cancelBtn');
+const deleteBtn = document.getElementById('deleteProfileBtn');
 
 saveBtn.addEventListener('click', (event) => {
   console.log('Save Btn clicked!');
@@ -35,6 +36,29 @@ cancelBtn.addEventListener('click', (event) => {
   cancelEdit();
   event.preventDefault();
 });
+
+deleteBtn.addEventListener('click', (event) =>{
+  let confirmDelete = confirm("This will permanently delete the User account and all associated media queues. Are you sure you want to proceed?");
+  confirmDelete ? deleteUser(userId) : false;
+});
+
+function deleteUser(id){
+  console.log("id: ", id);
+  let req = new XMLHttpRequest();
+  let payload = {"user_id" : id};  
+  req.open('DELETE', '/user-info', true);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.addEventListener('load',function(response){
+    console.log(req.status, req.responseText);
+    if(req.status >= 200 && req.status < 400){      
+      alert('User Deleted - I hope you meant to do that!');
+      window.location.href = "/login";          
+    } else {
+      alert('Error deleting user ' + req.statusText);
+    }});
+  req.send(JSON.stringify(payload));
+  //event.preventDefault();
+}
 
 function toggleEdit(){
   // if currently editing, show inputs, and populate inputs w/current values

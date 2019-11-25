@@ -1,7 +1,7 @@
 <section class="content">
   <form id="profileForm" class="form-div">
     <fieldset>
-      <p class="hidden" id="userId">{{user_id}}"</p>
+      <p class="hidden" id="userId">{{user_id}}</p>
       <label class="form-label" for="username">User Name</label>
       <p id="profile_username" class="displayed-text">{{username}}</p>
       <input class="hidden" type="text" id="username" name="username" value="" required>
@@ -26,6 +26,7 @@
         <button id="saveBtn" type="submit" class="submit-btn hidden" name="save_profile">Save Profile</button>
         <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
       </div>
+      <button id="deleteProfileBtn" type="submit" class="delete-btn" name="delete_profile">DELETE USER</button>
     </fieldset>
   </form>
 </section>

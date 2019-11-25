@@ -45,10 +45,10 @@ module.exports.UserController = {
     return Promise.resolve(dataSources.users.updateUser(body));
   },
                 
-  deleteUser : function deleteUser(body){
+  deleteUser : function deleteUser(id){
     // authenticateUser(body).then()  
     return Promise.resolve(
-        dataSources.users.deleteUser(body)
+        dataSources.users.deleteUser(id)
       );
     }
   }

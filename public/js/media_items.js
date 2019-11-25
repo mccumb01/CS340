@@ -268,6 +268,7 @@ function fillForm(obj){
   document.getElementById('originalLangTitle').value = obj.o_title;
   document.getElementById('mediaType').value = obj.m_type;
   document.getElementById('pubYear').value = obj.pub_year;
+  document.getElementById('genres').value = obj.genres;
   //document.querySelector('input[name="genres"][value="'+obj.genres+'"]').checked = true;  
 }
 

@@ -78,3 +78,17 @@ module.exports.updateUser = function(body){
     });
   });
 }
+
+module.exports.deleteUser = function(id){
+  // Permanently delete a user
+  return new Promise((resolve, reject) => {
+    pool.query('DELETE FROM users WHERE user_id = ?',[id], function (err, rows){
+      if (err){
+        console.log("ERROR DELETING USER");
+        return reject(err);
+      }
+      console.log("USER DELETED FROM DATABASE: ", JSON.stringify(rows));
+      resolve(rows);
+    });
+  });
+}

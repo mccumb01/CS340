@@ -5,6 +5,10 @@ module.exports = function() {
   const api = require('./api');
 
   router.get('/', function (req, res) {
+    if(!req.session || !req.session.username){
+      res.redirect('/login');
+      return;
+    }
     let context = {};
     let types = api.MediaItemsController.getMediaTypes();
     console.log('media types: ' , types);

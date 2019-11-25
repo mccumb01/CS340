@@ -26,8 +26,4 @@ DB Queries TODO
  Update queue_item (status, priority)
  Remove queue_item 
  Remove all queue_items from queue
-
- Add item_genre to media_item
- Update item_genres for media_item
- Remove item_genre from media_item
   *******************/ 

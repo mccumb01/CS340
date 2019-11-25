@@ -12,7 +12,7 @@ const api = require('./api');
  *********************************************/
 router.get('/', function (req, res) {
   if(!req.session || !req.session.username){
-    res.render('login');
+    res.redirect('/login');
     return;
   }
   res.render('home');
@@ -28,20 +28,27 @@ router.use('/media_items', require('./media_items.js'));
  * Profile Page
  *********************************************/
 router.get('/user', function (req, res) {
+  if(!req.session || !req.session.username){
+    res.redirect('/login');
+    return;
+  }
+
   let priorities = api.MediaQueueController.getPriorityItems();
   console.log("PRIORITIES: ", priorities);
   let context = {priorities}; 
-  if(!req.session || !req.session.username){
-    res.render('login', context);
-    return;
-  }
   context.user_id = req.session.user_id;
   context.username = req.session.username;
   context.user_email = req.session.user_email;
   res.render('profile', context);
-  return;
-  
 });
+
+// router.delete('/user', (req,res) => {
+//   let id = req.body.user_id;
+//   api.UserController.deleteUser(id)
+//                     .then(val => {
+//                       res.redirect('/login')
+//                     });
+// });
 
 /************************************************
 Login Existing User
@@ -76,7 +83,7 @@ router.route('/login')
             req.session.username = user.username;
             req.session.user_email = user.user_email;
             console.log('Req Session after login: ', req.session);
-            res.render('profile', context);
+            res.redirect('/user');
           })
           .catch(err =>{
             console.log("Error w/user auth in route", err);
@@ -104,6 +111,7 @@ router.route('/user-info')
   if (id != null && id != undefined) {
     api.UserController.getUserById(id).then(val => {
       res.json(val);
+      return;
     });
   }
   else {
@@ -118,8 +126,8 @@ router.route('/user-info')
     req.session.user_email = req.body.user_email;
   }
   // If there is no session, go to the login page.
-  if(!req.session || !req.session.username){
-    res.render('login', {});
+  if(!req.session.username){
+    res.redirect('/login');
     return;
   }
   api.UserController.createUser(req.body).then(val => {
@@ -130,16 +138,40 @@ router.route('/user-info')
     context.priorities = [];
     res.render('profile', context);
   });
-  
-  return;
 })
 .put((req, res) => { 
-  api.UserController.updateUser(req.body).then(val => res.json(val));
+  api.UserController.updateUser(req.body)
+                    .then(val => res.json(val))
+                    .catch(err => console.log(err));
 })
 .delete((req, res) => {
  // console.log('DELETE req received');
-  let id = parseInt(req.query.id);
-  api.deleteUser(req.body).then(() => res.send(`Entry ${id} deleted`))
+  let id = parseInt(req.body.user_id);
+  console.log(id, typeof id);
+  if (!id || (typeof id) != 'number' ) {
+    console.log("Bad User ID")
+    res.status(400).send(null);
+    return;    
+  }
+  let user = api.UserController.getUserById(id)
+  .then(val => {
+    if (val.user_id != null){
+      console.log("User exists with id ", val.user_id);
+      return api.UserController.deleteUser(id);
+    }
+    else {
+      console.log("No User w/that Id");
+      res.status(404).send("User does not exist");
+      return;
+    }
+  }) 
+  .then(() => {
+    console.log("User deleted!");
+    req.session.username = null;
+    req.session.user_email = null;
+    res.status(200).send('User deleted!');
+})
+  .catch(err => console.log(err));
 });
 
 /*********************************************
