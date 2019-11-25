@@ -38,7 +38,7 @@ module.exports.setGenresForItem = function setGenresForItem(item_id, genres){
   return new Promise((resolve, reject) => {
     let igs = [];
     for (let i = 0; i < genres.length; i++) {
-      igs[i] = [item_id, genres[i]];
+      igs[i] = [item_id, genres[i]['genre_id']];
     }
     if (igs.length === 0){
       return reject('No genres');

@@ -25,8 +25,8 @@ module.exports.getAllItems = function getAllItems(){
     pool.query(`SELECT m.media_item_id, title, original_language_title, media_type, 
                 publication_year, avg_user_rating, g.genre_id, g.genre_name 
                 FROM media_items m 
-                JOIN item_genres ig ON m.media_item_id = ig.media_item_id
-                JOIN genres g ON g.genre_id = ig.genre_id;`, function (err, rows){
+                LEFT JOIN item_genres ig ON m.media_item_id = ig.media_item_id
+                LEFT JOIN genres g ON g.genre_id = ig.genre_id;`, function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         reject(err);
