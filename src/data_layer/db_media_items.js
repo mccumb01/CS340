@@ -82,7 +82,7 @@ module.exports.addItem = function addItem(body){
                 [body.media_type, body.title, body.original_language_title, body.publication_year, body.avg_user_rating], 
                 function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR ADDING ENTRY");
         return reject(err);
       }
       console.log("Results in dataSources: ", JSON.stringify(rows));

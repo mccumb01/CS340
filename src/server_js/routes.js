@@ -1,6 +1,15 @@
 /******************************************************************************************
  * Author: Mike Cumberworth
  * CS 340, Section 400 Web Development Fall 2019 
+ * 
+ * This page contains page routes for Home, Media Items, User Profile, About, and Login pages 
+ * It also contains or leads to API Endpoints for the following:
+ * 
+ * /media_items
+ * /genres
+ * /item_genres
+ * /user_info 
+ * 
  ****************************************************************************************/
 
 const express = require('express');
@@ -82,79 +91,6 @@ router.route('/login')
   });
 
 
-// /*********************************************
-//  * User CRUD Web API Endpoints
-//  *********************************************/
-// router.route('/user-info')
-//   .get((req, res) => {
-//   console.log("user 'GET' route!");
-//   let id = req.query.id;
-//   if (id != null && id != undefined) {
-//     api.UserController.getUserById(id).then(val => {
-//       res.json(val);
-//       return;
-//     });
-//   }
-//   else {
-//     console.log("No user w/id ", id);
-//   }
-// })
-// .post((req, res, next) => {
-//  // console.log('POST req received');
-//   if(req.body['New Session'] || req.body['New User']){
-//     console.log("New Session?");
-//     req.session.username = req.body.username;
-//     req.session.user_email = req.body.user_email;
-//   }
-//   // If there is no session, go to the login page.
-//   if(!req.session.username){
-//     res.redirect('/login');
-//     return;
-//   }
-//   api.UserController.createUser(req.body).then(val => {
-//     req.body.user_id = val.insertId;
-//     req.session.user_id = val.insertId;
-//     console.log("Req.body from post now with id:", req.body);
-//     let context = req.body;
-//     context.priorities = [];
-//     res.render('profile', context);
-//   });
-// })
-// .put((req, res) => { 
-//   api.UserController.updateUser(req.body)
-//                     .then(val => res.json(val))
-//                     .catch(err => console.log(err));
-// })
-// .delete((req, res) => {
-//  // console.log('DELETE req received');
-//   let id = parseInt(req.body.user_id);
-//   console.log(id, typeof id);
-//   if (!id || (typeof id) != 'number' ) {
-//     console.log("Bad User ID")
-//     res.status(400).send(null);
-//     return;    
-//   }
-//   let user = api.UserController.getUserById(id)
-//   .then(val => {
-//     if (val.user_id != null){
-//       console.log("User exists with id ", val.user_id);
-//       return api.UserController.deleteUser(id);
-//     }
-//     else {
-//       console.log("No User w/that Id");
-//       res.status(404).send("User does not exist");
-//       return;
-//     }
-//   }) 
-//   .then(() => {
-//     console.log("User deleted!");
-//     req.session.username = null;
-//     req.session.user_email = null;
-//     res.status(200).send('User deleted!');
-// })
-//   .catch(err => console.log(err));
-// });
-
 /*********************************************
  * Genres CRUD Web API Endpoints
  *********************************************/
@@ -163,7 +99,7 @@ router.post('/add_genre', function (req, res) {
   console.log('add_genre route called in API!', req.body);
   api.GenreController.addGenre(req.body)
                      .then(val => {return api.GenreController.getAllGenres();})
-                     .then(genres => res.render('media_items', {genres: genres}))
+                     //.then(genres => res.render('media_items', {genres: genres}))
                      .catch(err => res.json(null));
 });
 
@@ -171,18 +107,18 @@ router.post('/add_genre', function (req, res) {
  * Media Queue CRUD Web API Endpoints
  *********************************************/
 
-router.route('/mediaqueue')
+router.route('/media_queue')
 
   .get((req, res) => {
   let entries = [];
   let id = req.query.id;
   if (id != null && id != undefined) {
-    api.getEntryById(id).then(val => {
+    api.MediaQueueController.getEntryById(id).then(val => {
       res.json(val);
     });
   }
   else {
-    api.getEntries().then(val => {
+    api.MediaQueueController.getEntries().then(val => {
      // console.log("Val: ", val);
       res.json(val);
     });   
@@ -190,7 +126,7 @@ router.route('/mediaqueue')
 })
 .post((req, res) => {
  // console.log('POST req received');
-  api.addWorkout(req.body).then(val => {
+  api.MediaQueueController.addQueueItem(req.body).then(val => {
     res.json(val);
   });
   return;
@@ -198,12 +134,12 @@ router.route('/mediaqueue')
 .put((req, res) => {
  // console.log('PUT req received');
   let id = req.query.id;
-  api.updateEntryWithId(id, req.body).then(val => res.json(val));
+  api.MediaQueueController.updateQueueItem(id, req.body).then(val => res.json(val));
 })
 .delete((req, res) => {
  // console.log('DELETE req received');
   let id = parseInt(req.query.id);
-  api.deleteEntryWithId(id).then(()=> res.send(`Entry ${id} deleted`));
+  api.MediaQueueController.deleteMediaQueueWithId(id).then(()=> res.send(`Entry ${id} deleted`));
 });
 
 

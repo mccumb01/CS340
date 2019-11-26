@@ -32,7 +32,7 @@ function addTableRow(obj, index){
   yr.textContent = obj.pub_year;
 
   let genres = row.insertCell(4);          
-  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
+  genres.textContent = mapGenresToString(obj.genres);
 
   let rating = row.insertCell(5);          
   rating.textContent = obj.rating;
@@ -62,16 +62,16 @@ function editTableRowAtIndex(obj, index){
   title.textContent = obj.title;
 
   let o_title = row.cells[1];
-  o_title.textContent = obj.original_language_title;
+  o_title.textContent = obj.o_title;
 
   let type = row.cells[2];
-  type.textContent = obj.media_type;
+  type.textContent = obj.m_type;
 
   let yr = row.cells[3];
-  yr.textContent = obj.publication_year;
+  yr.textContent = obj.pub_year;
 
   let genres = row.cells[4];          
-  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
+  genres.textContent = mapGenresToString(obj.genres);
 
   let rating = row.cells[5];          
   rating.textContent = obj.rating;
@@ -107,4 +107,11 @@ function scrollToRowAtIndex(index){
   // if (scrolledY) {
   //   tbody.scroll(0, scrollY - theadHeight);
   // }
+}
+
+function mapGenresToString(arr){
+  if (arr.length === 0){
+    return 'General';
+  }
+  return arr.map(obj => obj.genre_name).join(', ');
 }
