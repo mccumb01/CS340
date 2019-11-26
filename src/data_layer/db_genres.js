@@ -16,7 +16,7 @@ module.exports.getAllGenres = function getAllGenres(){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      console.log("Results in dataSources: ", JSON.stringify(rows));
+      console.log("Results of getAllGenres: ", rows);
       resolve(rows);
     });
   });
@@ -45,12 +45,12 @@ module.exports.updateGenreWithId = function updateGenreWithId(id, body){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
-      console.log("Results in dataSources: ", JSON.stringify(rows));
+      console.log("Results of updateGenreWithId: ", JSON.stringify(rows));
       resolve(rows);
     });
   });}
 
 module.exports.deleteGenreWithId = function deleteGenreWithId(id){
-  return dataSources.deleteGenreWithId(id);
+  
 }
 

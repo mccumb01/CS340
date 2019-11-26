@@ -88,7 +88,39 @@ API for MediaItemsController
 ************************************************/
 module.exports.MediaItemsController = {
   getAllItems : function getAllItems(){
-    return Promise.resolve(dataSources.media_items.getAllItems());
+    // return Promise.resolve(dataSources.media_items.getAllItems());
+    // https://stackoverflow.com/questions/30025965/merge-duplicate-objects-in-array-of-objects
+    return dataSources.media_items.getAllItems()
+                      .then(json => {
+                          let rows = JSON.parse(json); 
+                          let seen = {};
+                          let items = rows.filter(r => {
+                            console.log('Next row: ', r);
+                            let prev = {};
+                            let key = r.media_item_id;
+                            let gObj = {'genre_id': r.genre_id, 'genre_name': r.genre_name};
+                            if (seen.hasOwnProperty(key)){
+                              console.log('Seen this one! ', key);
+                              prev = seen[key];
+                              prev.genres.push(gObj);
+                              return false;
+                            }
+                            console.log('New item! ', key);
+                            seen[key] = r;
+                            let item = seen[key];
+                            if (!item.genres) {
+                              console.log('New item needs genres array!');
+                              item.genres = [];                              
+                              item.genres.push(gObj);
+                              delete item.genre_id;
+                              delete item.genre_name;
+                            }
+                            return true;
+                          });
+                          console.log("Single items! ", items);
+                          return items;
+                      })
+                      .catch(err => console.log('Error getting items w/genres', err));
   },
   getMediaTypes : function getMediaTypes(){
     return dataSources.media_items.MEDIA_TYPES;

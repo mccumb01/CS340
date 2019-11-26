@@ -194,7 +194,7 @@ function updateEntry(context){
       // alert("Data successfully edited!");  //replace this w/nice CSS animation instead if there's time?
       clearForm();
       let res = JSON.parse(req.responseText);
-      let index = self.entries.findIndex(e => e.id == entry.id);
+      let index = self.entries.findIndex(e => e.id == entry.media_item_id);
       self.entries.splice(index,1, entry);
       self.editTableRowAtIndex(entry, index);
     } else {
@@ -237,7 +237,7 @@ function getFormValues(){
   //https://stackoverflow.com/questions/5866169/how-to-get-all-selected-values-of-a-multiple-select-box
   let genres = Array(...gSel.options).reduce((acc, option) => {
     if (option.selected === true) {
-      acc.push(option.value);
+      acc.push({genre_id : option.value, genre_name : option.text});
     }
     return acc;
   }, []);

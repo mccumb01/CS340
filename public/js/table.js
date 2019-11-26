@@ -32,7 +32,7 @@ function addTableRow(obj, index){
   yr.textContent = obj.pub_year;
 
   let genres = row.insertCell(4);          
-  genres.textContent = obj.genres;
+  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
 
   let rating = row.insertCell(5);          
   rating.textContent = obj.rating;
@@ -54,26 +54,26 @@ function addTableRow(obj, index){
 
 function editTableRowAtIndex(obj, index){
   let tbody = document.getElementById('tbody');
-  
+  console.log('Editing table row obj ', obj, 'at index ', index);
   let row = tbody.rows[index]; 
   row.classList.add('table-entry');
 
-  let title = row.insertCell(0);
+  let title = row.cells[0];
   title.textContent = obj.title;
 
-  let o_title = row.insertCell(1);
-  o_title.textContent = obj.o_title;
+  let o_title = row.cells[1];
+  o_title.textContent = obj.original_language_title;
 
-  let type = row.insertCell(2);
-  type.textContent = obj.m_type;
+  let type = row.cells[2];
+  type.textContent = obj.media_type;
 
-  let yr = row.insertCell(3);
-  yr.textContent = obj.pub_year;
+  let yr = row.cells[3];
+  yr.textContent = obj.publication_year;
 
-  let genres = row.insertCell(4);          
-  genres.textContent = obj.genres;
+  let genres = row.cells[4];          
+  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
 
-  let rating = row.insertCell(5);          
+  let rating = row.cells[5];          
   rating.textContent = obj.rating;
 
   scrollToRowAtIndex(index);

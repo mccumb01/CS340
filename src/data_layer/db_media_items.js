@@ -22,13 +22,17 @@ module.exports.MEDIA_TYPES = ['Book','Movie','Audio Album','Periodical','Short']
 
 module.exports.getAllItems = function getAllItems(){
   return new Promise((resolve, reject) => {
-    pool.query('SELECT media_item_id, title, original_language_title, media_type, publication_year, avg_user_rating FROM media_items;', function (err, rows){
+    pool.query(`SELECT m.media_item_id, title, original_language_title, media_type, 
+                publication_year, avg_user_rating, g.genre_id, g.genre_name 
+                FROM media_items m 
+                LEFT JOIN item_genres ig ON m.media_item_id = ig.media_item_id
+                LEFT JOIN genres g ON g.genre_id = ig.genre_id;`, function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         reject(err);
       }
-      console.log("Results in dataSources: ", JSON.stringify(rows));
-      resolve(rows);
+      console.log("Results from getAllItems: ", rows);
+      resolve(JSON.stringify(rows));
     });
   });
 }
