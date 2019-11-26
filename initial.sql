@@ -126,7 +126,7 @@ DROP TABLE IF EXISTS genres;
 
 CREATE TABLE genres (
   genre_id int unsigned NOT NULL AUTO_INCREMENT,
-  genre_name varchar(25) NOT NULL,
+  genre_name varchar(25) NOT NULL DEFAULT 'General',
   PRIMARY KEY (genre_id)
 );
 
@@ -148,15 +148,16 @@ INSERT INTO genres VALUES
 (10,'Family'),
 (11,'Foreign'),
 (12,'Games'),
-(13,'Horror'),
-(14,'Language Learning'),
-(15,'Music'),
-(16,'New'),
-(17,'Programming'),
-(18,'Sci-Fi'),
-(19,'Sports'),
-(20,'Technology'),
-(21,'Travel');
+(13,'General'),
+(14,'Horror'),
+(15,'Language Learning'),
+(16,'Music'),
+(17,'New'),
+(18,'Programming'),
+(19,'Sci-Fi'),
+(20,'Sports'),
+(21,'Technology'),
+(22,'Travel');
 UNLOCK TABLES;
 
 

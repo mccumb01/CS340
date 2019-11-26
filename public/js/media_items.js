@@ -194,9 +194,10 @@ function updateEntry(context){
       // alert("Data successfully edited!");  //replace this w/nice CSS animation instead if there's time?
       clearForm();
       let res = JSON.parse(req.responseText);
-      let index = self.entries.findIndex(e => e.id == entry.media_item_id);
-      self.entries.splice(index,1, entry);
-      self.editTableRowAtIndex(entry, index);
+      let index = self.entries.findIndex(e => e.id === entry.media_item_id);
+      let e = new DataModel(entry);
+      self.entries.splice(index,1, e);
+      self.editTableRowAtIndex(e, index);
     } else {
       console.error("Error in network request: " + req.statusText);
     }});
@@ -242,7 +243,7 @@ function getFormValues(){
     return acc;
   }, []);
   let payload = {
-    media_item_id : id,
+    media_item_id : +id, 
     title: title,
     original_language_title: oTitle,
     publication_year: pubYr,
@@ -250,7 +251,7 @@ function getFormValues(){
     genres: genres,
     avg_user_rating : rating
   }
-  
+  console.log(payload)
   return payload;
 }
 

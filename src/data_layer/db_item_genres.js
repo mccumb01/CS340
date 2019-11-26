@@ -40,8 +40,9 @@ module.exports.setGenresForItem = function setGenresForItem(item_id, genres){
     for (let i = 0; i < genres.length; i++) {
       igs[i] = [item_id, genres[i]['genre_id']];
     }
-    if (igs.length === 0){
-      return reject('No genres');
+    if (genres.length === 0){
+      //return reject('No genres');
+      igs = [[item_id, 13]] // if no other genres provided, set to 'General'.
     }
     Promise.resolve(pool.query('DELETE FROM item_genres WHERE media_item_id = ?', [item_id], (err, rows) => {}))
     .then(() => {
