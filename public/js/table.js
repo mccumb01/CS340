@@ -11,11 +11,19 @@ function updateTable(){
   }
 }
 
+function clearTable(){
+  console.log('Clearing table!');
+  let tbody = document.getElementById('itemsList');
+  let tb = document.createElement('tbody');
+  tb.setAttribute('id', 'itemsList');
+  tbody.parentNode.replaceChild(tb, tbody);
+}
+
 function addTableRow(obj, index){
   if (!index) { 
     index = -1 
   }
-  let tbody = document.getElementById('tbody');
+  let tbody = document.getElementById('itemsList');
   let row = tbody.insertRow(index);
   row.classList.add('table-entry');
 
@@ -47,13 +55,13 @@ function addTableRow(obj, index){
   //del.classList.add("delete-btn");
   del.addEventListener('click', this.deleteEntry.bind(this));
   
-  scrollToRowAtIndex(index);
-  row.classList.add('row-highlight-animated');
-  setTimeout(() => row.classList.remove('row-highlight-animated'), 2000);
+  // scrollToRowAtIndex(index);
+  // row.classList.add('row-highlight-animated');
+  // setTimeout(() => row.classList.remove('row-highlight-animated'), 2000);
 }
 
 function editTableRowAtIndex(obj, index){
-  let tbody = document.getElementById('tbody');
+  let tbody = document.getElementById('itemsList');
   console.log('Editing table row obj ', obj, 'at index ', index);
   let row = tbody.rows[index]; 
   row.classList.add('table-entry');
@@ -83,7 +91,7 @@ function editTableRowAtIndex(obj, index){
 }
 
 function removeTableRowAtIndex(index){
-  let tbody = document.getElementById('tbody');
+  let tbody = document.getElementById('itemsList');
   let row = tbody.rows[index];
   row.classList.add('row-delete-animated');
   setTimeout(() => {
@@ -94,7 +102,7 @@ function removeTableRowAtIndex(index){
 
 function scrollToRowAtIndex(index){
   //console.log('scrolling to row?', index); 
-  let tbody = document.querySelector('#tbody'); 
+  let tbody = document.querySelector('#itemsList'); 
   let rows = tbody.querySelectorAll('tr');
   if (index == -1) {index = rows.length - 1}
   

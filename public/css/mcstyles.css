@@ -32,6 +32,38 @@ body {
   background: var(--primary-color);
 }
 
+
+#media_items_pg{
+  display: flex;
+  flex-direction: row;
+}
+
+#itemsTable {
+  display: table;
+}
+#item_filters{
+  margin: 0 0 1em 1em;
+}
+
+#theForm {
+  min-width: 210px;
+}
+
+@media (max-width: 960px) { 
+  #media_items_pg{
+    flex-direction: column;
+  }
+  #itemsTable {
+    width: 100%;
+  }
+  
+  #theForm {
+    width: 100%;
+  }
+}
+
+
+
 #queueBtns {
   display: flex;
   justify-content: flex-start;
@@ -42,6 +74,10 @@ body {
   cursor: pointer;
   font-size: 0.8em;
   margin: 0 1em 0 0;
+}
+
+table {
+  border: 1px solid var(--accent-color);
 }
 
 th {

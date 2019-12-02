@@ -32,7 +32,7 @@ module.exports.getAllItems = function getAllItems(){
         reject(err);
       }
       console.log("Results from getAllItems: ", rows);
-      resolve(JSON.stringify(rows));
+      resolve(rows);
     });
   });
 }
@@ -63,14 +63,34 @@ module.exports.getItemByTitle = function getItemByTitle(body){
   });
 }
 
-module.exports.getItemByType = function getItemByType(body){
+module.exports.getItemsByType = function getItemsByType(media_type){
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM media_items WHERE media_type = ?;',[body.media_type], function (err, rows){
+    pool.query(`SELECT media_item_id, media_type, title, original_language_title, publication_year, avg_user_rating 
+                FROM media_items WHERE media_type = media_type;`,[media_type], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
       }
       console.log("Results in dataSources: ", JSON.stringify(rows));
+      resolve(rows);
+    });
+  });
+}
+
+module.exports.getItemsByGenre = function getItemsByGenre(genre_id){
+  return new Promise((resolve, reject) => {
+    pool.query(`
+    SELECT m.media_item_id, title, original_language_title, publication_year media_type, avg_user_rating, g.genre_id, g.genre_name 
+    FROM media_items m 
+    JOIN item_genres ig ON m.media_item_id = ig.media_item_id 
+    JOIN genres g ON g.genre_id = ig.genre_id 
+    WHERE g.genre_id = ?;
+    `,[genre_id], function (err, rows){
+      if (err){
+        console.log("ERROR GETTING ENTRIES");
+        return reject(err);
+      }
+      console.log("Results of getting by genre_id: " , genre_id, JSON.stringify(rows));
       resolve(rows);
     });
   });

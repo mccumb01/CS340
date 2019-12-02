@@ -1,34 +1,12 @@
-
-// window.onload = function(){
-//   console.log('Media Items page loaded ...');
-//   getAllItems();
-// }
-
 /********************************************************************************************
  * Author: Mike Cumberworth
- * CS 290, Section 400 Web Development Summer 2019 
- * 
- * Assignment Database Interaction
- * External sites referenced while working on the client-side of this project:
- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
- https://stackoverflow.com/questions/1056728/where-can-i-find-documentation-on-formatting-a-date-in-javascript 
- https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement
- https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/reset
- https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/reportValidity 
- https://stackoverflow.com/questions/17112852/get-the-new-record-primary-key-id-from-mysql-insert-query
- https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView 
- https://stackoverflow.com/questions/7852986/javascript-scroll-to-nth-row-in-a-table?noredirect=1&lq=1
- https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations 
- https://stackoverflow.com/questions/4618733/set-selected-radio-from-radio-group-with-a-value?noredirect=1&lq=1
+ * CS 340, Section 400 Web Development Fall 2019 
  *******************************************************************************************/
-
 
 /******************************************************************
 "App"-level setup 
 ******************************************************************/
 
-// let entries = [];
-// let genres = [];
 let mList;
 window.onload = function(){
   mList = new MediaList();
@@ -58,6 +36,7 @@ function MediaList(){
   this.getAllMediaItems = getAllMediaItems;
   this.getMediaItemById = getMediaItemById;
   this.createEntries = createEntries;
+  this.clearTable = clearTable;
   this.updateTable = updateTable;
   this.addTableRow = addTableRow;
   this.editTableRowAtIndex = editTableRowAtIndex;
@@ -74,8 +53,13 @@ function MediaList(){
 
 // Called only on initial page load in getWorkoutList callback
 function createEntries(list){
+  this.entries = [];
+  this.clearTable();
   let i = 0;
   let len = list.length;
+  if (len === 0){
+    return;
+  }
   for (i; i < len; i++){
     let entry = new DataModel(list[i]);
     this.entries.push(entry);
@@ -89,6 +73,12 @@ function addListeners(){
 
   document.getElementById('addGenre').addEventListener('click', function(event){
     addGenre(mList);
+  });
+
+  document.getElementById('genre_filter').addEventListener('change', function(event){
+    console.log(event);
+    let index = event.target.value;
+    index == -1 ? getAllMediaItems() : getMediaByGenre(mList, index);
   });
   
   document.getElementById('saveBtn').addEventListener('click', function(event) {
@@ -123,7 +113,41 @@ function getAllMediaItems(){
   event.preventDefault();
 }
 
-function getMediaItemById(id){
+function getMediaByGenre(context, genre_id){
+  let req = new XMLHttpRequest();
+  const self = context;
+  req.open('GET', '/media_items/all_items/genre/'+ genre_id, true);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.addEventListener('load',function(response){
+    if(req.status >= 200 && req.status < 400){
+      let response = JSON.parse(req.responseText);
+      console.log(response);
+      self.createEntries(response);     
+    } else {
+      console.log('Error in network request: ' + req.statusText);
+    }});
+  req.send(null);
+  event.preventDefault();
+}
+
+function getMediaByType(context, media_type){
+  let req = new XMLHttpRequest();
+  const self = context;
+  req.open('GET', '/media_items/all_items/type/'+ media_type, true);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.addEventListener('load',function(response){
+    if(req.status >= 200 && req.status < 400){
+      console.log(self);
+      let response = JSON.parse(req.responseText);
+      self.createEntries(response);     
+    } else {
+      console.log('Error in network request: ' + req.statusText);
+    }});
+  req.send(null);
+  event.preventDefault();
+}
+
+function getMediaItemById(context, id){
   let req = new XMLHttpRequest();
   req.open('GET', '//id='+id, true);
   req.setRequestHeader('Content-Type', 'application/json');

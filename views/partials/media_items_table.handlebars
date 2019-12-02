@@ -1,4 +1,13 @@
 <section id="itemsTable" class="section">
+  <div id="item_filters" class="">
+    <label class="form-label" for="genre_filter">Filter By Genre</label>
+    <select name="genre_filter" id="genre_filter">
+        <option value=-1>Show All</option>
+      {{#each genres}}
+        <option value={{genre_id}}>{{genre_name}}</option>
+      {{/each}}
+    </select>
+  </div>
   <table id="mediaItems" class="table">
     <thead>
     <tr class="header-row">
@@ -12,7 +21,7 @@
       <th></th>
     </tr>
   </thead>
-  <tbody id="tbody">
+  <tbody id="itemsList">
     {{!-- <tr class="table-entry">
       <td>curls</td>
       <td>12</td>
