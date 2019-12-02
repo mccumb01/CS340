@@ -193,7 +193,7 @@ function addMediaItem(context){
       console.log("self?", self, "this?", this);
       entry.id = req.responseText.insertId;
       self.entries.push(entry);
-      addTableRow(entry);
+      self.addTableRow(entry);
       alert("Media Item added!");      
     } else {
       console.log('Error in network request: ' + req.statusText);
@@ -283,6 +283,7 @@ function editEntry(e){
   let row = e.target.parentElement.rowIndex - 1;
   let entry = this.entries[row];
   let self = this;
+  setFormTitle('Edit Item');
   this.fillForm(entry);
 }
 
@@ -293,11 +294,26 @@ function fillForm(obj){
   document.getElementById('originalLangTitle').value = obj.o_title;
   document.getElementById('mediaType').value = obj.m_type;
   document.getElementById('pubYear').value = obj.pub_year;
-  document.getElementById('genres').value = obj.genres;
-  //document.querySelector('input[name="genres"][value="'+obj.genres+'"]').checked = true;  
+  
+  let genreList = Array.from(document.getElementById('genres').options);
+  console.log(genreList);
+  if (obj.genres.length > 0){
+    obj.genres.forEach(v => {
+      genreList.find(g => +g.value == v.genre_id).selected = true;
+    });
+  }
+}
+
+function setGenres(list){
+
+}
+
+function setFormTitle(title){
+  document.getElementsByClassName('form-title')[0].textContent = title;
 }
 
 function clearForm(){
+  setFormTitle('Add Item');
   document.getElementById('theForm').reset();
   document.getElementById('entryId').value = -1; // Need to explicit reset hidden value or else it retains last entry's id
 }

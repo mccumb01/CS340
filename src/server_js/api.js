@@ -93,6 +93,11 @@ function addGenresTo(rows){
     console.log('Next row: ', r);
     let prev = {};
     let key = r.media_item_id;
+
+    // Check for null - otherwise adds an empty genre obj w/null id & null name
+    if (!key || !r.genre_name){
+      return false;
+    }
     let gObj = {'genre_id': r.genre_id, 'genre_name': r.genre_name};
     if (seen.hasOwnProperty(key)){
       console.log('Seen this one! ', key);

@@ -1,6 +1,6 @@
 <form class="form-div" id="theForm">
   <fieldset>
-    <h3>Add New Item</h3>
+    <h3 class="form-title" >Add New Item</h3>
     <input type="hidden" class="form-input hidden" id="entryId" value="-1">
     <label class="form-label" for="title">Title</label>
     <input class="form-input" id="itemTitle" type="text" name="title">
@@ -16,19 +16,20 @@
     </select>
     <label class="form-label" for="genres">Genres (Ctrl/Cmd + Click To Select Multiple</label>
     <select multiple name="genres" id="genres">
-      <option value="99">Add New ...</option>
+      <option value=""></option>
       {{#each genres}}
         <option value={{genre_id}}>{{genre_name}}</option>
       {{/each}}
     </select>
+    <div class="button-set">
+      <button id="saveBtn" type="submit" class="submit-btn" name="saveItem">Save Item</button>
+      <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
+    </div>  
     <div id="newGenreDiv">
       <label for="newGenre" class="form-label">Add New Genre</label>
       <input type="text" id="newGenre" >
       <button id="addGenre" type="button" class="add-btn" name="addGenre">Add Genre</button>
     </div>
-    <div class="button-set">
-      <button id="saveBtn" type="submit" class="submit-btn" name="saveItem">Save Item</button>
-      <button id="cancelBtn" type="submit" class="cancel-btn" name="cancel">Cancel</button>
-    </div>  
+    
     </fieldset>
 </form>
