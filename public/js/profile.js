@@ -1,5 +1,7 @@
 window.onload = function(){
-
+  if (username === 'Guest User'){
+    disableEditing();
+  }
 }
 
 
@@ -41,6 +43,14 @@ deleteBtn.addEventListener('click', (event) =>{
   let confirmDelete = confirm("This will permanently delete the User account and all associated media queues. Are you sure you want to proceed?");
   confirmDelete ? deleteUser(userId) : false;
 });
+
+function disableEditing(){
+  let p = document.getElementById('editingDisabledForGuest');
+  p.classList.remove('hidden');
+  p.classList.add('displayed');
+  editBtn.disabled = true;
+  deleteBtn.disabled = true;
+}
 
 function deleteUser(id){
   console.log("id: ", id);

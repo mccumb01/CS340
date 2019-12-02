@@ -7,6 +7,10 @@ const cancelBtns = document.getElementsByClassName('cancel-btn');
 let loggedIn = false;
 let showWarning = true;
 
+window.onload = function(){
+  setTimeout(hideWarning, 3000);
+}
+
 newSession.addEventListener('click', (event) => {
   console.log('login btn clicked!');
   login();
@@ -36,8 +40,7 @@ for (let btn of cancelBtns) {
 function hideWarning(){
   showWarning = false;
   let box = document.getElementById('loginWarning');
-  box.classList.add('hidden');
-  
+  box.classList.add('hidden');  
 }
 
 function login(name){

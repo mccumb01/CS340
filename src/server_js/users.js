@@ -7,7 +7,7 @@ module.exports = function() {
   /*********************************************
  * User CRUD Web API Endpoints
  *********************************************/
-router.route('/')
+router.route('/') //actually /user-info
   .get((req, res) => {
     console.log("user-info 'GET' route!");
     let id = req.query.id;
@@ -25,6 +25,7 @@ router.route('/')
     // console.log('POST req received');
     if(req.body['New Session'] || req.body['New User']){
       console.log("New Session?");
+      req.app.locals.loggedIn = true;
       req.session.user = {};
       req.session.user.username = req.body.username;
       req.session.user.user_email = req.body.user_email;
@@ -37,7 +38,7 @@ router.route('/')
     api.UserController.createUser(req.body).then(val => {
       req.body.user_id = val.insertId;
       req.session.user.user_id = val.insertId;
-      console.log("Req.body from post now with id:", req.body);
+      req.app.locals.loggedIn = true;
       let context = req.body;
       context.priorities = [];
       res.render('profile', context);
