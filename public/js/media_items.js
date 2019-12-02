@@ -202,10 +202,6 @@ function addMediaItem(context){
   event.preventDefault();
 }
 
-function addGenres(){
-
-}
-
 function updateEntry(context){
   let self = context;
   let entry = getFormValues();
@@ -262,6 +258,7 @@ function getFormValues(){
   //https://stackoverflow.com/questions/5866169/how-to-get-all-selected-values-of-a-multiple-select-box
   let genres = Array(...gSel.options).reduce((acc, option) => {
     if (option.selected === true) {
+      if (option.value === ""){ return acc; }
       acc.push({genre_id : option.value, genre_name : option.text});
     }
     return acc;
@@ -294,18 +291,17 @@ function fillForm(obj){
   document.getElementById('originalLangTitle').value = obj.o_title;
   document.getElementById('mediaType').value = obj.m_type;
   document.getElementById('pubYear').value = obj.pub_year;
-  
+  setFormGenreValues(obj.genres);
+}
+
+function setFormGenreValues(list){
   let genreList = Array.from(document.getElementById('genres').options);
   console.log(genreList);
-  if (obj.genres.length > 0){
-    obj.genres.forEach(v => {
+  if (list.length > 0){
+    list.forEach(v => {
       genreList.find(g => +g.value == v.genre_id).selected = true;
     });
   }
-}
-
-function setGenres(list){
-
 }
 
 function setFormTitle(title){
