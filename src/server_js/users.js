@@ -25,6 +25,7 @@ router.route('/')
     // console.log('POST req received');
     if(req.body['New Session'] || req.body['New User']){
       console.log("New Session?");
+      req.session.user = {};
       req.session.user.username = req.body.username;
       req.session.user.user_email = req.body.user_email;
     }

@@ -1,32 +1,34 @@
 <section class="page-content">
-<form id="login" class="form" action="/login" method="post">
+<form id="login" class="form">
   <h2 class="login-h2">Existing User Login</h2>
   <fieldset class="form-div box-shadow">
     <label for="name">Username</label>
-    <input type="text" name="username" id="name">
+    <input type="text" name="username" id="username">
     <label for="pw">Password</label>
     <input type="password" name="pw" id="pw">
     <div class="button-set">
-      <button type="submit" class="submit-btn" name="New Session" value="needsSomeValue">Login</button>
+      <button id="newSessionSubmit" type="submit" class="submit-btn" name="New Session" value="needsSomeValue">Login</button>
       <button type="submit" class="cancel-btn" name="cancel">Cancel</button>
     </div>
   </fieldset>
 </form>
-<form id="createUser" class="form" action="/user-info" method="post">
+<div><p>Don't wanna? Continue as a <a href="#" id="guestUserLink">'Guest User'</a></p></div>
+<form id="createUser" class="form">
   <h2 class="login-h2">New User? Sign Up!</h2>
   <fieldset class="form-div box-shadow">
     <label for="username">Username</label>
-    <input type="text" name="username" id="username">
+    <input type="text" name="username" id="new_username">
     <label for="user_email">Email</label>
-    <input type="text" name="user_email" id="user_email">
+    <input type="text" name="user_email" id="new_user_email">
     <label for="pw">Password</label>
-    <input type="password" name="pw" id="pw">
+    <input type="password" name="pw" id="new_pw">
     <label for="pw">Confirm Password</label>
-    <input type="password" name="pw2" id="pw2">
+    <input type="password" name="pw2" id="new_pw2">
     <div class="button-set">
-      <button type="submit" class="submit-btn" name="New User" value="newUser">Create Account</button>
+      <button id="newUserSubmit" type="submit" class="submit-btn" name="New User" value="newUser">Create Account</button>
       <button type="submit" class="cancel-btn" name="cancel">Cancel</button>
     </div>
   </fieldset>
 </form>
 </section>
+<script src="/js/client_login.js"></script>

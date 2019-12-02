@@ -8,8 +8,8 @@ module.exports = function() {
     .get((req, res) => {
       if(req.body['New Session'] || req.body['New User']){
         console.log("New Session?");
-        req.session.username = req.body.username;
-        req.session.user_email = req.body.user_email;
+        req.session.user.username = req.body.username;
+        req.session.user.user_email = req.body.user_email;
       } 
       res.render('login');
       return;    
