@@ -156,7 +156,8 @@ function getOtherDataFromItunes(){
             addBtn.setAttribute('class', 'add-btn');
             addBtn.addEventListener('click', $event =>{
                 let id = $event.target.id.substring(7);
-                alert("Adding item " + id + " : '" + item.trackCensoredName + "' to the queue!");
+                addQueue(id);
+                //alert("Adding item " + id + " : '" + item.trackCensoredName + "' to the queue!");
             });
             addBtnCell.appendChild(addBtn);
 
@@ -180,3 +181,50 @@ function getOtherDataFromItunes(){
     }).catch(error => console.log("ERROR!"))
 
 }
+
+function addQueue(id){
+    traverseSearch(id);
+    var tbody = document.getElementById("queue");
+    var titleRow = document.createElement("tr")
+    var titleCell1 = document.createElement("th")
+    var titleCellText1 = document.createTextNode("Poster")
+    var titleCell2 = document.createElement("th")
+    var titleCellText2 = document.createTextNode("Title")
+    var titleCell3 = document.createElement("th")
+    var titleCellText3 = document.createTextNode("Type")
+    var titleCell4 = document.createElement("th")
+    var titleCellText4 = document.createTextNode("Release Date")
+    var titleCell5 = document.createElement("th")
+    var titleCellText5 = document.createTextNode("Add to Queue")
+    titleCell1.appendChild(titleCellText1);
+    titleCell2.appendChild(titleCellText2);
+    titleCell3.appendChild(titleCellText3);
+    titleCell4.appendChild(titleCellText4);
+    titleCell5.appendChild(titleCellText5);
+    titleRow.appendChild(titleCell1);
+    titleRow.appendChild(titleCell1);
+    titleRow.appendChild(titleCell2);
+    titleRow.appendChild(titleCell3);
+    titleRow.appendChild(titleCell4);
+    titleRow.appendChild(titleCell5);
+    tbody.appendChild(titleRow);
+}
+
+function traverseSearch(id){
+    console.log("id of element is "+id);
+    var sourceRow = document.getElementsByTagName('tbody');
+    console.log(sourceRow[0].firstChild); 
+}
+/*module.exports.*/
+/*addMediaQueue = function addMediaQueue(id, body){
+    return new Promise((resolve, reject) => {
+      pool.query('UPDATE genres SET genre_name = ? WHERE genre_id = ?;',[body.genre_name, body.genre_id], function (err, rows){
+        if (err){
+          console.log("ERROR GETTING ENTRIES");
+          return reject(err);
+        }
+        console.log("Results of addMediaQueue: ", JSON.stringify(rows));
+        resolve(rows);
+      });
+    });}
+  */

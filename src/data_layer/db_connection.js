@@ -17,7 +17,6 @@ let pool = mysql.createPool({
   database: process.env.CS340_MYSQL_DB,
   connectionLimit: 100
 });
-
 module.exports = pool;
 
 /**********************************************************
