@@ -72,8 +72,11 @@ function addListeners(){
   console.log("Adding listeners...", this.addMediaItem);
 
   document.getElementById('addGenre').addEventListener('click', function(event){
-    if (validateEntry(document.getElementById('newGenre').value)){
-      addGenre(mList);
+    let newGenre = document.getElementById('newGenre').value;
+    if (validateEntry(newGenre)){
+      newGenre = capitalize(newGenre);
+      console.log(newGenre);
+      addGenre(newGenre, mList);
       return;
     }
     alert('Cannot add a blank genre.');
@@ -107,11 +110,20 @@ function addListeners(){
 }
 
 function validateEntry(entry){
-  let valid = true;
-  if (!entry || entry.length === 0){
-    valid = false;
+  if (typeof entry != 'string'){
+    return false;
   }
-  return valid;
+  if (!entry || entry.length === 0){
+    return false;
+  }
+  return true;
+}
+
+function capitalize(s) {
+  if (typeof s !== 'string') {
+    return '';
+  }
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
 function getAllMediaItems(){
@@ -179,11 +191,10 @@ function getMediaItemById(context, id){
   event.preventDefault();
 }
 
-function addGenre(context){
+function addGenre(genre, context){
   
   let self = context;
-  let ng = document.getElementById('newGenre');
-  let payload = { 'genre_name' : ng.value};
+  let payload = { 'genre_name' : genre};
   console.log('Genre to add: ', payload);
   let req = new XMLHttpRequest();  
   req.open('POST', '/add_genre', true);
