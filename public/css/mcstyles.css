@@ -36,13 +36,45 @@ body {
 #media_items_pg{
   display: flex;
   flex-direction: row;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+#tableWrapper {
+  display: block;
+  max-height: 100%;
+  overflow: auto;
 }
 
 #itemsTable {
-  display: table;
+  margin-bottom: 90px;
 }
+
+#itemsTable thead {
+  background: rgba(63, 147, 63, 0.9);
+  position: sticky;
+  top:0;
+  width: 100%;
+}
+
+#itemsList {
+  overflow-y: auto; 
+  width: 100%;
+}
+
 #item_filters{
+  display: flex;
+  flex-direction: row;
   margin: 0 0 1em 1em;
+}
+
+.filter-div {
+  margin: 0 2em 0 0;
+  min-width: 25%;
+}
+
+.filter-div > select { 
+  width: 100%;
 }
 
 #theForm {
@@ -52,6 +84,7 @@ body {
 @media (max-width: 960px) { 
   #media_items_pg{
     flex-direction: column;
+    overflow: auto;
   }
   #itemsTable {
     width: 100%;

@@ -1,36 +1,49 @@
 <section id="itemsTable" class="section">
   <div id="item_filters" class="">
-    <label class="form-label" for="genre_filter">Filter By Genre</label>
-    <select name="genre_filter" id="genre_filter">
-        <option value=-1>Show All</option>
-      {{#each genres}}
-        <option value={{genre_id}}>{{genre_name}}</option>
-      {{/each}}
-    </select>
+    <div class="filter-div">
+      <label class="form-label" for="genre_filter">Filter By Genre</label>
+      <select name="genre_filter" id="genre_filter">
+          <option value=-1>Show All</option>
+        {{#each genres}}
+          <option value={{genre_id}}>{{genre_name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="filter-div">
+      <label class="form-label" for="type_filter">Filter By Media Type</label>
+      <select name="type_filter" id="type_filter">
+          <option value=-1>Show All</option>
+        {{#each types}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
-  <table id="mediaItems" class="table">
-    <thead>
-    <tr class="header-row">
-      <th>Title</th>
-      <th>Orig. Title</th>
-      <th>Type</th>
-      <th>Pub. Year</th>
-      <th>Genres</th>
-      <th>Avg User Rating</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="itemsList">
-    {{!-- <tr class="table-entry">
-      <td>curls</td>
-      <td>12</td>
-      <td>55</td>
-      <td>08-02-2019</td>
-      <td>lbs</td>
-      <td>Edit Button</td>
-      <td>Delete Button</td>
-    </tr>  --}}
-  </tbody>
-  </table>  
+  <div id="tableWrapper">
+    <table id="mediaItems" class="table">
+      <thead>
+      <tr class="header-row">
+        <th>Title</th>
+        <th>Orig. Title</th>
+        <th>Type</th>
+        <th>Pub. Year</th>
+        <th>Genres</th>
+        <th>Avg User Rating</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="itemsList">
+      {{!-- <tr class="table-entry">
+        <td>curls</td>
+        <td>12</td>
+        <td>55</td>
+        <td>08-02-2019</td>
+        <td>lbs</td>
+        <td>Edit Button</td>
+        <td>Delete Button</td>
+      </tr>  --}}
+    </tbody>
+    </table>  
+  </div>
 </section>
