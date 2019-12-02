@@ -57,8 +57,12 @@ Login Existing User
 ************************************************/
 router.route('/login')
   .get((req, res) => {
+    if (req.app.locals.loggedIn){
+      req.app.locals.loggedIn = false;
+    }
     if(req.body['New Session'] || req.body['New User']){
       console.log("New Session?");
+      req.app.locals.loggedIn = true;
       req.session.user = {user_id: -1, username: req.body.username, user_email: req.body.user_email };
     } 
     res.render('login');
@@ -73,6 +77,7 @@ router.route('/login')
               return;
             }
             req.session.user = user;
+            req.app.locals.loggedIn = true;
             res.redirect('/user');
           })
           .catch(err =>{

@@ -32,10 +32,6 @@ body {
   background: var(--primary-color);
 }
 
-#login {
-
-}
-
 #queueBtns {
   display: flex;
   justify-content: flex-start;
@@ -222,6 +218,47 @@ li {
 
 .nav-list li.active {
   background: var(--accent-color);
+}
+
+.login-reqd {
+  display: block;
+  background: rgb(196, 3, 3);
+  border-radius: 3px;
+  color: #eee;
+  padding: 1em;
+  position: fixed;
+  width: 60%;
+  
+  top: 45%; 
+  left: 20%;
+  right: 20%;
+}
+.login-warning-title {
+  color: #fff;
+}
+
+button.closeX {
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 24px;
+  min-width: 24px;
+  position: absolute;
+  top: 4%;
+  right: 1%;
+  text-align: center;
+  z-index: 1000;
+}
+
+.closeX:before {
+  content: "X";
+}
+
+.guest-login-div {
+  background:  var(--accent-color);;
+  border-radius: 3px;
+  padding: 0.5em;
+  text-align: right;
 }
 
 .priority-list-item {
