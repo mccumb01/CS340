@@ -158,7 +158,7 @@ module.exports.MediaItemsController = {
                         let id = res.insertId;
                         return dataSources.item_genres
                                           .setGenresForItem(id, body.genres)
-                                          .then(res => res)
+                                          .then(res => {res.insertId = id; return res;}) // set the id to insert id prev returned before adding genres
                                           .catch(err => err)
                       })
                       .catch(err => {throw err});

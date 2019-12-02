@@ -190,8 +190,9 @@ function addMediaItem(context){
   req.addEventListener('load',function(response){
     if(req.status >= 200 && req.status < 400){
       clearForm();
-      console.log("self?", self, "this?", this);
-      entry.id = req.responseText.insertId;
+      let res = JSON.parse(req.responseText);
+      entry.id = res.insertId;
+      console.log("id?:", entry.id, res);
       self.entries.push(entry);
       self.addTableRow(entry);
       alert("Media Item added!");      
@@ -267,7 +268,7 @@ function getFormValues(){
     media_item_id : +id, 
     title: title,
     original_language_title: oTitle,
-    publication_year: pubYr,
+    publication_year: +pubYr,
     media_type: type,
     genres: genres,
     avg_user_rating : rating
