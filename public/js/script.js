@@ -1,3 +1,8 @@
+/********************************************************************************************
+ * Author: Sriram Narayanan
+ * CS 340, Section 400 Web Development Summer 2019 
+ *******************************************************************************************/
+
 let button = document.querySelector('#submit')
 let input = document.getElementById('new-title')
 console.log(input.value)
