@@ -3,11 +3,11 @@
     <h3 class="form-title" >Add New Item</h3>
     <input type="hidden" class="form-input hidden" id="entryId" value="-1">
     <label class="form-label" for="title">Title</label>
-    <input class="form-input" id="itemTitle" type="text" name="title">
+    <input class="form-input" id="itemTitle" type="text" name="title" required/>
     <label class="form-label" for="originalLangTitle">Original Language Title</label>
-    <input class="form-input" id="originalLangTitle" type="text" name="originalLangTitle">
+    <input class="form-input" id="originalLangTitle" type="text" name="originalLangTitle"/>
     <label class="form-label" for="pubYear">Publication Year</label>
-    <input class="form-input" id="pubYear" type="number" min='1000' max='2999' name="pubYear">
+    <input class="form-input" id="pubYear" type="number" min='1000' max='2999' name="pubYear"/>
     <label class="form-label" for="media_type">Media Type</label>
     <select name="media_type" id="mediaType">
       {{#each types}}
@@ -27,7 +27,7 @@
     </div>  
     <div id="newGenreDiv">
       <label for="newGenre" class="form-label">Add New Genre</label>
-      <input type="text" id="newGenre" >
+      <input type="text" id="newGenre"/>
       <button id="addGenre" type="button" class="add-btn" name="addGenre">Add Genre</button>
     </div>
     

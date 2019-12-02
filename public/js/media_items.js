@@ -72,7 +72,11 @@ function addListeners(){
   console.log("Adding listeners...", this.addMediaItem);
 
   document.getElementById('addGenre').addEventListener('click', function(event){
-    addGenre(mList);
+    if (validateEntry(document.getElementById('newGenre').value)){
+      addGenre(mList);
+      return;
+    }
+    alert('Cannot add a blank genre.');
   });
 
   document.getElementById('genre_filter').addEventListener('change', function(event){
@@ -84,17 +88,31 @@ function addListeners(){
   document.getElementById('saveBtn').addEventListener('click', function(event) {
     let id = document.getElementById('entryId').value;
     console.log("Add/Edit btn clicked with ID: ", id, mList);
-    if (!id || id == -1){
+    let entry = getFormValues();
+    
       console.log('Adding Entry...');
-      addMediaItem(mList);
+    if (validateEntry(entry.title)){
+      if (!id || id == -1){
+        addMediaItem(entry, mList);
+      }
+      else {
+        console.log('Updating Entry...');
+          updateEntry(entry.title,mList);
+      }  
     }
     else {
-      console.log('Updating Entry...');
-      updateEntry(mList);
+      alert("Invalid entry! Please provide a title.");
     }
   });
 }
 
+function validateEntry(entry){
+  let valid = true;
+  if (!entry || entry.length === 0){
+    valid = false;
+  }
+  return valid;
+}
 
 function getAllMediaItems(){
   let req = new XMLHttpRequest();
@@ -162,6 +180,7 @@ function getMediaItemById(context, id){
 }
 
 function addGenre(context){
+  
   let self = context;
   let ng = document.getElementById('newGenre');
   let payload = { 'genre_name' : ng.value};
@@ -180,10 +199,8 @@ function addGenre(context){
   //event.preventDefault();
 }
 
-function addMediaItem(context){
+function addMediaItem(payload, context){
   let self = context;
-  let payload = getFormValues();
-  let entry = new DataModel(payload);
   let req = new XMLHttpRequest();  
   req.open('POST', '/media_items', true);
   req.setRequestHeader('Content-Type', 'application/json');
@@ -191,6 +208,7 @@ function addMediaItem(context){
     if(req.status >= 200 && req.status < 400){
       clearForm();
       let res = JSON.parse(req.responseText);
+      let entry = new DataModel(payload);
       entry.id = res.insertId;
       console.log("id?:", entry.id, res);
       self.entries.push(entry);
@@ -203,9 +221,8 @@ function addMediaItem(context){
   event.preventDefault();
 }
 
-function updateEntry(context){
+function updateEntry(entry, context){
   let self = context;
-  let entry = getFormValues();
   let url = '/media_items';
   let req = new XMLHttpRequest();
   req.open('PUT', url, true);
