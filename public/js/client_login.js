@@ -4,6 +4,9 @@ const newUserSubmit = document.getElementById('newUserSubmit');
 const newSession = document.getElementById('newSessionSubmit');
 const cancelBtns = document.getElementsByClassName('cancel-btn');
 
+let loggedIn = false;
+let showWarning = true;
+
 newSession.addEventListener('click', (event) => {
   console.log('login btn clicked!');
   login();
@@ -29,6 +32,13 @@ for (let btn of cancelBtns) {
     event.preventDefault();
   });  
 };
+
+function hideWarning(){
+  showWarning = false;
+  let box = document.getElementById('loginWarning');
+  box.classList.add('hidden');
+  
+}
 
 function login(name){
   if (!name || name.length === 0){
