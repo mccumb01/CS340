@@ -136,7 +136,11 @@ module.exports.MediaItemsController = {
   },
 
   getItemsByType : function getItemsByType(media_type) {
-    return dataSources.media_items.getItemsByType(media_type);
+    return dataSources.media_items.getItemsByType(media_type)
+                                  .then(rows => {
+                                    return addGenresTo(rows);
+                                })
+                                .catch(err => console.log('Error getting items by type', err));  
   },
 
   getItemsByGenre : function getItemsByGenre(genre_id) {

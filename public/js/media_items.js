@@ -85,7 +85,13 @@ function addListeners(){
   document.getElementById('genre_filter').addEventListener('change', function(event){
     console.log(event);
     let index = event.target.value;
-    index == -1 ? getAllMediaItems() : getMediaByGenre(mList, index);
+    index == -1 ? getAllMediaItems() : getMediaByGenre(index, mList);
+  });
+  
+  document.getElementById('type_filter').addEventListener('change', function(event){
+    console.log(event);
+    let index = event.target.value;
+    index == -1 ? getAllMediaItems() : getMediaByType(index, mList);
   });
   
   document.getElementById('saveBtn').addEventListener('click', function(event) {
@@ -143,7 +149,7 @@ function getAllMediaItems(){
   event.preventDefault();
 }
 
-function getMediaByGenre(context, genre_id){
+function getMediaByGenre(genre_id, context){
   let req = new XMLHttpRequest();
   const self = context;
   req.open('GET', '/media_items/all_items/genre/'+ genre_id, true);
@@ -160,9 +166,10 @@ function getMediaByGenre(context, genre_id){
   event.preventDefault();
 }
 
-function getMediaByType(context, media_type){
+function getMediaByType(media_type, context){
   let req = new XMLHttpRequest();
   const self = context;
+  console.log("Filter by Media Type: ", media_type);
   req.open('GET', '/media_items/all_items/type/'+ media_type, true);
   req.setRequestHeader('Content-Type', 'application/json');
   req.addEventListener('load',function(response){

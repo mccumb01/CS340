@@ -65,8 +65,14 @@ module.exports.getItemByTitle = function getItemByTitle(body){
 
 module.exports.getItemsByType = function getItemsByType(media_type){
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT media_item_id, media_type, title, original_language_title, publication_year, avg_user_rating 
-                FROM media_items WHERE media_type = media_type;`,[media_type], function (err, rows){
+    console.log
+    pool.query(`SELECT m.media_item_id, title, original_language_title, media_type, 
+                       publication_year, avg_user_rating, g.genre_id, g.genre_name 
+                FROM media_items m 
+                LEFT JOIN item_genres ig ON m.media_item_id = ig.media_item_id
+                LEFT JOIN genres g ON g.genre_id = ig.genre_id 
+                WHERE m.media_type = ?;`,
+                [media_type], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
