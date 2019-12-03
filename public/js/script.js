@@ -220,6 +220,7 @@ function addTitleQueue(){
 function addQueue(id){
     var sourceRow = document.getElementsByTagName('tbody');
     var mediaTitle = sourceRow[0].childNodes[id-1].childNodes[1].innerHTML;
+    addMediaQueue(mediaTitle);
     var tbody = document.getElementById("queue");
     var titleRow = document.createElement("tr")
     /*var titleCell1 = document.createElement("th")
@@ -276,7 +277,6 @@ function addQueue(id){
     titleRow.appendChild(titleCell6);
     titleRow.appendChild(titleCell7);
     tbody.appendChild(titleRow);
-    id=id+1;
 }
 
 function traverseSearch(id){
@@ -296,15 +296,34 @@ function traverseSearch(id){
     }).catch(error => console.log("ERROR!"))
 }
 /*module.exports.*/
-addMediaQueue = function addMediaQueue(id, body){
+/*addMediaQueue = function addMediaQueue(json){
     return new Promise((resolve, reject) => {
-      pool.query('UPDATE genres SET genre_name = ? WHERE genre_id = ?;',[body.genre_name, body.genre_id], function (err, rows){
+      pool.query('INSERT INTO genres (genre_name) VALUES (?);',[body.genre_name], function (err, rows){
+        pool.query('INSERT INTO media_items (media_type,title,original_language) VALUES (?);',[body.genre_name], function (err, rows){
+      //(1, 'Book', 'A Common Sense Guide to Data Structures and Algorithms', NULL , 2017, NULL)
         if (err){
           console.log("ERROR GETTING ENTRIES");
           return reject(err);
         }
-        console.log("Results of addMediaQueue: ", JSON.stringify(rows));
         resolve(rows);
       });
-    });}
-  
+    });}*/
+    addMediaQueue = function addMediaQueue(mediaTitle){
+        console.log(mediaTitle);
+        let url='https://itunes.apple.com/search?term='+mediaTitle+'&limit=5'
+        let cors = 'https://cors-anywhere.herokuapp.com/'
+        fetch(cors+url)
+        .then( data => data.json() )
+        .then( json => {
+            
+            result = json.results;
+            console.log(result[0].kind,result[0].trackCensoredName,result[0].primaryGenreName,result[0].releaseDate)
+            pool.query('INSERT INTO media_items (media_type,title,original_language_title,publication_year) VALUES (?);',[result[0].kind,result[0].trackCensoredName,result[0].trackName,result[0].releaseDate], function (err, rows){
+                  if (err){
+                    console.log("ERROR GETTING ENTRIES");
+                    return reject(err);
+                  }
+                  resolve(rows);
+                });
+        }).catch(error => console.log("ERROR!"))
+    };
