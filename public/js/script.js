@@ -296,7 +296,7 @@ function traverseSearch(id){
     }).catch(error => console.log("ERROR!"))
 }
 /*module.exports.*/
-/*addMediaQueue = function addMediaQueue(id, body){
+addMediaQueue = function addMediaQueue(id, body){
     return new Promise((resolve, reject) => {
       pool.query('UPDATE genres SET genre_name = ? WHERE genre_id = ?;',[body.genre_name, body.genre_id], function (err, rows){
         if (err){
@@ -307,4 +307,4 @@ function traverseSearch(id){
         resolve(rows);
       });
     });}
-  */
+  
