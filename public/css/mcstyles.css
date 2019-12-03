@@ -36,22 +36,59 @@ body {
 #media_items_pg{
   display: flex;
   flex-direction: row;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#tableWrapper {
+  display: block;
+  max-height: 100%;
+  margin: 0 auto;
+  overflow: auto; 
 }
 
 #itemsTable {
-  display: table;
+  margin-bottom: 90px;
 }
+
+#itemsTable thead {
+  background: rgba(63, 147, 63, 0.9);
+  position: sticky;
+  top:0;
+  width: 100%;
+}
+
+#itemsList {
+  overflow-y: auto; 
+  width: 100%;
+}
+
 #item_filters{
+  display: flex;
+  flex-direction: row;
   margin: 0 0 1em 1em;
 }
 
+.filter-div {
+  margin: 0 2em 0 0;
+  min-width: 25%;
+}
+
+.filter-div > select { 
+  width: 100%;
+}
+
 #theForm {
-  min-width: 210px;
+  min-width: 250px;
+  max-height: 100%;
+  /* overflow: auto; */
 }
 
 @media (max-width: 960px) { 
   #media_items_pg{
     flex-direction: column;
+    overflow: auto;
   }
   #itemsTable {
     width: 100%;
@@ -345,8 +382,8 @@ fieldset {
 .form-div select{
   font-size: 0.8em;
   line-height: 0.8em;
-  margin: 0 0 10px 0;
-  min-height: 35px;
+  margin: 0 0 8px 0;
+  min-height: 24px;
   width: 100%;  
 }
 
@@ -395,9 +432,9 @@ fieldset {
   cursor: pointer;
   font-size: 0.9em;
   /* font-weight: bold; */
-  height: 40px;
+  height: 32px;
   max-width: 200px;
-  margin: 20px 0;
+  margin: 12px 0;
   padding: 0.4em ;  
 }
 

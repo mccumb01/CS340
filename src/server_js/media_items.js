@@ -38,7 +38,8 @@ module.exports = function() {
   });
   
   router.get('/all_items/type/:media_type', function (req, res) {
-    let type = (req.params.media_type).toString();
+    let type = req.params.media_type;
+    console.log('Trying to get media by type: ', type);
     api.MediaItemsController.getItemsByType(type).then(g => {
       res.json(g);
     })

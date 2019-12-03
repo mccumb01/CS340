@@ -72,29 +72,65 @@ function addListeners(){
   console.log("Adding listeners...", this.addMediaItem);
 
   document.getElementById('addGenre').addEventListener('click', function(event){
-    addGenre(mList);
+    let newGenre = document.getElementById('newGenre').value;
+    if (validateEntry(newGenre)){
+      newGenre = capitalize(newGenre);
+      console.log(newGenre);
+      addGenre(newGenre, mList);
+      return;
+    }
+    alert('Cannot add a blank genre.');
   });
 
   document.getElementById('genre_filter').addEventListener('change', function(event){
     console.log(event);
     let index = event.target.value;
-    index == -1 ? getAllMediaItems() : getMediaByGenre(mList, index);
+    index == -1 ? getAllMediaItems() : getMediaByGenre(index, mList);
+  });
+  
+  document.getElementById('type_filter').addEventListener('change', function(event){
+    console.log(event);
+    let index = event.target.value;
+    index == -1 ? getAllMediaItems() : getMediaByType(index, mList);
   });
   
   document.getElementById('saveBtn').addEventListener('click', function(event) {
     let id = document.getElementById('entryId').value;
     console.log("Add/Edit btn clicked with ID: ", id, mList);
-    if (!id || id == -1){
+    let entry = getFormValues();
+    
       console.log('Adding Entry...');
-      addMediaItem(mList);
+    if (validateEntry(entry.title)){
+      if (!id || id == -1){
+        addMediaItem(entry, mList);
+      }
+      else {
+        console.log('Updating Entry...');
+        updateEntry(entry,mList);
+      }  
     }
     else {
-      console.log('Updating Entry...');
-      updateEntry(mList);
+      alert("Invalid entry! Please provide a title.");
     }
   });
 }
 
+function validateEntry(entry){
+  if (typeof entry != 'string'){
+    return false;
+  }
+  if (!entry || entry.length === 0){
+    return false;
+  }
+  return true;
+}
+
+function capitalize(s) {
+  if (typeof s !== 'string') {
+    return '';
+  }
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 function getAllMediaItems(){
   let req = new XMLHttpRequest();
@@ -113,7 +149,7 @@ function getAllMediaItems(){
   event.preventDefault();
 }
 
-function getMediaByGenre(context, genre_id){
+function getMediaByGenre(genre_id, context){
   let req = new XMLHttpRequest();
   const self = context;
   req.open('GET', '/media_items/all_items/genre/'+ genre_id, true);
@@ -130,9 +166,10 @@ function getMediaByGenre(context, genre_id){
   event.preventDefault();
 }
 
-function getMediaByType(context, media_type){
+function getMediaByType(media_type, context){
   let req = new XMLHttpRequest();
   const self = context;
+  console.log("Filter by Media Type: ", media_type);
   req.open('GET', '/media_items/all_items/type/'+ media_type, true);
   req.setRequestHeader('Content-Type', 'application/json');
   req.addEventListener('load',function(response){
@@ -161,10 +198,10 @@ function getMediaItemById(context, id){
   event.preventDefault();
 }
 
-function addGenre(context){
+function addGenre(genre, context){
+  
   let self = context;
-  let ng = document.getElementById('newGenre');
-  let payload = { 'genre_name' : ng.value};
+  let payload = { 'genre_name' : genre};
   console.log('Genre to add: ', payload);
   let req = new XMLHttpRequest();  
   req.open('POST', '/add_genre', true);
@@ -172,7 +209,8 @@ function addGenre(context){
   req.addEventListener('load',function(response){
     if(req.status >= 200 && req.status < 400){
       payload.id = req.responseText.insertId;
-      alert("Genre added!");      
+      alert("Genre added!");
+      window.location.href = "/media_items";      
     } else {
       console.log('Error in network request: ' + req.statusText);
     }});
@@ -180,20 +218,20 @@ function addGenre(context){
   //event.preventDefault();
 }
 
-function addMediaItem(context){
+function addMediaItem(payload, context){
   let self = context;
-  let payload = getFormValues();
-  let entry = new DataModel(payload);
   let req = new XMLHttpRequest();  
   req.open('POST', '/media_items', true);
   req.setRequestHeader('Content-Type', 'application/json');
   req.addEventListener('load',function(response){
     if(req.status >= 200 && req.status < 400){
       clearForm();
-      console.log("self?", self, "this?", this);
-      entry.id = req.responseText.insertId;
+      let res = JSON.parse(req.responseText);
+      let entry = new DataModel(payload);
+      entry.id = res.insertId;
+      console.log("id?:", entry.id, res);
       self.entries.push(entry);
-      addTableRow(entry);
+      self.addTableRow(entry);
       alert("Media Item added!");      
     } else {
       console.log('Error in network request: ' + req.statusText);
@@ -202,13 +240,8 @@ function addMediaItem(context){
   event.preventDefault();
 }
 
-function addGenres(){
-
-}
-
-function updateEntry(context){
+function updateEntry(entry, context){
   let self = context;
-  let entry = getFormValues();
   let url = '/media_items';
   let req = new XMLHttpRequest();
   req.open('PUT', url, true);
@@ -262,6 +295,7 @@ function getFormValues(){
   //https://stackoverflow.com/questions/5866169/how-to-get-all-selected-values-of-a-multiple-select-box
   let genres = Array(...gSel.options).reduce((acc, option) => {
     if (option.selected === true) {
+      if (option.value === ""){ return acc; }
       acc.push({genre_id : option.value, genre_name : option.text});
     }
     return acc;
@@ -270,7 +304,7 @@ function getFormValues(){
     media_item_id : +id, 
     title: title,
     original_language_title: oTitle,
-    publication_year: pubYr,
+    publication_year: +pubYr,
     media_type: type,
     genres: genres,
     avg_user_rating : rating
@@ -283,6 +317,7 @@ function editEntry(e){
   let row = e.target.parentElement.rowIndex - 1;
   let entry = this.entries[row];
   let self = this;
+  setFormTitle('Edit Item');
   this.fillForm(entry);
 }
 
@@ -293,11 +328,25 @@ function fillForm(obj){
   document.getElementById('originalLangTitle').value = obj.o_title;
   document.getElementById('mediaType').value = obj.m_type;
   document.getElementById('pubYear').value = obj.pub_year;
-  document.getElementById('genres').value = obj.genres;
-  //document.querySelector('input[name="genres"][value="'+obj.genres+'"]').checked = true;  
+  setFormGenreValues(obj.genres);
+}
+
+function setFormGenreValues(list){
+  let genreList = Array.from(document.getElementById('genres').options);
+  console.log(genreList);
+  if (list.length > 0){
+    list.forEach(v => {
+      genreList.find(g => +g.value == v.genre_id).selected = true;
+    });
+  }
+}
+
+function setFormTitle(title){
+  document.getElementsByClassName('form-title')[0].textContent = title;
 }
 
 function clearForm(){
+  setFormTitle('Add Item');
   document.getElementById('theForm').reset();
   document.getElementById('entryId').value = -1; // Need to explicit reset hidden value or else it retains last entry's id
 }

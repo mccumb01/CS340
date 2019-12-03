@@ -93,6 +93,11 @@ function addGenresTo(rows){
     console.log('Next row: ', r);
     let prev = {};
     let key = r.media_item_id;
+
+    // Check for null - otherwise adds an empty genre obj w/null id & null name
+    if (!key || !r.genre_name){
+      return false;
+    }
     let gObj = {'genre_id': r.genre_id, 'genre_name': r.genre_name};
     if (seen.hasOwnProperty(key)){
       console.log('Seen this one! ', key);
@@ -131,7 +136,11 @@ module.exports.MediaItemsController = {
   },
 
   getItemsByType : function getItemsByType(media_type) {
-    return dataSources.media_items.getItemsByType(media_type);
+    return dataSources.media_items.getItemsByType(media_type)
+                                  .then(rows => {
+                                    return addGenresTo(rows);
+                                })
+                                .catch(err => console.log('Error getting items by type', err));  
   },
 
   getItemsByGenre : function getItemsByGenre(genre_id) {
@@ -153,7 +162,7 @@ module.exports.MediaItemsController = {
                         let id = res.insertId;
                         return dataSources.item_genres
                                           .setGenresForItem(id, body.genres)
-                                          .then(res => res)
+                                          .then(res => {res.insertId = id; return res;}) // set the id to insert id prev returned before adding genres
                                           .catch(err => err)
                       })
                       .catch(err => {throw err});
