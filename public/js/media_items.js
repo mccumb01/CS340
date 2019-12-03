@@ -100,7 +100,7 @@ function addListeners(){
       }
       else {
         console.log('Updating Entry...');
-          updateEntry(entry.title,mList);
+        updateEntry(entry,mList);
       }  
     }
     else {
