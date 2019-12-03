@@ -202,7 +202,8 @@ function addGenre(genre, context){
   req.addEventListener('load',function(response){
     if(req.status >= 200 && req.status < 400){
       payload.id = req.responseText.insertId;
-      alert("Genre added!");      
+      alert("Genre added!");
+      window.location.href = "/media_items";      
     } else {
       console.log('Error in network request: ' + req.statusText);
     }});

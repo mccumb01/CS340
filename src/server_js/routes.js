@@ -104,7 +104,7 @@ router.post('/add_genre', function (req, res) {
   console.log('add_genre route called in API!', req.body);
   api.GenreController.addGenre(req.body)
                      .then(val => {return api.GenreController.getAllGenres();})
-                     //.then(genres => res.render('media_items', {genres: genres}))
+                     .then(genres => res.render('media_items', {genres: genres}))
                      .catch(err => res.json(null));
 });
 
