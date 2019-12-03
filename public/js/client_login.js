@@ -5,7 +5,7 @@ const newSession = document.getElementById('newSessionSubmit');
 const cancelBtns = document.getElementsByClassName('cancel-btn');
 
 let loggedIn = false;
-let showWarning = true;
+let showWarning = false;
 
 window.onload = function(){
   setTimeout(hideWarning, 3000);
