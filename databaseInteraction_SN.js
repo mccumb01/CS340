@@ -23,7 +23,7 @@ app.engine('handlebars', hb.engine);
 
 app.set('view engine', 'handlebars');
 //app.set('port', process.env.CS340_MYSQL_PORT);
-app.set('port', 3306);
+app.set('port', 3000);
 
 app.listen(app.get('port'), () => {
   //console.log('Express started on ' + process.env.CS340_MYSQL_HOST + ":" + process.env.CS340_MYSQL_PORT); // http://flip3.engr.oregonstate.edu:60075/

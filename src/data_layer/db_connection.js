@@ -17,6 +17,13 @@ let pool = mysql.createPool({
   database: process.env.CS340_MYSQL_DB,
   connectionLimit: 100
 });
+/*let pool = mysql.createPool({
+  host  : 'localhost', //+ ":" + process.env.CS340_MYSQL_PORT,
+  user  : 'root',
+  password: 'password',
+  database: 'cs340_naraysri',
+  connectionLimit: 100
+});*/
 module.exports = pool;
 
 /**********************************************************
