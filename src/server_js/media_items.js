@@ -11,7 +11,9 @@ module.exports = function() {
     }
     let context = {};
     let types = api.MediaItemsController.getMediaTypes();
-    console.log(types);
+
+    console.log("Media types: ", types);
+
     context.types = types;
     api.GenreController.getAllGenres().then(g => {
       context.genres = g;
@@ -21,8 +23,26 @@ module.exports = function() {
   });
 
   router.get('/all_items', function (req, res) {
-    let types = api.MediaItemsController.getMediaTypes();
     api.MediaItemsController.getAllItems().then(g => {
+      res.json(g);
+    })
+    .catch((err)=> console.log("Err retrieving media_items." , err));
+    return; 
+  });
+
+  router.get('/all_items/genre/:genre_id', function (req, res) {
+    console.log('Getting by genre id?', req.params.genre_id);
+    api.MediaItemsController.getItemsByGenre(req.params.genre_id).then(g => {
+      res.json(g);
+    })
+    .catch((err)=> console.log("Err retrieving media_items." , err));
+    return; 
+  });
+  
+  router.get('/all_items/type/:media_type', function (req, res) {
+    let type = req.params.media_type;
+    console.log('Trying to get media by type: ', type);
+    api.MediaItemsController.getItemsByType(type).then(g => {
       res.json(g);
     })
     .catch((err)=> console.log("Err retrieving media_items." , err));

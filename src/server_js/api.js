@@ -89,45 +89,69 @@ module.exports.MediaQueueController = {
 /************************************************
 API for MediaItemsController
 ************************************************/
+
+function addGenresTo(rows){
+  let seen = {};
+  let items = rows.filter(r => {
+    console.log('Next row: ', r);
+    let prev = {};
+    let key = r.media_item_id;
+
+    // Check for null - otherwise adds an empty genre obj w/null id & null name
+    if (!key || !r.genre_name){
+      return false;
+    }
+    let gObj = {'genre_id': r.genre_id, 'genre_name': r.genre_name};
+    if (seen.hasOwnProperty(key)){
+      console.log('Seen this one! ', key);
+      prev = seen[key];
+      prev.genres.push(gObj);
+      return false;
+    }
+    console.log('New item! ', key);
+    seen[key] = r;
+    let item = seen[key];
+    if (!item.genres) {
+      item.genres = [];                              
+      item.genres.push(gObj);
+      delete item.genre_id;
+      delete item.genre_name;
+    }
+    return true;
+  });
+  console.log("Single items! ", items);
+  return items;
+}
+
 module.exports.MediaItemsController = {
   getAllItems : function getAllItems(){
     // return Promise.resolve(dataSources.media_items.getAllItems());
     // https://stackoverflow.com/questions/30025965/merge-duplicate-objects-in-array-of-objects
     return dataSources.media_items.getAllItems()
-                      .then(json => {
-                          let rows = JSON.parse(json); 
-                          let seen = {};
-                          let items = rows.filter(r => {
-                            console.log('Next row: ', r);
-                            let prev = {};
-                            let key = r.media_item_id;
-                            let gObj = {'genre_id': r.genre_id, 'genre_name': r.genre_name};
-                            if (seen.hasOwnProperty(key)){
-                              console.log('Seen this one! ', key);
-                              prev = seen[key];
-                              prev.genres.push(gObj);
-                              return false;
-                            }
-                            console.log('New item! ', key);
-                            seen[key] = r;
-                            let item = seen[key];
-                            if (!item.genres) {
-                              console.log('New item needs genres array!');
-                              item.genres = [];                              
-                              item.genres.push(gObj);
-                              delete item.genre_id;
-                              delete item.genre_name;
-                            }
-                            return true;
-                          });
-                          console.log("Single items! ", items);
-                          return items;
+                      .then(rows => {
+                          return addGenresTo(rows);
                       })
                       .catch(err => console.log('Error getting items w/genres', err));
   },
   getMediaTypes : function getMediaTypes(){
     return dataSources.media_items.MEDIA_TYPES;
     //return Promise.resolve(dataSources.getMediaTypes());
+  },
+
+  getItemsByType : function getItemsByType(media_type) {
+    return dataSources.media_items.getItemsByType(media_type)
+                                  .then(rows => {
+                                    return addGenresTo(rows);
+                                })
+                                .catch(err => console.log('Error getting items by type', err));  
+  },
+
+  getItemsByGenre : function getItemsByGenre(genre_id) {
+    return dataSources.media_items.getItemsByGenre(genre_id)
+                      .then(rows => {
+                        return addGenresTo(rows);
+                    })
+                    .catch(err => console.log('Error getting items w/genres', err));                  
   },
 
   getItemById : function getItemId(id){
@@ -141,7 +165,7 @@ module.exports.MediaItemsController = {
                         let id = res.insertId;
                         return dataSources.item_genres
                                           .setGenresForItem(id, body.genres)
-                                          .then(res => res)
+                                          .then(res => {res.insertId = id; return res;}) // set the id to insert id prev returned before adding genres
                                           .catch(err => err)
                       })
                       .catch(err => {throw err});

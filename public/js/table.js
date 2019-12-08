@@ -11,11 +11,19 @@ function updateTable(){
   }
 }
 
+function clearTable(){
+  console.log('Clearing table!');
+  let tbody = document.getElementById('itemsList');
+  let tb = document.createElement('tbody');
+  tb.setAttribute('id', 'itemsList');
+  tbody.parentNode.replaceChild(tb, tbody);
+}
+
 function addTableRow(obj, index){
   if (!index) { 
     index = -1 
   }
-  let tbody = document.getElementById('tbody');
+  let tbody = document.getElementById('itemsList');
   let row = tbody.insertRow(index);
   row.classList.add('table-entry');
 
@@ -32,7 +40,7 @@ function addTableRow(obj, index){
   yr.textContent = obj.pub_year;
 
   let genres = row.insertCell(4);          
-  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
+  genres.textContent = mapGenresToString(obj.genres);
 
   let rating = row.insertCell(5);          
   rating.textContent = obj.rating;
@@ -47,13 +55,13 @@ function addTableRow(obj, index){
   //del.classList.add("delete-btn");
   del.addEventListener('click', this.deleteEntry.bind(this));
   
-  scrollToRowAtIndex(index);
-  row.classList.add('row-highlight-animated');
-  setTimeout(() => row.classList.remove('row-highlight-animated'), 2000);
+  // scrollToRowAtIndex(index);
+  // row.classList.add('row-highlight-animated');
+  // setTimeout(() => row.classList.remove('row-highlight-animated'), 2000);
 }
 
 function editTableRowAtIndex(obj, index){
-  let tbody = document.getElementById('tbody');
+  let tbody = document.getElementById('itemsList');
   console.log('Editing table row obj ', obj, 'at index ', index);
   let row = tbody.rows[index]; 
   row.classList.add('table-entry');
@@ -62,16 +70,16 @@ function editTableRowAtIndex(obj, index){
   title.textContent = obj.title;
 
   let o_title = row.cells[1];
-  o_title.textContent = obj.original_language_title;
+  o_title.textContent = obj.o_title;
 
   let type = row.cells[2];
-  type.textContent = obj.media_type;
+  type.textContent = obj.m_type;
 
   let yr = row.cells[3];
-  yr.textContent = obj.publication_year;
+  yr.textContent = obj.pub_year;
 
   let genres = row.cells[4];          
-  genres.textContent = obj.genres.map(obj => obj.genre_name).join(', ');
+  genres.textContent = mapGenresToString(obj.genres);
 
   let rating = row.cells[5];          
   rating.textContent = obj.rating;
@@ -83,7 +91,7 @@ function editTableRowAtIndex(obj, index){
 }
 
 function removeTableRowAtIndex(index){
-  let tbody = document.getElementById('tbody');
+  let tbody = document.getElementById('itemsList');
   let row = tbody.rows[index];
   row.classList.add('row-delete-animated');
   setTimeout(() => {
@@ -94,7 +102,7 @@ function removeTableRowAtIndex(index){
 
 function scrollToRowAtIndex(index){
   //console.log('scrolling to row?', index); 
-  let tbody = document.querySelector('#tbody'); 
+  let tbody = document.querySelector('#itemsList'); 
   let rows = tbody.querySelectorAll('tr');
   if (index == -1) {index = rows.length - 1}
   
@@ -107,4 +115,11 @@ function scrollToRowAtIndex(index){
   // if (scrolledY) {
   //   tbody.scroll(0, scrollY - theadHeight);
   // }
+}
+
+function mapGenresToString(arr){
+  if (arr.length === 0){
+    return 'General';
+  }
+  return arr.map(obj => obj.genre_name).join(', ');
 }

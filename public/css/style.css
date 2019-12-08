@@ -27,7 +27,7 @@ table td{
 }
 
 table tr{
-  border-bottom: 2px solid yellow
+  border-bottom: 1px solid var(--accent-color);
 }
 
 form div{
@@ -36,7 +36,7 @@ form div{
 
 fieldset{
     background-color: #858687;
-    border: 3px solid yellow
+    border: 1px solid var(--accent-color);
 }
 
 h1{

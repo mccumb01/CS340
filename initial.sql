@@ -83,7 +83,10 @@ INSERT INTO media_items VALUES
 (1, 'Book', 'A Common Sense Guide to Data Structures and Algorithms', NULL , 2017, NULL), 
 (2, 'Book', 'Cracking the Coding Interview, 6th Ed', NULL, 2015, NULL), 
 (3, 'Book', 'Taiwan Today', '今日台灣', 2004, NULL), 
-(4, 'Book', 'Modern Chinese Conversation, Revised Edition', '新編會話', 1998, NULL); 
+(4, 'Book', 'Modern Chinese Conversation, Revised Edition', '新編會話', 1998, NULL), 
+(5, 'Book', 'The Hobbit', 'There, and Back Again', 1937, NULL), 
+(6, 'Movie', 'The Hobbit', NULL, 1977, 3.4), 
+(7, 'Audio Album', 'Tool - Fear Inoculum', NULL, 2019, 3.7); 
 UNLOCK TABLES;
 
 --
@@ -128,7 +131,7 @@ DROP TABLE IF EXISTS genres;
 
 CREATE TABLE genres (
   genre_id int unsigned NOT NULL AUTO_INCREMENT,
-  genre_name varchar(25) NOT NULL,
+  genre_name varchar(25) NOT NULL DEFAULT 'General',
   PRIMARY KEY (genre_id)
 );
 
@@ -137,28 +140,29 @@ CREATE TABLE genres (
 --
 
 LOCK TABLES genres WRITE;
-INSERT INTO genres VALUES 
+INSERT INTO genres (genre_id, genre_name) VALUES 
 (1,'Action'),
 (2,'Animation'),
 (3,'Children'),
 (4,'Classics'),
-(5,'Computer Science'),
-(6,'Comedy'),
+(5,'Comedy'),
+(6,'Computer Science'),
 (7,'Documentary'),
 (8,'Drama'),
 (9,'Education'),
 (10,'Family'),
 (11,'Foreign'),
 (12,'Games'),
-(13,'Horror'),
-(14,'Language Learning'),
-(15,'Music'),
-(16,'New'),
-(17,'Programming'),
-(18,'Sci-Fi'),
-(19,'Sports'),
-(20,'Technology'),
-(21,'Travel');
+(13,'General'),
+(14,'Horror'),
+(15,'Language Learning'),
+(16,'Music'),
+(17,'New'),
+(18,'Programming'),
+(19,'Sci-Fi'),
+(20,'Sports'),
+(21,'Technology'),
+(22,'Travel');
 UNLOCK TABLES;
 
 
@@ -180,21 +184,27 @@ CREATE TABLE item_genres (
 --
 
 LOCK TABLES item_genres WRITE;
-INSERT INTO item_genres VALUES 
-(5,1),
+INSERT INTO item_genres (genre_id, media_item_id) VALUES 
+(6,1),
 (9,1),
-(17,1),
-(20,1),
-(5,2),
+(18,1),
+(21,1),
+(6,2),
 (9,2),
-(17,2),
-(20,2),
+(18,2),
+(21,2),
 (9,3),
 (11,3),
-(14,3),
+(15,3),
 (9,4),
 (11,4),
-(14,4);
+(15,4),
+(4,5),
+(22,5),
+(2,6),
+(3,6),
+(4,6),
+(13,7);
 UNLOCK TABLES;
 
 SET FOREIGN_KEY_CHECKS = 1;
