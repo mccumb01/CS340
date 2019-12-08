@@ -45,18 +45,8 @@
   </select>
   <div id="queue-table">
   <table>
-    <caption> Queue wisely! </caption>
-    <thead>
-      <th> Queue ID</th>
-      <th> Title</th>
-      <th> Genre</th>
-      <th> Status</th>
-      <th> Priority</th>
-      <th> Date Added</th>
-      <th> Delete </th>
-    </thead>
-    <tbody>
-      <tr>
+      {{>queue_item_table}}
+      <!--<tr>
         <th>1</th>
         <td>The Last Knight</td>
         <td>Useless Summer Blockbuster Sequel</td>
@@ -73,8 +63,7 @@
         <td>
           <button type="button" class="delete-btn" value="Delete">Delete</button>
         </td>
-        </tr>
-        </tbody>
+        </tr>-->
   </table></div>
   <script src="js/script.js"></script>
 </section>
