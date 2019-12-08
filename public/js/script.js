@@ -1,6 +1,6 @@
 /********************************************************************************************
  * Author: Sriram Narayanan
- * CS 340, Section 400 Web Development Summer 2019 
+ * CS 340, Section 400 Intro to Databases Fall 2019 
  *******************************************************************************************/
 
 let button = document.querySelector('#submit')

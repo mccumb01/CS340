@@ -57,6 +57,9 @@ module.exports.UserController = {
 API for MediaQueue Controller
 ************************************************/
 module.exports.MediaQueueController = {
+  test : function() {
+    return Promise.resolve('hello!');
+  },
   createNewQueue : function() {
     // create a new media queue;
   },
