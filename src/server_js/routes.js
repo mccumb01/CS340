@@ -27,7 +27,7 @@ router.use('/media_items', require('./media_items.js'));
 /*********************************************
  * Media Queue
  *********************************************/
-router.use('/queue_item', require('./queue_items.js'));
+//router.use('/queue_item', require('./queue_items.js'));
 /*********************************************
  * Profile Page
  *********************************************/

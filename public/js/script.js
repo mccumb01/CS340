@@ -5,11 +5,11 @@
 
 let button = document.querySelector('#submit')
 let input = document.getElementById('new-title')
-console.log(input.value)
+console.log(button)
 //querySelector('#input')
 let output = document.querySelector('#output')
 
-addTitleQueue();
+//addTitleQueue();
 button.addEventListener('click', (e)=>{
     
     var med_typ =document.getElementById("mediaSelector").value;
@@ -163,11 +163,9 @@ function getOtherDataFromItunes(){
             addBtn.addEventListener('click', $event =>{
                 let id = $event.target.id.substring(7);
                 addQueue(id);
-                //alert("Adding item " + id + " : '" + item.trackCensoredName + "' to the queue!");
+                alert("Adding item " + id + " : '" + item.trackCensoredName + "' to the queue!");
             });
             addBtnCell.appendChild(addBtn);
-
-
             cell1.appendChild(cellText1);
             cell2.appendChild(cellText2);
             cell3.appendChild(cellText3);
@@ -187,8 +185,8 @@ function getOtherDataFromItunes(){
     }).catch(error => console.log("ERROR!"))
 
 }
-function addTitleQueue(){
-    var tbody = document.getElementById("queue");
+/*function addTitleQueue(){
+    var tbody = document.getElementById("queue_items");
     var titleRow = document.createElement("tr")
     var titleCell2 = document.createElement("th")
     var titleCellText2 = document.createTextNode("Title")
@@ -215,19 +213,18 @@ function addTitleQueue(){
     titleRow.appendChild(titleCell6);
     titleRow.appendChild(titleCell7);
     tbody.appendChild(titleRow);
-}
+}*/
 
 function addQueue(id){
     var sourceRow = document.getElementsByTagName('tbody');
+    console.log(sourceRow);
     var mediaTitle = sourceRow[0].childNodes[id-1].childNodes[1].innerHTML;
-    addMediaQueue(mediaTitle);
-    var tbody = document.getElementById("queue");
+    var tbody = document.getElementById("queue-items");
     var titleRow = document.createElement("tr")
-    /*var titleCell1 = document.createElement("th")
-    var titleCellText1 = document.createTextNode(id)*/
     var titleCell2 = document.createElement("td")
     var titleCellText2 = document.createTextNode(mediaTitle)
     var titleCell3 = document.createElement("td")
+    //Have to fix the genre input
     var titleCellText3 = document.createTextNode("Action")
     var titleCell4 = document.createElement("td")
     var status1 = document.createElement("select")
