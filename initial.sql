@@ -117,8 +117,10 @@ DROP TABLE IF EXISTS queue_items;
 CREATE TABLE queue_items (
   media_queue_id int unsigned NOT NULL,
   media_item_id int unsigned NOT NULL,
+  priority BOOLEAN DEFAULT FALSE,
+  status enum('Not Started','In Progress','Completed') DEFAULT 'Not Started',
   CONSTRAINT media_item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id),
-  CONSTRAINT queue_fk FOREIGN KEY (media_queue_id) REFERENCES media_queues(media_queue_id)
+  CONSTRAINT queue_fk FOREIGN KEY (media_queue_id) REFERENCES media_queues(media_queue_id) ON DELETE CASCADE
 );
 
 --
