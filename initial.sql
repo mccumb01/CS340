@@ -97,7 +97,7 @@ CREATE TABLE  media_queues (
   media_queue_id int unsigned NOT NULL AUTO_INCREMENT,
   user_id int unsigned NOT NULL, 
   PRIMARY KEY (media_queue_id),
-  CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE
+  CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 --
