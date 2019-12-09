@@ -145,7 +145,7 @@ router.route('/media_queue/:user_id?/:queue_id?')
 /*********************************************
  * Queue Item CRUD Web API Endpoints
  *********************************************/
-router.route('/queue')
+router.route('/queue_items')
       .get((req, res) => {
           if (!id){
             id = 1;
