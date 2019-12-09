@@ -105,7 +105,7 @@ CREATE TABLE  media_queues (
 --
 
 LOCK TABLES media_queues WRITE;
-INSERT INTO media_queues (user_id) VALUES (1), (2);
+INSERT INTO media_queues (user_id) VALUES (1), (2), (3);
 UNLOCK TABLES;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE queue_items (
 
 LOCK TABLES queue_items WRITE;
 INSERT INTO queue_items (media_queue_id, media_item_id) 
-VALUES (1, 1), (1, 2), (1, 5), (2, 3), (2, 4), (2,7);
+VALUES (1, 1), (1, 2), (1, 5), (2, 3), (2, 4), (2, 7), (3, 5), (3, 6);
 UNLOCK TABLES;
 
 
