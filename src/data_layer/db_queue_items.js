@@ -25,7 +25,7 @@ module.exports.getAllQueueItems = function getAllQueueItems(id){
   return new Promise((resolve, reject) => {
     pool.query(`SELECT * FROM queue_items q 
     LEFT JOIN media_queues mq ON mq.media_queue_id = q.media_item_id
-    LEFT JOIN media_items m ON mq.media_queue_id = m.media_item_id WHERE mq.media_queue_id = ?;`,[passed_in_id], function (err, rows){
+    LEFT JOIN media_items m ON mq.media_queue_id = m.media_item_id WHERE mq.media_queue_id = ?;`,[id], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         reject(err);
@@ -39,7 +39,8 @@ module.exports.getAllQueueItems = function getAllQueueItems(id){
  module.exports.updateQueueItem = function(body,id){
   console.log('UpdateQueueItem id',id);
   return new Promise((resolve, reject) => {
-    pool.query('UPDATE queue_items SET media_queue_id = ?, media_item_id = ? WHERE media_queue_id = ?',[body.media_queue_id, body.media_item_id, id], function (err, rows){
+    pool.query('UPDATE queue_items SET media_queue_id = ?, media_item_id = ?, priority = ?, status = ? WHERE media_queue_id = ?',
+        [body.media_queue_id, body.media_item_id, body.priority, body.status], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);

@@ -105,7 +105,7 @@ CREATE TABLE  media_queues (
 --
 
 LOCK TABLES media_queues WRITE;
--- NONE, for now. We might want to create a few fake/pre-made queues, or figure out how to export one once we've added stuff
+INSERT INTO media_queues (user_id) VALUES (1), (2);
 UNLOCK TABLES;
 
 --
@@ -122,6 +122,17 @@ CREATE TABLE queue_items (
   CONSTRAINT media_item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id),
   CONSTRAINT queue_fk FOREIGN KEY (media_queue_id) REFERENCES media_queues(media_queue_id) ON DELETE CASCADE
 );
+
+--
+-- Seed data for table queue_items
+--
+
+LOCK TABLES queue_items WRITE;
+INSERT INTO queue_items (media_queue_id, media_item_id) 
+VALUES (1, 1), (1, 2), (1, 5), (2, 3), (2, 4), (2,7);
+UNLOCK TABLES;
+
+
 
 --
 -- Table structure for table genres
