@@ -136,12 +136,15 @@ DELETE FROM media_queues mq WHERE mq.user_id = :user_id;
 
 -- Get all queue_items for a particular media_queue
 SELECT * FROM queue_items q 
-    LEFT JOIN media_queues mq ON mq.media_queue_id = q.media_item_id
-    LEFT JOIN media_items m ON mq.media_queue_id = m.media_item_id WHERE mq.media_queue_id = :media_queue_id;
+    LEFT JOIN media_queues mq ON mq.media_queue_id = q.media_queue_id
+    LEFT JOIN media_items m ON q.media_item_id = m.media_item_id WHERE mq.media_queue_id = :media_queue_id;
 
 -- Create a new media_queue for a particular user, with a list name
 INSERT INTO queue_items(media_queue_id, media_item_id, date_added, priority, status) VALUES (:queue_id, :item_id, :Date.now().toISOString() :priority, :status);
 
--- Delete all media_queues for a particular user
-DELETE FROM media_queues mq WHERE mq.user_id = :user_id;
+-- Delete specific item from a particular queue
+DELETE FROM queue_items WHERE media_queue_id = :media_queue_id AND media_item_id = :item_id;
+
+-- Delete all items from a particular queue
+DELETE FROM queue_items WHERE media_queue_id = :media_queue_id;
 

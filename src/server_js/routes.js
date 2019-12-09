@@ -126,30 +126,67 @@ router.route('/media_queue/:user_id?/:queue_id?')
     });
   }
   else {
-    api.MediaQueueController.getEntries().then(val => {
-     // console.log("Val: ", val);
-      res.json(val);
-    });   
+      res.json(null);   
   }
 })
 .post((req, res) => {
  // console.log('POST req received');
-  api.MediaQueueController.addQueueItem(req.body).then(val => {
+  api.MediaQueueController.createNewQueue(req.user_id).then(val => {
     res.json(val);
   });
   return;
 })
-.put((req, res) => {
- // console.log('PUT req received');
-  let id = req.query.id;
-  api.MediaQueueController.updateQueueItem(req.body, id).then(val => res.json(val));
-})
 .delete((req, res) => {
  // console.log('DELETE req received');
   let id = parseInt(req.query.id);
-  api.MediaQueueController.deleteMediaQueueWithId(id).then(()=> res.send(`Entry ${id} deleted`));
+  api.MediaQueueController.deleteMediaQueueWithId(id).then(()=> res.send(`Queue with ${id} deleted`));
 });
 
+/*********************************************
+ * Queue Item CRUD Web API Endpoints
+ *********************************************/
+router.route('/queue')
+      .get((req, res) => {
+          if (!id){
+            id = 1;
+          }
+          api.QueueItemsController.getItemsForQueue(id).then(val => {
+            res.json(val);
+          });
+      })
+      .post((req, res) => {
+      // console.log('POST req received');
+        let item = req.body;
+        if (!item){
+          res.statusCode(400).send('No form body.');
+        }
+        api.QueueItemsController.addQueueItem(item).then(val => {
+          res.json(val);
+        });
+        return;
+      })
+      .put((req, res) => {
+        // console.log('POST req received');
+          let item = req.body;
+          if (!item){
+            res.statusCode(400).send('No form body.');
+          }
+          api.QueueItemsController.updateQueueItem(item).then(val => {
+            res.json(val);
+          });
+          return;
+        })
+      .delete((req, res) => {
+      // console.log('DELETE req received');
+      let item_id = req.body.media_item_id;
+      let q_id = req.body.media_queue_id;
+        api.QueueItemsController.removeQueueItem(item_id, q_id).then(()=> res.send(`Queue item with ${id} deleted`));
+      });
+  router.delete('/clear_queue/:queue_id',(req, res) => {
+    api.QueueItemsController.clearQueue(queue_id)
+                            .then(() => res.send({}))
+                            .catch((err) => console.log("Error clearing queue ", err));
+  });
 
 
 // Used to drop & rebuild an empty workouts table in the database

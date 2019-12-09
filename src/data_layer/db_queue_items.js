@@ -8,11 +8,11 @@ const pool = require('./db_connection');
 'Queue Items' Functions
 *******************************************/
 /*Get all queue_items for queue*/
-module.exports.getItemsForQueue = function getItemsForQueue(id){
+module.exports.getItemsForQueue = function getItemsForQueue(queue_id){
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT m.title, q.status, q.priority FROM queue_items q 
-    LEFT JOIN media_queues mq ON mq.media_queue_id = q.media_item_id
-    LEFT JOIN media_items m ON mq.media_queue_id = m.media_item_id WHERE mq.media_queue_id = ?;`,[id], function (err, rows){
+    pool.query(`SELECT * FROM queue_items q 
+    LEFT JOIN media_queues mq ON mq.media_queue_id = q.media_queue_id
+    LEFT JOIN media_items m ON q.media_item_id = m.media_item_id WHERE mq.media_queue_id = ?;`,[queue_id], function (err, rows){
       if (err){
         console.log("ERROR GETTING QUEUE ITEMS");
         reject(err);
@@ -39,11 +39,11 @@ module.exports.addQueueItem = function addQueueItem(body){
   });
 }
  /*Update queue_item (status, priority)*/
- module.exports.updateQueueItem = function(body,id){
+ module.exports.updateQueueItem = function(body){
   console.log('UpdateQueueItem id',id);
   return new Promise((resolve, reject) => {
-    pool.query('UPDATE queue_items SET media_queue_id = ?, media_item_id = ?, priority = ?, status = ? WHERE media_queue_id = ?',
-        [body.media_queue_id, body.media_item_id, body.priority, body.status], function (err, rows){
+    pool.query('UPDATE queue_items SET media_queue_id = ?, media_item_id = ?, priority = ?, status = ? WHERE media_queue_id = ? AND media_item_id = ?',
+        [body.media_queue_id, body.media_item_id, body.priority, body.status, body.media_queue_id, body.media_item_id], function (err, rows){
       if (err){
         console.log("ERROR UPDATING QUEUE ITEM");
         return reject(err);
@@ -54,10 +54,10 @@ module.exports.addQueueItem = function addQueueItem(body){
   });
 }
  /*Remove queue_item */
- module.exports.removeQueueItem = function(id){
+ module.exports.removeQueueItem = function(item_id, queue_id){
   //Deletes a queue item
   return new Promise((resolve, reject) => {
-    pool.query('DELETE FROM queue_items WHERE media_item_id = ?',[id], function (err, rows){
+    pool.query('DELETE FROM queue_items WHERE media_item_id = ? AND queue_id = ?',[item_id, queue_id], function (err, rows){
       if (err){
         console.log("ERROR DELETING QUEUE ITEM");
         return reject(err);

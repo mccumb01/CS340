@@ -100,17 +100,17 @@ module.exports.QueueItemsController = {
     )
     .catch(err => console.log("API Error getting queue items"));
   },
-  addQueueItem : function(item_id, queueId){
+  addQueueItem : function(body){
     // add an item to to queue with the given id 
     return Promise.resolve(
-      dataSources.queue_items.addQueueItem(queue_id)
+      dataSources.queue_items.addQueueItem(body)
     )
     .catch(err => console.log("API Error adding queue item"));
   },
-  updateQueueItem : function(item, queueId){
+  updateQueueItem : function(body){
     // update a given item in a given queue - could be updates to title, author, status, or priority
     return Promise.resolve(
-      dataSources.queue_items.updateQueueItem(body, queue_id)
+      dataSources.queue_items.updateQueueItem(body)
     )
     .catch(err => console.log("API Error adding queue item"));
   },
