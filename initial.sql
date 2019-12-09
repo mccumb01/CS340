@@ -22,7 +22,9 @@
 -- END$$
  
 -- DELIMITER ;
-
+DROP DATABASE IF EXISTS cs340_naraysri;
+CREATE DATABASE cs340_naraysri;
+USE cs340_naraysri;
 SET FOREIGN_KEY_CHECKS = 0;
 --
 -- Table structure for table user

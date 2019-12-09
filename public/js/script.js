@@ -1,9 +1,15 @@
+/********************************************************************************************
+ * Author: Sriram Narayanan
+ * CS 340, Section 400 Intro to Databases Fall 2019 
+ *******************************************************************************************/
+
 let button = document.querySelector('#submit')
 let input = document.getElementById('new-title')
 console.log(input.value)
 //querySelector('#input')
 let output = document.querySelector('#output')
 
+addTitleQueue();
 button.addEventListener('click', (e)=>{
     
     var med_typ =document.getElementById("mediaSelector").value;
@@ -156,7 +162,8 @@ function getOtherDataFromItunes(){
             addBtn.setAttribute('class', 'add-btn');
             addBtn.addEventListener('click', $event =>{
                 let id = $event.target.id.substring(7);
-                alert("Adding item " + id + " : '" + item.trackCensoredName + "' to the queue!");
+                addQueue(id);
+                //alert("Adding item " + id + " : '" + item.trackCensoredName + "' to the queue!");
             });
             addBtnCell.appendChild(addBtn);
 
@@ -179,4 +186,95 @@ function getOtherDataFromItunes(){
         });
     }).catch(error => console.log("ERROR!"))
 
+}
+function addTitleQueue(){
+    var tbody = document.getElementById("queue");
+    var titleRow = document.createElement("tr")
+    var titleCell2 = document.createElement("th")
+    var titleCellText2 = document.createTextNode("Title")
+    var titleCell3 = document.createElement("th")
+    var titleCellText3 = document.createTextNode("Genre")
+    var titleCell4 = document.createElement("th")
+    var titleCellText4 = document.createTextNode("Status")
+    var titleCell5 = document.createElement("th")
+    var titleCellText5 = document.createTextNode("Date Added")
+    var titleCell6 = document.createElement("th")
+    var titleCellText6 = document.createTextNode("Priority")
+    var titleCell7 = document.createElement("th")
+    var titleCellText7 = document.createTextNode("Delete")
+    titleCell2.appendChild(titleCellText2);
+    titleCell3.appendChild(titleCellText3);
+    titleCell4.appendChild(titleCellText4);
+    titleCell5.appendChild(titleCellText5);
+    titleCell6.appendChild(titleCellText6);
+    titleCell7.appendChild(titleCellText7);
+    titleRow.appendChild(titleCell2);
+    titleRow.appendChild(titleCell3);
+    titleRow.appendChild(titleCell4);
+    titleRow.appendChild(titleCell5);
+    titleRow.appendChild(titleCell6);
+    titleRow.appendChild(titleCell7);
+    tbody.appendChild(titleRow);
+}
+
+function addQueue(id){
+    var sourceRow = document.getElementsByTagName('tbody');
+    var mediaTitle = sourceRow[0].childNodes[id-1].childNodes[1].innerHTML;
+    addMediaQueue(mediaTitle);
+    var tbody = document.getElementById("queue");
+    var titleRow = document.createElement("tr")
+    /*var titleCell1 = document.createElement("th")
+    var titleCellText1 = document.createTextNode(id)*/
+    var titleCell2 = document.createElement("td")
+    var titleCellText2 = document.createTextNode(mediaTitle)
+    var titleCell3 = document.createElement("td")
+    var titleCellText3 = document.createTextNode("Action")
+    var titleCell4 = document.createElement("td")
+    var status1 = document.createElement("select")
+    var option1 = document.createElement("option")
+    var option1text = document.createTextNode("Unwatched")
+    var option2 = document.createElement("option")
+    var option2text = document.createTextNode("In Progress")
+    //var titleCellText4 = document.createTextNode("Status")
+    var titleCell5 = document.createElement("td")
+    var d = new Date();
+    day = d.getDate();
+    month = d.getMonth()+1;
+    year = d.getFullYear()
+    compDate = month+"-"+day+"-"+year
+    var titleCellText5 = document.createTextNode(compDate)
+    var titleCell6 = document.createElement("td")
+    var checkbox = document.createElement('input');
+    checkbox.type = "checkbox";
+    checkbox.name = "name";
+    checkbox.value = "value";
+    checkbox.id = "id";
+
+    var label = document.createElement('label')
+    label.htmlFor = "id";
+    label.appendChild(document.createTextNode('text for label after checkbox'));
+    var titleCell7 = document.createElement("td");
+    var element = document.createElement('input');
+    //Assign different attributes to the element. 
+    element.setAttribute("type", 'button');
+    element.setAttribute("value", 'Delete');
+    var titleCellText7 = document.createTextNode("Delete")
+    titleCell2.appendChild(titleCellText2);
+    titleCell3.appendChild(titleCellText3);
+    titleCell4.appendChild(status1);
+    option1.appendChild(option1text);
+    option2.appendChild(option2text);
+    status1.appendChild(option1);
+    status1.appendChild(option2);
+    titleCell5.appendChild(titleCellText5);
+    titleCell6.appendChild(checkbox);
+    //titleCell6.appendChild(label);
+    titleCell7.appendChild(element);
+    titleRow.appendChild(titleCell2);
+    titleRow.appendChild(titleCell3);
+    titleRow.appendChild(titleCell4);
+    titleRow.appendChild(titleCell5);
+    titleRow.appendChild(titleCell6);
+    titleRow.appendChild(titleCell7);
+    tbody.appendChild(titleRow);
 }

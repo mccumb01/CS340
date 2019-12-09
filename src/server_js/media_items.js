@@ -11,7 +11,9 @@ module.exports = function() {
     }
     let context = {};
     let types = api.MediaItemsController.getMediaTypes();
+
     console.log("Media types: ", types);
+
     context.types = types;
     api.GenreController.getAllGenres().then(g => {
       context.genres = g;

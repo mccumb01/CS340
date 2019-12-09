@@ -10,14 +10,20 @@ const mysql = require ('mysql');
 /************************************************
 Shared Database Connection Pool for All Entities
 ************************************************/
-let pool = mysql.createPool({
+/*let pool = mysql.createPool({
   host  : process.env.CS340_MYSQL_HOST, //+ ":" + process.env.CS340_MYSQL_PORT,
   user  : process.env.CS340_MYSQL_USER,
   password: process.env.CS340_MYSQL_PW,
   database: process.env.CS340_MYSQL_DB,
   connectionLimit: 100
+});*/
+let pool = mysql.createPool({
+  host  : 'localhost', //+ ":" + process.env.CS340_MYSQL_PORT,
+  user  : 'root',
+  password: 'password',
+  database: 'cs340_naraysri',
+  connectionLimit: 100
 });
-
 module.exports = pool;
 
 /**********************************************************
