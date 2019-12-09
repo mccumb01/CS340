@@ -115,3 +115,33 @@ SELECT genre_id, genre_name FROM genres g
 -- Set genres for a particular item
 -- Not sure how to do this in a loop w/just SQL; using Express mysql to pass an array of items & genres
 INSERT INTO item_genres (media_item_id, genre_id) VALUES (:passed_media_item, :passed_genres);
+
+
+-------------------------------------------------------------------------------------------------
+
+-- MEDIA_QUEUES TABLE
+
+-- Get all media_queues for a particular user
+SELECT media_queue_id FROM media_queues mq WHERE mq.user_id = :user_id;
+
+-- Create a new media_queue for a particular user, with a list name
+INSERT INTO media_queues (user_id, list_name) VALUES (:user_id, :list_name);
+
+-- Delete all media_queues for a particular user
+DELETE FROM media_queues mq WHERE mq.user_id = :user_id;
+
+-------------------------------------------------------------------------------------------------
+
+-- QUEUE_ITEMS TABLE
+
+-- Get all queue_items for a particular media_queue
+SELECT * FROM queue_items q 
+    LEFT JOIN media_queues mq ON mq.media_queue_id = q.media_item_id
+    LEFT JOIN media_items m ON mq.media_queue_id = m.media_item_id WHERE mq.media_queue_id = :media_queue_id;
+
+-- Create a new media_queue for a particular user, with a list name
+INSERT INTO queue_items(media_queue_id, media_item_id, date_added, priority, status) VALUES (:queue_id, :item_id, :Date.now().toISOString() :priority, :status);
+
+-- Delete all media_queues for a particular user
+DELETE FROM media_queues mq WHERE mq.user_id = :user_id;
+

@@ -95,7 +95,8 @@ DROP TABLE IF EXISTS media_queues;
 
 CREATE TABLE  media_queues (
   media_queue_id int unsigned NOT NULL AUTO_INCREMENT,
-  user_id int unsigned NOT NULL, 
+  user_id int unsigned NOT NULL,
+  list_name varchar(100) DEFAULT 'My Media', 
   PRIMARY KEY (media_queue_id),
   CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -105,7 +106,7 @@ CREATE TABLE  media_queues (
 --
 
 LOCK TABLES media_queues WRITE;
-INSERT INTO media_queues (user_id) VALUES (1), (2), (3);
+INSERT INTO media_queues (user_id, list_name) VALUES (1, 'My Books'), (2, 'My Movies'), (3, 'Stuff to Watch');
 UNLOCK TABLES;
 
 --
@@ -118,8 +119,9 @@ CREATE TABLE queue_items (
   media_queue_id int unsigned NOT NULL,
   media_item_id int unsigned NOT NULL,
   priority BOOLEAN DEFAULT FALSE,
+  date_added DATETIME DEFAULT NOW(), 
   status enum('Not Started','In Progress','Completed') DEFAULT 'Not Started',
-  CONSTRAINT media_item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id),
+  CONSTRAINT media_item_fk FOREIGN KEY (media_item_id) REFERENCES media_items(media_item_id) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT queue_fk FOREIGN KEY (media_queue_id) REFERENCES media_queues(media_queue_id) ON DELETE CASCADE
 );
 

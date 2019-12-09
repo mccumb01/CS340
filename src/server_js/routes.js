@@ -116,13 +116,12 @@ router.post('/add_genre', function (req, res) {
  * Media Queue CRUD Web API Endpoints
  *********************************************/
 
-router.route('/media_queue')
+router.route('/media_queue/:user_id?/:queue_id?')
 
   .get((req, res) => {
-  let entries = [];
   let id = req.query.id;
   if (id != null && id != undefined) {
-    api.MediaQueueController.getEntryById(id).then(val => {
+    api.MediaQueueController.getQueueById(id).then(val => {
       res.json(val);
     });
   }
@@ -143,7 +142,7 @@ router.route('/media_queue')
 .put((req, res) => {
  // console.log('PUT req received');
   let id = req.query.id;
-  api.MediaQueueController.updateQueueItem(id, req.body).then(val => res.json(val));
+  api.MediaQueueController.updateQueueItem(req.body, id).then(val => res.json(val));
 })
 .delete((req, res) => {
  // console.log('DELETE req received');

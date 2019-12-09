@@ -57,20 +57,26 @@ module.exports.UserController = {
 API for MediaQueue Controller
 ************************************************/
 module.exports.MediaQueueController = {
-  createNewQueue : function() {
+  createNewQueue : function(user_id) {
     // create a new media queue;
+    return Promise.resolve(
+      dataSources.media_queues.addMediaQueueForUser(user_id)
+    )
+    .catch(err => console.log("API Error creating media queue for user"));
   },
-  addQueueItem : function(item, queueId){
-    // add an item to to queue with the given id 
-  },
-  updateQueueItem : function(item, queueId){
-    // update a given item in a given queue - could be updates to title, author, status, or priority
-  },
-  removeQueueItem : function(item, queueId){
-    // removes an item from a queue; does not remove the item from the database.
-  },
+  getQueueById : function(queue_id) {
+    // create a new media queue;
+    return Promise.resolve(
+      dataSources.media_queues.getMediaQueuesByQueueId(queue_id)
+    )
+    .catch(err => console.log("API Error creating media queue for user"));
+  },  
   deleteMediaQueueWithId : function(queueId){
     // delete the given queue from the database.
+    return Promise.resolve(
+      dataSources.media_queues.deleteMediaQueue(queue_id)
+    )
+    .catch(err => console.log("API Error deleting media queue"));
   },
   getPriorityItems : function getPriorityItems(){
     return Promise.resolve(
@@ -83,6 +89,45 @@ module.exports.MediaQueueController = {
   },  
 }
 
+/************************************************
+API for QueueItems Controller
+************************************************/
+module.exports.QueueItemsController = {
+  getItemsForQueue : function(queueId){
+    // add an item to to queue with the given id 
+    return Promise.resolve(
+      dataSources.queue_items.getItemsForQueue(queue_id)
+    )
+    .catch(err => console.log("API Error getting queue items"));
+  },
+  addQueueItem : function(item_id, queueId){
+    // add an item to to queue with the given id 
+    return Promise.resolve(
+      dataSources.queue_items.addQueueItem(queue_id)
+    )
+    .catch(err => console.log("API Error adding queue item"));
+  },
+  updateQueueItem : function(item, queueId){
+    // update a given item in a given queue - could be updates to title, author, status, or priority
+    return Promise.resolve(
+      dataSources.queue_items.updateQueueItem(body, queue_id)
+    )
+    .catch(err => console.log("API Error adding queue item"));
+  },
+  removeQueueItem : function(item_id, queueId){
+    // removes an item from a queue; does not remove the item from the database.
+    return Promise.resolve(
+      dataSources.queue_items.removeQueueItem(item_id, queue_id)
+    )
+    .catch(err => console.log("API Error removing queue item"));
+  },
+  clearQueue : function(queue_id){
+    return Promise.resolve(
+      dataSources.queue_items.clearQueue(queue_id)
+    )
+    .catch(err => console.log("API Error clearing queue"));
+  }
+}
 /************************************************
 API for MediaItemsController
 ************************************************/

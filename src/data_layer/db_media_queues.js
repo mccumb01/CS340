@@ -10,7 +10,11 @@ const pool = require('./db_connection');
 /*Add media_queue for user*/ 
 module.exports.addMediaQueueForUser = function addMediaQueueForUser(id, body){
   return new Promise((resolve, reject) => {
-    pool.query('INSERT INTO media_queues(user_id) VALUES (?);', [id] , function (err, rows){
+    let name = null;
+    if (body.list_name){
+      name = body.list_name;
+    }
+    pool.query('INSERT INTO media_queues(user_id, list_name) VALUES (?, ?);', [id, name] , function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
@@ -21,10 +25,10 @@ module.exports.addMediaQueueForUser = function addMediaQueueForUser(id, body){
   });
 }
 
- /*Get all media_queues for user*/
-module.exports.getMediaQueueForUser = function getMediaQueueForUser(id){
+ /*Get all media_queues for user - used to populate dropdown list */
+module.exports.getMediaQueuesForUser = function getMediaQueuesForUser(id){
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM media_queues WHERE user_id = ?;', [id] , function (err, rows){
+    pool.query('SELECT media_queue_id FROM media_queues WHERE user_id = ?;', [id] , function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
@@ -35,21 +39,7 @@ module.exports.getMediaQueueForUser = function getMediaQueueForUser(id){
   });
 }
 
- /*Get media_queue (for user) by queue_id*/
-module.exports.getMediaQueuesByQueueId = function getMediaQueuesByQueueId(id){
-  return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM media_queues WHERE media_queue_id = ?;', [id], function (err, rows){
-      if (err){
-        console.log("ERROR GETTING ENTRIES");
-        return reject(err);
-      }
-      console.log("Results in getMediaQueuesByQueueId: ", JSON.stringify(rows));
-      resolve(rows);
-    });
-  });
-}
-
- /*Delete media_queue (and cascade delete all its queue_items)*/
+/*Delete media_queue (and cascade delete all its queue_items)*/
 module.exports.deleteMediaQueue = function deleteMediaQueues(id){
   return new Promise((resolve, reject) => {
     pool.query('DELETE FROM media_queues WHERE media_queue_id = ?;',[id], 
