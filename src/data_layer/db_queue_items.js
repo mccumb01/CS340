@@ -8,9 +8,9 @@ const pool = require('./db_connection');
 'Queue Items' Functions
 *******************************************/
 /*Add queue_item to media_queue*/
-module.exports.addQueueItems = function addQueueItems(id){
+module.exports.addQueueItems = function addQueueItems(mq_id,mi_id){
   return new Promise((resolve, reject) => {
-    pool.query('INSERT INTO queue_items(media_queue_id,media_item_id) VALUES (?,?);', function (err, rows){
+    pool.query('INSERT INTO queue_items(media_queue_id,media_item_id) VALUES (?,?);',[mq_id, mi_id], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         return reject(err);
@@ -21,11 +21,11 @@ module.exports.addQueueItems = function addQueueItems(id){
   });
 }
 /*Get all queue_items for queue*/
-module.exports.getAllQueueItems = function getAllQueueItems(){
+module.exports.getAllQueueItems = function getAllQueueItems(id){
   return new Promise((resolve, reject) => {
     pool.query(`SELECT * FROM queue_items q 
     LEFT JOIN media_queues mq ON mq.media_queue_id = q.media_item_id
-    LEFT JOIN media_items m ON mq.media_queue_id = m.media_item_id;`, function (err, rows){
+    LEFT JOIN media_items m ON mq.media_queue_id = m.media_item_id WHERE mq.media_queue_id = ?;`,[passed_in_id], function (err, rows){
       if (err){
         console.log("ERROR GETTING ENTRIES");
         reject(err);
@@ -64,10 +64,10 @@ module.exports.getAllQueueItems = function getAllQueueItems(){
   });
 }
  /*Remove all queue_items from queue*/
- module.exports.removeQueueItems = function(){
+ module.exports.removeQueueItems = function(id){
   //Deletes a queue item
   return new Promise((resolve, reject) => {
-    pool.query(`DROP TABLE queue_items;`, function (err, rows){
+    pool.query(`DELETE FROM queue_items WHERE media_queue_id = ?`,[id], function (err, rows){
       if (err){
         console.log("ERROR DELETING QUEUE ITEMS TABLE");
         return reject(err);
