@@ -48,7 +48,7 @@ router.route('/') //actually /user-info
   .put((req, res) => { 
     api.UserController.updateUser(req.body)
                       .then(val => res.json(val))
-                      .catch(err => console.log(err));
+                      .catch(err => res.status(400).json(err));
   })
   .delete((req, res) => {
     // console.log('DELETE req received');

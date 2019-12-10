@@ -127,7 +127,9 @@ function saveEdits() {
         displayedText[1].textContent = payload.user_email;
         alert('Data successfully updated!', response);          
       } else {
-        alert('Login Error: ' + req.statusText);
+        let msg = JSON.parse(response.target.response);
+        console.log(msg);
+        alert('Error Updating User: ' + msg.sqlMessage);
       }});
     req.send(JSON.stringify(payload));
     event.preventDefault();
