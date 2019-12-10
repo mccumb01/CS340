@@ -4,25 +4,6 @@
 -- Initial Database Setup and Seed Data
 -- Fall 2019
 
-
--- Variable delimeter used throughout: '$$'
-
--- DELIMITER $$
- 
--- CREATE PROCEDURE `nukeDB`()
--- BEGIN
---     SET FOREIGN_KEY_CHECKS = 0;
---     DROP TABLE IF EXISTS users;
---     DROP TABLE IF EXISTS media_items;
---     DROP TABLE IF EXISTS media_queues;
---     DROP TABLE IF EXISTS queue_items;
---     DROP TABLE IF EXISTS genres;
---     DROP TABLE IF EXISTS item_genres;
---     DROP TABLE IF EXISTS hashed_credentials;
--- END$$
- 
--- DELIMITER ;
-
 SET FOREIGN_KEY_CHECKS = 0;
 --
 -- Table structure for table user

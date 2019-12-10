@@ -1,6 +1,6 @@
 /********************************************************************************************
- * Author: Sriram Narayanan
- * CS 340, Section 400 Fall 2019 
+ * Author: Sriram Narayanan & Mike Cumberworth
+ * CS 340, Section 400 Databases Fall 2019 
  *******************************************************************************************/
 const pool = require('./db_connection');
 

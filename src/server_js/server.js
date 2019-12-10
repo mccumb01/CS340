@@ -1,3 +1,8 @@
+/********************************************************************************************
+ * Author: Mike Cumberworth
+ * CS 340, Section 400 Databases Fall 2019 
+ *******************************************************************************************/
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
