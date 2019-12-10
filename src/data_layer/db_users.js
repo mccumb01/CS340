@@ -28,7 +28,7 @@ module.exports.createUser = function(body){
   return new Promise((resolve, reject) => {
     pool.query('INSERT INTO users (username, user_email) VALUES (?,?);',[body.username, body.user_email], function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR CREATING USER");
         return reject(err);
       }
       console.log("Results in dataSources: ", JSON.stringify(rows));

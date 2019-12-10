@@ -42,7 +42,8 @@ router.route('/') //actually /user-info
       let context = req.body;
       context.priorities = [];
       res.render('profile', context);
-  });
+    })
+    .catch((err) => res.status(400).json(err));
   })
   .put((req, res) => { 
     api.UserController.updateUser(req.body)

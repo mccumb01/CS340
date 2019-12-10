@@ -8,7 +8,7 @@ let loggedIn = false;
 let showWarning = false;
 
 window.onload = function(){
-  setTimeout(hideWarning, 3000);
+  //setTimeout(hideWarning, 3000);
 }
 
 newSession.addEventListener('click', (event) => {
@@ -37,11 +37,11 @@ for (let btn of cancelBtns) {
   });  
 };
 
-function hideWarning(){
-  showWarning = false;
-  let box = document.getElementById('loginWarning');
-  box.classList.add('hidden');  
-}
+// function hideWarning(){
+//   showWarning = false;
+//   let box = document.getElementById('loginWarning');
+//   box.classList.add('hidden');  
+// }
 
 function login(name){
   if (!name || name.length === 0){
@@ -80,7 +80,9 @@ function createUser(){
       window.location.href = "/user";
       clearForms();
     } else {
-      alert('Error Creating User: ' + req.statusText);
+      let msg = JSON.parse(response.target.response);
+      console.log(msg);
+      alert('Error Creating User: ' + msg.sqlMessage);
     }});
   req.send(JSON.stringify(payload));
   event.preventDefault();
