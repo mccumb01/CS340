@@ -25,6 +25,9 @@ module.exports.MEDIA_TYPES = ['Book','Movie','Audio Album','Periodical','Short']
 //   });
 // }
 
+
+// Note: This returns genres as separate columns that get processed into an array of genres in api.js
+
 module.exports.getAllItems = function getAllItems(){
   return new Promise((resolve, reject) => {
     pool.query(`SELECT m.media_item_id, title, original_language_title, media_type, 

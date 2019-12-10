@@ -7,13 +7,13 @@ const pool = require('./db_connection');
 
 
 /*******************************************
-'Genres' Functions
+'Item Genres' Functions
 *******************************************/
 module.exports.getGenresForItem = function getGenresForItem(id){
   return new Promise((resolve, reject) => {
     pool.query('SELECT genre_id FROM item_genres WHERE media_item_id = ?;', [id] , function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR GETTING Genres for item");
         return reject(err);
       }
       console.log("Results getGenresForItem: ", JSON.stringify(rows));
@@ -26,7 +26,7 @@ module.exports.getItemsOfGenre = function getItemsOfGenre(genre_id){
   return new Promise((resolve, reject) => {
     pool.query('SELECT media_item_id FROM item_genres WHERE genre_id = ?;', [genre_id], function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR GETTING items with genre ");
         return reject(err);
       }
       console.log("Results in getItemsOfGenre: ", JSON.stringify(rows));

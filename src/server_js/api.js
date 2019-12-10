@@ -1,6 +1,24 @@
 /********************************************************************************************
  * Author: Mike Cumberworth
  * CS 340, Section 400 Databases Fall 2019 
+ * 
+ * This file is an abstraction layer between the routes/endpoints and the actual database calls.
+ * It groups functions in a sort of "Controller" approach, to facilitate testing without
+ * hitting the actual database, if used with mocks and fakes. This would also allow for easy
+ * swapping out of the actual database code, which is tightly coupled to MySQL and the npm
+ * mysql module.  
+ * 
+ * This file also serves as the only real "middleware" of the app, handling the fetching and 
+ * transformation of database results into a format suitable for passing back to clients. 
+ * For example, this is where multiple table rows from item_genres get combined into a single entry
+ * for an item, with an array of associated genres the client needs to display.
+ * 
+ * - UsersController
+ * - MediaQueueController
+ * - QueueItemsController
+ * - MediaItemsController
+ * - GenreController
+ *  
  *******************************************************************************************/
 
 const dataSources = require ('../data_layer/dataSources');
@@ -261,6 +279,6 @@ module.exports.GenreController = {
   }
 }
   
-module.exports.resetTable = function resetTable(tableName) {
-  return dataSources.resetTable(tableName);
-}
+// module.exports.resetTable = function resetTable(tableName) {
+//   return dataSources.resetTable(tableName);
+// }

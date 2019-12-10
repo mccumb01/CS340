@@ -1,7 +1,12 @@
 /********************************************************************************************
  * Author: Mike Cumberworth
  * CS 340, Section 400 Web Development Summer 2019 
- *******************************************************************************************/
+ * 
+ * Initially intended to be used for creating Data Transfer Objects and Mocks for testing.
+ * This layer would mimic and abstract the actual database table structure.
+ * Wound up not using it, but keeping it here for when I can go back and add more tests.
+ 
+ ********************************************************************************************/
 
 module.exports.User = function(obj){ 
                         this.user_id = obj.user_id || null; 

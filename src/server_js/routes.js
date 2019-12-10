@@ -2,13 +2,18 @@
  * Author: Mike Cumberworth
  * CS 340, Section 400 Web Development Fall 2019 
  * 
- * This page contains page routes for Home, Media Items, User Profile, About, and Login pages 
- * It also contains or leads to API Endpoints for the following:
- * 
- * /media_items
- * /genres
- * /item_genres
- * /user_info 
+ * This page brings together all page and API routes actually called by clients.
+
+ * These functions all call the appropriate "Controller" in api.js.
+ * That file is an abstraction layer between endpoints and the database.
+ * The goal of this separation was to use TDD and the abstractions to facilitate testing & development 
+ * of the front-end and routing independent of the actual database. 
+
+ * Some routes been split to separate files, while others are still in this file.
+ *  - genres, media_queue, and queue_items are all still here. 
+ *  - media_items.js handles all routes and endpoints for the media_items page 
+ *  - login.js handles login functionality (Creates new users) on the "Login" page
+ *  - users.js handles routes and endpoints for RUD'ing user info on the "Profile" page
  * 
  ****************************************************************************************/
 
@@ -187,14 +192,6 @@ router.route('/queue_items')
                             .then(() => res.send({}))
                             .catch((err) => console.log("Error clearing queue ", err));
   });
-
-
-// Used to drop & rebuild an empty workouts table in the database
-router.get('/reset-table',function(req,res,next){
-  let tableName = req.query.tableName || "";
-  let context = {};
-  api.resetTable(tableName).then(() => res.send('<h1>Table Reset</h1>')); 
-});
 
 router.use((req, res, next) => {
   res.status(404);

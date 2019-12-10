@@ -1,3 +1,8 @@
+/********************************************************************************************
+ * Author: Mike Cumberworth
+ * CS 340, Section 400 Databases Fall 2019 
+ *******************************************************************************************/
+
 
 const guestBtn = document.getElementById('guestUserLink');
 const newUserSubmit = document.getElementById('newUserSubmit');
@@ -95,6 +100,5 @@ function clearForms(){
   document.getElementById('new_username').value = '';
   document.getElementById('new_user_email').value = '';
   document.getElementById('new_pw').value = '';
-  document.getElementById('new_pw2').value = '';
-  
+  document.getElementById('new_pw2').value = ''; 
 }

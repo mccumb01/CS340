@@ -7,6 +7,7 @@ const pool = require('./db_connection');
 /*******************************************
 'Media Queue' Functions
 *******************************************/
+
 /*Add media_queue for user*/ 
 module.exports.addMediaQueueForUser = function addMediaQueueForUser(id, body){
   return new Promise((resolve, reject) => {
@@ -16,7 +17,7 @@ module.exports.addMediaQueueForUser = function addMediaQueueForUser(id, body){
     }
     pool.query('INSERT INTO media_queues(user_id, list_name) VALUES (?, ?);', [id, name] , function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR CREATING NEW MEDIA QUEUE");
         return reject(err);
       }
       console.log("Results getMediaQueueForUser: ", JSON.stringify(rows));
@@ -25,12 +26,12 @@ module.exports.addMediaQueueForUser = function addMediaQueueForUser(id, body){
   });
 }
 
- /*Get all media_queues for user - used to populate dropdown list */
+/*Get all media_queues for user - used to populate dropdown list */
 module.exports.getMediaQueuesForUser = function getMediaQueuesForUser(id){
   return new Promise((resolve, reject) => {
     pool.query('SELECT media_queue_id FROM media_queues WHERE user_id = ?;', [id] , function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR GETTING MEDIA QUEUE FOR USER");
         return reject(err);
       }
       console.log("Results getMediaQueueForUser: ", JSON.stringify(rows));
@@ -45,7 +46,7 @@ module.exports.deleteMediaQueue = function deleteMediaQueues(id){
     pool.query('DELETE FROM media_queues WHERE media_queue_id = ?;',[id], 
     function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR DELETING MEDIA QUEUE");
         return reject(err);
       }
       console.log("Results in deleteMediaQueues: ", JSON.stringify(rows));
@@ -59,7 +60,7 @@ module.exports.deleteAllQueuesForUser = function deleteMediaQueues(id){
     pool.query('DELETE FROM media_queues WHERE user_id = ?;',[id], 
     function (err, rows){
       if (err){
-        console.log("ERROR GETTING ENTRIES");
+        console.log("ERROR DELETING ALL QUEUES FOR USER");
         return reject(err);
       }
       console.log("Results in deleteAllQueuesForUser: ", JSON.stringify(rows));

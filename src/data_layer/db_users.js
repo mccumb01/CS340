@@ -8,12 +8,16 @@ const pool = require('./db_connection');
 /*******************************************
 'User' Database Functions 
 *******************************************/
+
+// NOTE: Doesn't actually "authenticate" in any way - just grabs the row w/matching username. 
+// A real project would have auth middleware to compare password hashes etc prior to this point. 
+
 module.exports.authenticateUser = function authenticateUser(body) {
   console.log("Authenticating user against DB!", body);
   return new Promise((resolve, reject) => {
     pool.query('SELECT * FROM users WHERE username = ?;',[body.username] ,function (err, rows){
       if (err || rows.length < 1 ){
-      console.log("ERROR GETTING ENTRIES");
+      console.log("ERROR GETTING USER");
         return reject(err);
       }
       console.log("Result from DB: ", JSON.stringify(rows[0]));
@@ -28,7 +32,7 @@ module.exports.createUser = function(body){
   return new Promise((resolve, reject) => {
     pool.query('INSERT INTO users (username, user_email) VALUES (?,?);',[body.username, body.user_email], function (err, rows){
       if (err){
-        console.log("ERROR CREATING USER");
+        console.log("ERROR CREATING NEW USER");
         return reject(err);
       }
       console.log("Results in dataSources: ", JSON.stringify(rows));

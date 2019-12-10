@@ -1,13 +1,24 @@
 /********************************************************************************************
  * Author: Mike Cumberworth
  * CS 340, Section 400 Databases Fall 2019 
+ * 
+ * This is the main Express server-side app, run with Node.
+ * Imports npm modules used by the app
+ * Imports "routes.js", which holds all the endpoints for clients to hit
+ * 
+ * Files under 'src/server' are server-side Express files
+ *  - routes.js brings together all the endpoints and routes 
+ *  - api.js is an API abstraction layer that performs some middleware functions, and data models
+ 
+ * Files under 'src/data_layer' are for the database connection, and for making actual DB queries 
+ * 
+ * Files under 'public' are static client-side JS, CSS, and image assets
+ * 
  *******************************************************************************************/
 
 const bodyParser = require('body-parser');
-const db = require('mysql');
 const express = require('express');
 let session = require('express-session');
-
 const path = require('path');
 
 const app = express();

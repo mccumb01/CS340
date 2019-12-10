@@ -1,3 +1,12 @@
+/********************************************************************************************
+ * Author: Mike Cumberworth
+ * CS 340, Section 400 Databases Fall 2019 
+ * 
+ * This file handles row insertion/deletion for the media_items table. 
+ * Not quite as abstract as it ought to be.
+ * Not used for the 'Home' page media_queue table, which is all in script.js
+ *******************************************************************************************/
+
 /******************************************************************
 Functions that build and/or manipulate the table  
 ******************************************************************/

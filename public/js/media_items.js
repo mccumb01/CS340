@@ -1,6 +1,6 @@
 /********************************************************************************************
  * Author: Mike Cumberworth
- * CS 340, Section 400 Web Development Fall 2019 
+ * CS 340, Section 400 Databases Fall 2019 
  *******************************************************************************************/
 
 /******************************************************************
@@ -51,7 +51,7 @@ function MediaList(){
   this.getFormValues = getFormValues;
 }
 
-// Called only on initial page load in getWorkoutList callback
+// Called only on initial page load in callback to get all media items
 function createEntries(list){
   this.entries = [];
   this.clearTable();
@@ -67,6 +67,9 @@ function createEntries(list){
   this.updateTable();
 }
 
+/********************************************************************************************
+ Add Event Listeners
+ *******************************************************************************************/
 function addListeners(){
 
   console.log("Adding listeners...", this.addMediaItem);
@@ -115,23 +118,10 @@ function addListeners(){
   });
 }
 
-function validateEntry(entry){
-  if (typeof entry != 'string'){
-    return false;
-  }
-  if (!entry || entry.length === 0){
-    return false;
-  }
-  return true;
-}
-
-function capitalize(s) {
-  if (typeof s !== 'string') {
-    return '';
-  }
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
+/********************************************************************************************
+ HTTP Requests
+ - Using old-school XMLHttpRequest because that's what CS290 uses. Should've used fetch() 
+ *******************************************************************************************/
 function getAllMediaItems(){
   let req = new XMLHttpRequest();
   const self = this;
@@ -199,7 +189,6 @@ function getMediaItemById(context, id){
 }
 
 function addGenre(genre, context){
-  
   let self = context;
   let payload = { 'genre_name' : genre};
   console.log('Genre to add: ', payload);
@@ -284,6 +273,9 @@ function deleteEntry(e){
   event.preventDefault();
 }
 
+/********************************************************************************************
+ DOM Manipulation functions for filling & getting form values and prepping payload to send
+*********************************************************************************************/
 function getFormValues(){
   let id = document.getElementById('entryId').value;
   let title = document.getElementById('itemTitle').value;
@@ -348,5 +340,26 @@ function setFormTitle(title){
 function clearForm(){
   setFormTitle('Add Item');
   document.getElementById('theForm').reset();
-  document.getElementById('entryId').value = -1; // Need to explicit reset hidden value or else it retains last entry's id
+  document.getElementById('entryId').value = -1; // Need to explicitly reset hidden value or else it retains last entry's id
+}
+
+
+/********************************************************************************************
+ Minor utility functions
+ *******************************************************************************************/
+function validateEntry(entry){
+  if (typeof entry != 'string'){
+    return false;
+  }
+  if (!entry || entry.length === 0){
+    return false;
+  }
+  return true;
+}
+
+function capitalize(s) {
+  if (typeof s !== 'string') {
+    return '';
+  }
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }

@@ -1,3 +1,8 @@
+/********************************************************************************************
+ * Author: Sriram Narayan
+ * CS 340, Section 400 Databases Fall 2019 
+ *******************************************************************************************/
+
 let button = document.querySelector('#submit')
 let input = document.getElementById('new-title')
 console.log(button)

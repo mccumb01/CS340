@@ -1,9 +1,19 @@
+/********************************************************************************************
+ * Author: Mike Cumberworth
+ * CS 340, Section 400 Databases Fall 2019 
+ *******************************************************************************************/
+
+
+// The 'Guest User' profile may not be edited or deleted!  
 window.onload = function(){
   if (username === 'Guest User'){
     disableEditing();
   }
 }
 
+/********************************************************************************************
+ Grab DOM elements here to avoid having to do it constantly below
+*******************************************************************************************/
 
 let isEditing = false;
  
@@ -19,6 +29,11 @@ const saveBtn = document.getElementById('saveBtn');
 const editBtn = document.getElementById('editBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const deleteBtn = document.getElementById('deleteProfileBtn');
+
+
+/********************************************************************************************
+ Add Event Listeners
+*******************************************************************************************/
 
 saveBtn.addEventListener('click', (event) => {
   console.log('Save Btn clicked!');
@@ -52,6 +67,10 @@ function disableEditing(){
   deleteBtn.disabled = true;
 }
 
+/********************************************************************************************
+ HTTP Requests
+*********************************************************************************************/
+
 function deleteUser(id){
   console.log("id: ", id);
   let req = new XMLHttpRequest();
@@ -68,6 +87,61 @@ function deleteUser(id){
     }});
   req.send(JSON.stringify(payload));
   //event.preventDefault();
+}
+ 
+function saveEdits() {
+  console.log('Save Edits called!');
+  // get the current values from the form fields
+  let name = nameInput.value;
+  let email = emailInput.value;
+  // save them in a 'User' object format
+  let payload = getFormValues();
+  console.log("User vals to update:", payload);
+
+  // send the User object to client-side API method for updating the User's info
+    let req = new XMLHttpRequest();  
+    req.open('PUT', '/user-info', true);
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.addEventListener('load',function(response){
+      console.log(req.status, response);
+      if(req.status >= 200 && req.status < 400){
+        clearForm();
+        user = payload;
+        displayedText[0].textContent = payload.username;
+        displayedText[1].textContent = payload.user_email;
+        alert('Data successfully updated!', response);          
+      } else {
+        let msg = JSON.parse(response.target.response);
+        console.log(msg);
+        alert('Error Updating User: ' + msg.sqlMessage);
+      }});
+    req.send(JSON.stringify(payload));
+    event.preventDefault();
+}
+
+/********************************************************************************************
+ DOM Manipulation functions for filling & getting form values and prepping payload to send
+*********************************************************************************************/
+
+function getFormValues(){
+  console.log('Getting form values!');
+  let vals = {
+    'user_id': parseInt(userId),
+    'username': nameInput.value,
+    'user_email': emailInput.value
+  };
+  return vals;
+}
+
+function populateForm() {
+  console.log('Populate form called! ', userId, nameInput, emailInput);
+  nameInput.value = user.username;
+  emailInput.value = user.user_email;
+}
+
+function clearForm(){
+  nameInput.value = '';
+  emailInput.value = '';
 }
 
 function toggleEdit(){
@@ -103,54 +177,4 @@ function hideFormInputs(){
 function cancelEdit(){
   isEditing = false;
   this.hideFormInputs(); 
-}
- 
-function saveEdits() {
-  console.log('Save Edits called!');
-  // get the current values from the form fields
-  let name = nameInput.value;
-  let email = emailInput.value;
-  // save them in a 'User' object format
-  let payload = getFormValues();
-  console.log("User vals to update:", payload);
-
-  // send the User object to client-side API method for updating the User's info
-    let req = new XMLHttpRequest();  
-    req.open('PUT', '/user-info', true);
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.addEventListener('load',function(response){
-      console.log(req.status, response);
-      if(req.status >= 200 && req.status < 400){
-        clearForm();
-        user = payload;
-        displayedText[0].textContent = payload.username;
-        displayedText[1].textContent = payload.user_email;
-        alert('Data successfully updated!', response);          
-      } else {
-        let msg = JSON.parse(response.target.response);
-        console.log(msg);
-        alert('Error Updating User: ' + msg.sqlMessage);
-      }});
-    req.send(JSON.stringify(payload));
-    event.preventDefault();
-}
-function getFormValues(){
-  console.log('Getting form values!');
-  let vals = {
-    'user_id': parseInt(userId),
-    'username': nameInput.value,
-    'user_email': emailInput.value
-  };
-  return vals;
-}
-
-function populateForm() {
-  console.log('Populate form called! ', userId, nameInput, emailInput);
-  nameInput.value = user.username;
-  emailInput.value = user.user_email;
-}
-
-function clearForm(){
-  nameInput.value = '';
-  emailInput.value = '';
 }
