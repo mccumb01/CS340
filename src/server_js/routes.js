@@ -25,7 +25,9 @@ const api = require('./api');
  * Home Page
  *********************************************/
 router.get('/', function (req, res) {
-  if(!req.session.user || !req.session.user.username){
+  console.log('User: ',req.session.user, "loggedIn? : ", req.app.locals.loggedIn);
+  if(!req.app.locals.loggedIn || !req.session.user || !req.session.user.username){
+    
     res.redirect('/login');
     return;
   }

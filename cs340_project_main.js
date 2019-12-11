@@ -24,12 +24,14 @@ const path = require('path');
 const app = express();
 const publicDirPath = path.join(__dirname, '/public');
 
+app.locals.loggedIn = false;
+
 app.use(session({secret:'ReadAllTheThings', path: "/", saveUninitialized: true, resave: true }));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(publicDirPath));
 app.use(require('./src/server_js/routes.js')); 
-app.locals.loggedIn = false;
+
 const hb = require('express-handlebars').create({
   defaultLayout : 'main',
   helpers: {
@@ -37,7 +39,7 @@ const hb = require('express-handlebars').create({
       return new Date().getFullYear();
     },
     loggedIn :function() {
-      console.log('Logged in helper called!\n', app.locals);
+      console.log('Logged in helper called!\n', app.locals.loggedIn);
       return app.locals.loggedIn;
     }  
   }
