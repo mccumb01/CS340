@@ -3,6 +3,7 @@
  * CS 340, Section 400 Databases Fall 2019 
  *******************************************************************************************/
 
+const baseURL = 'http://globemonkeymedia.com/tsundoku';
 
 const guestBtn = document.getElementById('guestUserLink');
 const newUserSubmit = document.getElementById('newUserSubmit');
@@ -56,7 +57,7 @@ function login(name){
   pw = document.getElementById('pw').value;
   let req = new XMLHttpRequest();  
   let payload = {username: name, pw : pw, "New Session" : "New Session"};
-  req.open('POST', '/login', true);
+  req.open('POST', `${baseURL}/login`, true);
   req.setRequestHeader('Content-Type', 'application/json');
   req.addEventListener('load',function(response){
     console.log(req.status, response);
