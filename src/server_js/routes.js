@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
   console.log('User: ',req.session.user, "loggedIn? : ", req.app.locals.loggedIn);
   if(!req.app.locals.loggedIn || !req.session.user || !req.session.user.username){
     
-    res.redirect('/login');
+    res.redirect('./login');
     return;
   }
   res.render('home');
@@ -50,7 +50,7 @@ router.use('/media_items', require('./media_items.js'));
 
 router.get('/user', function (req, res) {
   if(!req.session.user || !req.session.user.username){
-    res.redirect('/login');
+    res.redirect('./login');
     return;
   }
 
